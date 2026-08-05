@@ -18,6 +18,7 @@
 포함한다:
 
 - `skills/`: 여러 프로젝트에서 재사용할 Agent Skills
+- `frameworks/`: 여러 skill과 도구가 공유하는 규약, 스키마, 템플릿과 확장 체계
 - `tools/`: 독립 실행 자동화 및 개발 도구
 - `packages/`: 배포 가능한 CLI와 npm 패키지
 - `configs/`: 공통 설정과 에이전트별 adapter
@@ -46,6 +47,14 @@
 - `SKILL.md` frontmatter에는 최소한 `name`과 구체적인 `description`을 둔다.
 - 큰 참고자료와 실행 코드는 각각 `references/`, `scripts/`, `assets/`로 분리한다.
 - 특정 에이전트 전용 동작은 명시하고, 공통 본문은 도구 중립적으로 유지한다.
+
+### Frameworks
+
+- 각 framework는 `frameworks/<framework-name>/README.md`를 진입점으로 사용한다.
+- framework는 특정 skill이나 에이전트에 의존하지 않는 canonical source로 유지한다.
+- skill, tool과 adapter는 framework를 소비할 수 있지만 framework가 이들을 참조하지 않는다.
+- 둘 이상의 최상위 영역에 영향을 주는 결정은 `docs/decisions/`에, framework 내부 결정은 해당 framework의 `decisions/`에 기록한다.
+- 규격과 스키마는 버전을 명시하며 이미 배포한 버전의 의미를 호환성 없이 변경하지 않는다.
 
 ### CLI와 도구
 
