@@ -18,9 +18,20 @@ REQUIRED_FILES = [
     "docs/architecture.md",
     "docs/github/issues.md",
     "external/catalog.yaml",
+    "frameworks/README.md",
+    "frameworks/human-review-artifacts/README.md",
+    "frameworks/human-review-artifacts/spec/core-0.1.md",
+    "frameworks/human-review-artifacts/schemas/manifest-0.1.schema.json",
+    "frameworks/human-review-artifacts/templates/artifact.html",
     "templates/skill/SKILL.md",
 ]
 REQUIRED_DIRECTORIES = [
+    "frameworks",
+    "frameworks/human-review-artifacts/decisions",
+    "frameworks/human-review-artifacts/examples",
+    "frameworks/human-review-artifacts/profiles",
+    "frameworks/human-review-artifacts/scripts",
+    "frameworks/human-review-artifacts/tests",
     "skills",
     "tools",
     "packages",
@@ -142,12 +153,69 @@ def validate_skills(errors: list[str]) -> None:
             errors.append(f"skill has no description: {skill_file.relative_to(ROOT)}")
 
 
+def validate_frameworks(errors: list[str]) -> None:
+    frameworks_directory = ROOT / "frameworks"
+    if not frameworks_directory.is_dir():
+        return
+
+    required_children = {
+        "README.md",
+        "decisions",
+        "examples",
+        "profiles",
+        "schemas",
+        "scripts",
+        "spec",
+        "templates",
+        "tests",
+    }
+    for directory in sorted(path for path in frameworks_directory.iterdir() if path.is_dir()):
+        relative = directory.relative_to(ROOT)
+        if not KEBAB_CASE.fullmatch(directory.name):
+            errors.append(f"framework name must be kebab-case: {relative}")
+        missing = sorted(item for item in required_children if not (directory / item).exists())
+        if missing:
+            errors.append(f"framework {relative} is missing: {', '.join(missing)}")
+
+        for schema_path in sorted((directory / "schemas").glob("*.json")):
+            try:
+                schema = json.loads(schema_path.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError) as exc:
+                errors.append(f"invalid framework schema {schema_path.relative_to(ROOT)}: {exc}")
+                continue
+            if schema.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+                errors.append(
+                    f"framework schema must use JSON Schema 2020-12: "
+                    f"{schema_path.relative_to(ROOT)}"
+                )
+            if not isinstance(schema.get("$id"), str) or not schema["$id"].startswith("urn:"):
+                errors.append(
+                    f"framework schema must use an offline URN id: "
+                    f"{schema_path.relative_to(ROOT)}"
+                )
+
+        for decision_path in sorted((directory / "decisions").glob("*.md")):
+            if not re.fullmatch(r"[0-9]{4}-[a-z0-9-]+\.md", decision_path.name):
+                errors.append(
+                    f"framework decision must use numbered kebab-case filename: "
+                    f"{decision_path.relative_to(ROOT)}"
+                )
+            decision_text = decision_path.read_text(encoding="utf-8")
+            for heading in ("## 결정", "## 이유", "## 결과"):
+                if heading not in decision_text:
+                    errors.append(
+                        f"framework decision is missing {heading}: "
+                        f"{decision_path.relative_to(ROOT)}"
+                    )
+
+
 def main() -> int:
     errors: list[str] = []
     validate_paths(errors)
     label_names = load_label_names(errors)
     validate_issue_forms(label_names, errors)
     validate_skills(errors)
+    validate_frameworks(errors)
 
     if errors:
         print("repository validation failed:", file=sys.stderr)
@@ -163,9 +231,13 @@ def main() -> int:
         ]
     )
     skill_count = len([path for path in (ROOT / "skills").iterdir() if path.is_dir()])
+    framework_count = len(
+        [path for path in (ROOT / "frameworks").iterdir() if path.is_dir()]
+    )
     print(
         f"repository validation passed: {len(label_names)} labels, "
-        f"{issue_form_count} issue forms, {skill_count} skills"
+        f"{issue_form_count} issue forms, {skill_count} skills, "
+        f"{framework_count} frameworks"
     )
     return 0
 

@@ -5,6 +5,7 @@
 ## 원칙
 
 - 공통 역량의 원본은 이 저장소에서 관리합니다.
+- 여러 skill과 도구가 공유하는 계약은 독립된 framework로 관리합니다.
 - skill은 표준 `SKILL.md` 구조를 우선합니다.
 - 기존 설치 도구로 충분한 동안 별도 CLI를 만들지 않습니다.
 - Codex, Claude Code 등 에이전트별 차이는 adapter 계층으로 제한합니다.
@@ -14,6 +15,7 @@
 
 ```text
 skills/        재사용 가능한 Agent Skills
+frameworks/    공통 규약, 스키마, 템플릿과 확장 체계
 tools/         독립 실행 자동화와 개발 도구
 packages/      배포 가능한 CLI 및 npm 패키지
 configs/       공통 설정과 에이전트별 adapter
@@ -23,7 +25,7 @@ tests/         저장소 계약 및 동작 검증
 docs/          아키텍처와 의사결정 기록
 ```
 
-자세한 설계는 [아키텍처](docs/architecture.md), 이슈 작성과 메타데이터 규칙은 [GitHub Issue 표준](docs/github/issues.md)을 참고하세요.
+자세한 설계는 [저장소 아키텍처](docs/architecture.md), 첫 framework는 [Human Review Artifacts](frameworks/human-review-artifacts/README.md), 이슈 작성과 메타데이터 규칙은 [GitHub Issue 표준](docs/github/issues.md)을 참고하세요.
 
 ## 시작하기
 
@@ -49,4 +51,4 @@ python scripts/sync_github_labels.py --repo SWBaek/improvement-ai
 
 ## 현재 단계
 
-초기 기반을 구축하는 단계입니다. 첫 번째 실제 skill이나 도구가 추가되기 전까지 `packages/`와 `tools/`는 확장 지점만 정의합니다.
+초기 기반을 구축하는 단계입니다. 첫 framework인 `human-review-artifacts`를 통해 복잡한 AI 산출물을 사람이 검토하고 결정할 수 있는 HTML Artifact 계약을 개발합니다. 자체 CLI는 반복되는 배포 요구가 확인될 때까지 확장 지점으로 유지합니다.
