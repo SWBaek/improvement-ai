@@ -1,0 +1,63 @@
+name: Improvement proposal
+description: 저장소, 워크플로 또는 기존 역량의 개선을 제안합니다.
+title: "[Feature] "
+labels: ["type: feature", "status: triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 해결하려는 문제
+      description: 현재 어떤 반복 비용이나 제약이 있는지 구체적으로 설명해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 원하는 결과
+      description: 구현 방법보다 사용자가 얻게 될 결과를 먼저 작성해 주세요.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 관련 영역
+      options:
+        - skills
+        - cli-packages
+        - tools
+        - configs
+        - github-automation
+        - documentation
+        - repository-governance
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 제안 내용
+      description: 예상 인터페이스, 구조 또는 사용 예를 포함해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 기존 도구와 대안
+      description: 이미 사용할 수 있는 skill, CLI, npm package 또는 다른 접근을 조사했다면 기록해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 조건
+      placeholder: |
+        - [ ] 사용자가 ...할 수 있다.
+        - [ ] 문서와 검증이 추가된다.
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: 위험과 호환성
+      description: 보안, 파괴적 동작, 플랫폼 차이와 breaking change 가능성을 작성해 주세요.
+    validations:
+      required: false

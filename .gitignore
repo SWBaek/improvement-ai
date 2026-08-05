@@ -1,0 +1,25 @@
+# Local and agent runtime state
+.agent-config/
+.env
+.env.*
+!.env.example
+.codex/
+.claude/settings.local.json
+
+# Dependencies and build outputs
+node_modules/
+dist/
+build/
+coverage/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

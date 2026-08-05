@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Issue 작성 표준
+    url: https://github.com/SWBaek/improvement-ai/blob/main/docs/github/issues.md
+    about: 이슈 제목, 필수 내용과 label 규칙을 먼저 확인합니다.
