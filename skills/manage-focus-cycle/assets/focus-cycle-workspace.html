@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="{{LANG}}" data-diagram-status="source">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="focus-cycle-workspace-template" content="0.1">
+  <title>{{PROJECT_NAME}} — {{FOCUS_CYCLE_TITLE}}</title>
+  <style>
+    :root{color-scheme:light;--bg:#f4f5f1;--panel:#fff;--ink:#18201d;--muted:#63706a;--line:#d8ddd9;--accent:#176b55;--accent-soft:#e4f2ed;--warn:#9a5b13;--warn-soft:#fff2d8;--danger:#a33a32;--shadow:0 12px 32px rgba(27,43,36,.08)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+    a{color:var(--accent)}.shell{max-width:1180px;margin:auto;padding:28px}.eyebrow{margin:0 0 6px;color:var(--muted);font-size:.78rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+    h1,h2,h3{line-height:1.2;margin-top:0}h1{font-size:clamp(1.9rem,4vw,3.2rem);max-width:850px}h2{font-size:1.25rem}h3{font-size:1rem}
+    .topline,.statusline,.grid,.split,.criteria{display:grid;gap:16px}.topline{grid-template-columns:1fr auto;align-items:start}.statusline{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:22px}
+    .grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.95fr);margin-top:20px}.split{grid-template-columns:1fr 1fr}.criteria{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}.panel+.panel{margin-top:16px}
+    .badge,.tag{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;font-size:.78rem;font-weight:700}.badge{background:var(--accent-soft);color:var(--accent)}.tag{background:#edf0ee;color:#46534d;margin:0 6px 6px 0}
+    .metric{padding:14px;border-left:3px solid var(--line);background:#fafbf9}.metric strong{display:block;font-size:1.05rem}.metric span,.meta{color:var(--muted);font-size:.86rem}
+    .decision{border-left:4px solid var(--warn);background:var(--warn-soft);padding:14px 16px;border-radius:10px}.criterion{border:1px solid var(--line);border-radius:12px;padding:14px}.criterion[data-state="met"]{border-color:var(--accent);background:var(--accent-soft)}
+    .criterion[data-state="blocked"]{border-color:var(--danger)}.label{font-size:.72rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+    table{width:100%;border-collapse:collapse}caption{text-align:left;font-weight:700;margin-bottom:8px}th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+    pre.mermaid{overflow:auto;min-height:120px;padding:16px;border:1px dashed var(--line);border-radius:12px;background:#fbfcfb;white-space:pre-wrap}
+    ul{padding-left:20px}.source-list{font-size:.9rem}.muted{color:var(--muted)}
+    @media(max-width:820px){.topline,.grid,.split,.criteria,.statusline{grid-template-columns:1fr}.shell{padding:18px}.topline .badge{justify-self:start}}
+    @media print{body{background:#fff}.shell{max-width:none;padding:0}.panel{box-shadow:none;break-inside:avoid}}
+  </style>
+  <script type="module">
+    try {
+      const {default: mermaid} = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+      mermaid.initialize({startOnLoad:false,theme:"neutral",securityLevel:"strict"});
+      await mermaid.run({querySelector:".mermaid"});
+      document.documentElement.dataset.diagramStatus = "rendered";
+    } catch (error) {
+      document.documentElement.dataset.diagramStatus = "source";
+      console.warn("Mermaid unavailable; diagram source remains visible.", error);
+    }
+  </script>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="topline">
+        <div>
+          <p class="eyebrow">Focus Cycle Workspace · {{PROJECT_NAME}}</p>
+          <h1>{{FOCUS_CYCLE_TITLE}}</h1>
+          <p class="meta">Updated {{UPDATED_AT}} · Durable record: {{DURABLE_RECORD}}</p>
+        </div>
+        <span class="badge">{{CYCLE_STATUS}}</span>
+      </div>
+      <div class="decision"><strong>Human decision</strong><br>{{REQUESTED_DECISION}}</div>
+      <div class="statusline" aria-label="Focus Cycle status summary">
+        <div class="metric"><span>Mode</span><strong>{{WORK_MODE}}</strong></div>
+        <div class="metric"><span>Exit criteria</span><strong>{{CRITERIA_SUMMARY}}</strong></div>
+        <div class="metric"><span>Decision readiness</span><strong>{{READINESS}}</strong></div>
+        <div class="metric"><span>Primary blocker</span><strong>{{PRIMARY_BLOCKER}}</strong></div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <aside>
+        <section id="project-context" class="panel" aria-labelledby="project-context-title">
+          <p class="eyebrow">Long-lived context</p>
+          <h2 id="project-context-title">Project Context</h2>
+          <p>{{PROJECT_PURPOSE}}</p>
+          <h3>Relevant workstreams</h3>
+          <ul>{{WORKSTREAM_ITEMS}}</ul>
+          <p class="muted">No whole-project completion is calculated.</p>
+        </section>
+
+        <section id="sources-freshness" class="panel" aria-labelledby="sources-title">
+          <p class="eyebrow">Provenance</p>
+          <h2 id="sources-title">Sources &amp; Freshness</h2>
+          <div>{{OBSERVED_INFERRED_UNKNOWN}}</div>
+          <ul class="source-list">{{SOURCE_ITEMS}}</ul>
+        </section>
+      </aside>
+
+      <div>
+        <section id="active-focus-cycle" class="panel" aria-labelledby="focus-title">
+          <p class="eyebrow">Primary bounded work</p>
+          <h2 id="focus-title">Active Focus Cycle</h2>
+          <p><strong>Objective:</strong> {{OBJECTIVE}}</p>
+          <p><strong>Why now:</strong> {{WHY_NOW}}</p>
+          <div>{{SCOPE_TAGS}}</div>
+          <h3>Cycle-specific progress</h3>
+          <div>{{PROGRESS_VISUAL}}</div>
+        </section>
+
+        <section id="completion-contract" class="panel" aria-labelledby="contract-title">
+          <p class="eyebrow">Stopping rule</p>
+          <h2 id="contract-title">Completion Contract</h2>
+          <div class="criteria">{{CRITERION_CARDS}}</div>
+          <div class="split">
+            <div><h3>Review point / budget</h3><p>{{REVIEW_BUDGET}}</p></div>
+            <div><h3>Expected outcome</h3><p>{{EXPECTED_OUTCOME}}</p></div>
+          </div>
+          <h3>Reopen condition</h3>
+          <p>{{REOPEN_CONDITION}}</p>
+        </section>
+
+        <section id="current-discussion" class="panel" data-view-type="{{VIEW_TYPE}}" aria-labelledby="discussion-title">
+          <p class="eyebrow">Adaptive surface</p>
+          <h2 id="discussion-title">Current Discussion</h2>
+          <p>{{CURRENT_QUESTION}}</p>
+          <div>{{ADAPTIVE_CONTENT}}</div>
+          <pre class="mermaid">{{MERMAID_SOURCE}}</pre>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

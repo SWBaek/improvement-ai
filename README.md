@@ -94,17 +94,18 @@ docs/          아키텍처, 운영 정책과 의사결정 기록
 - 독립 제품으로 운영돼야 하는 전체 서비스 코드
 - 다른 곳에서 재생성할 수 있는 다운로드·빌드 결과물
 
-## 첫 번째 주요 Candidate
+## 첫 번째 In Progress Capability
 
-**Human-AI Project Workspace**는 이 저장소 전체의 정체성이 아니라, 여기서 발전시킬 capability 중 하나입니다.
+**Focus Cycle Management**는 장기 프로젝트 안에서 현재 집중할 단기 목표를 설정하고, 완료 기준과 진행 상태를 관리하며, 적절한 시점에 주기를 종료하도록 돕는 첫 번째 In Progress capability입니다.
 
-이 capability는 AI가 프로젝트를 조사한 뒤 인간에게 다음을 시각적으로 보여주는 workflow를 목표로 합니다.
+[`manage-focus-cycle`](skills/manage-focus-cycle/SKILL.md) Skill은 다음을 수행합니다.
 
-1. 프로젝트 전체 진행 상황
-2. 현재 단계, Focus와 필요한 결정
-3. 현재 문제에 적합한 표, 흐름, architecture diagram 또는 기타 시각 자료
+1. 하나의 Primary Focus Cycle과 Completion Contract를 설정합니다.
+2. Delivery, maintenance, research와 decision work의 진행을 적합한 기준으로 갱신합니다.
+3. 전체 프로젝트 완료율 없이 현재 Focus, evidence와 논의를 Focus Cycle Workspace로 보여줍니다.
+4. 종료·중단·대체 판단을 채팅에서 확인하고 durable project record에 반영합니다.
 
-GM 프로젝트에서 pilot을 시작할 때 flat Skill과 필요한 HTML asset/script를 만들고 In Progress로 전환합니다. 인간의 응답은 기존 채팅을 사용합니다. 독립 Engine, Framework 또는 서버형 서비스는 Skill만으로 해결하기 어려운 요구가 실제로 확인된 뒤 검토합니다.
+Skill은 [tracking issue #10](https://github.com/SWBaek/improvement-ai/issues/10)에서 synthetic scenario와 실제 pilot 결과를 수집합니다. 독립 renderer, Framework 또는 서비스는 Skill만으로 해결하기 어려운 요구가 확인된 뒤 검토합니다.
 
 ## 현재 상태
 
@@ -112,7 +113,7 @@ GM 프로젝트에서 pilot을 시작할 때 flat Skill과 필요한 HTML asset/
 |---|---|
 | 저장소 운영 기반 | 구축됨 |
 | Promoted capability | 아직 없음 |
-| Human-AI Project Workspace | Candidate, Skill 기반 pilot 준비 전 |
+| Focus Cycle Management | In Progress, concept 검증 중 |
 | 자체 CLI와 Framework | 실사용 근거가 생길 때까지 보류 |
 
 ## 시작하기

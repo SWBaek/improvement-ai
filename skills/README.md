@@ -26,4 +26,5 @@ skills/<skill-name>/
 <!-- skill-index:start -->
 | Skill | Status | Tracking |
 |---|---|---|
+| [manage-focus-cycle](manage-focus-cycle/SKILL.md) | In Progress | [#10](https://github.com/SWBaek/improvement-ai/issues/10) |
 <!-- skill-index:end -->
