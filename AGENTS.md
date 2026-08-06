@@ -102,9 +102,10 @@ Candidate 단계에서는 speculative 디렉터리, schema나 package를 만들�
 2. 실제 사용 근거와 현재 lifecycle 단계를 확인한다.
 3. 가장 작은 재사용 가능한 단위로 구현한다.
 4. 문서, template과 검증 코드를 함께 갱신한다.
-5. `python scripts/validate_repository.py`와 관련 테스트를 실행한다.
-6. commit 전에 diff에서 비밀 정보, 생성 파일과 불필요한 범위가 없는지 확인한다.
-7. GitHub 작업은 인증된 `gh` 정책을 따른다.
+5. 배포된 Skill을 변경하면 `skills/catalog.json`의 독립 version을 올리고 `docs/releases/`의 해당 변경 이력을 갱신한다.
+6. `python scripts/validate_repository.py`와 관련 테스트를 실행한다.
+7. commit 전에 diff에서 비밀 정보, 생성 파일과 불필요한 범위가 없는지 확인한다.
+8. GitHub 작업은 인증된 `gh` 정책을 따른다. `main` 병합 후 version 증가를 감지한 workflow가 인증된 `gh`로 tag와 Release를 생성한다.
 
 ## 완료 기준
 
@@ -114,4 +115,5 @@ Candidate 단계에서는 speculative 디렉터리, schema나 package를 만들�
 - 저장소 검증과 관련 테스트가 통과한다.
 - 새 경로와 명령이 README 또는 관련 문서에서 발견 가능하다.
 - 외부 의존성과 license가 기록되어 있다.
+- 배포된 Skill 변경에는 version, 변경 이력과 호환성 설명이 있다.
 - 비밀 정보와 개인 runtime 상태가 commit에 포함되지 않는다.

@@ -52,9 +52,16 @@ On close, distinguish achieved, decision made, inconclusive, stopped, and supers
 
 ### 5. Render the Workspace
 
-Read [the Workspace rendering guide](references/workspace-rendering.md), copy [the HTML shell](assets/focus-cycle-workspace.html), replace its placeholders, remove unused example structures, and write the current view to the stable OS temp path.
+Read [the Workspace rendering guide](references/workspace-rendering.md) and [the versioned input schema](references/workspace-input.schema.json). Create a temporary JSON input that represents only supported fields and adaptive block types. Never edit the HTML shell or interpolate project text into HTML directly.
 
-Render Project Context, Primary Focus Cycle, Completion Contract, Current Discussion, and Sources & Freshness on every invocation, including Proposed and closure-review states. Open the HTML in the available browser when possible.
+Validate and render with the bundled deterministic script:
+
+```text
+python scripts/render_workspace.py --input <workspace.json> --validate-only
+python scripts/render_workspace.py --input <workspace.json> --open
+```
+
+Resolve the script path from this Skill directory when invoking it outside the Skill folder. Render Project Context, Primary Focus Cycle, Completion Contract, Current Discussion, and Sources & Freshness on every invocation, including Proposed and closure-review states. If the browser cannot open, still report the generated path.
 
 ### 6. Report in chat
 
@@ -65,10 +72,11 @@ State the Primary Focus Cycle, status, strongest evidence or blocker, requested 
 - Preserve unrelated user changes and project-native source conventions.
 - Do not turn a long-term vision into a measurable final-project denominator.
 - Do not report inferred state as observed fact.
+- Do not place raw HTML, script, or unsafe link schemes in Workspace input.
 - Do not broaden scope or extend research merely because another question exists.
 - Do not publish or host the Workspace unless the user separately authorizes it.
 - Do not commit, push, create issues, or modify external systems unless the user or project policy authorizes those actions.
 
 ## Completion
 
-A run is complete when the durable record is unchanged or intentionally updated, the Workspace reflects the same Cycle and source freshness, required confirmation is explicit, and the user receives the current path and next decision.
+A run is complete when the durable record is unchanged or intentionally updated, the renderer accepts the structured input, the Workspace reflects the same Cycle and source freshness, required confirmation is explicit, and the user receives the current path and next decision.

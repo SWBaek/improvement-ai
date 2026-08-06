@@ -1,2 +1,16 @@
 version: 1
-sources: []
+sources:
+  - name: skills-cli
+    source: https://github.com/vercel-labs/skills
+    distribution: npm:skills@1.5.22
+    version: 1.5.22
+    license: MIT
+    purpose: Discover, install, and update Agent Skills through the supported consumer path.
+    fallback: Install a Skill from its GitHub directory manually when the CLI is unavailable.
+  - name: mermaid
+    source: https://github.com/mermaid-js/mermaid
+    distribution: https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.esm.min.mjs
+    version: 11.16.1
+    license: MIT
+    purpose: Render optional diagrams in the manage-focus-cycle Workspace.
+    fallback: Keep the Mermaid source and surrounding labels readable when the CDN is unavailable.

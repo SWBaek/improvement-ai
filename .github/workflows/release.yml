@@ -1,0 +1,105 @@
+name: Release changed Skills
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Validate and detect releases
+    runs-on: ubuntu-latest
+    outputs:
+      has_releases: ${{ steps.detect.outputs.has_releases }}
+      releases: ${{ steps.detect.outputs.releases }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.13"
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22.20.0"
+      - name: Validate repository contracts
+        run: python scripts/validate_repository.py
+      - name: Check generated Skill index
+        run: python scripts/render_skill_index.py --check
+      - name: Run tests
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+      - name: Smoke test Codex installation
+        run: python scripts/smoke_install.py
+      - name: Detect version changes
+        id: detect
+        run: >-
+          python scripts/release_skills.py detect
+          --before "${{ github.event.before }}"
+          --after "${{ github.sha }}"
+          --github-output "$GITHUB_OUTPUT"
+
+  release:
+    name: Release ${{ matrix.release.tag }}
+    needs: prepare
+    if: needs.prepare.outputs.has_releases == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        release: ${{ fromJSON(needs.prepare.outputs.releases) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.13"
+      - name: Build Release notes
+        run: >-
+          python scripts/release_skills.py notes
+          --skill "${{ matrix.release.skill }}"
+          --version "${{ matrix.release.version }}"
+          --output release-notes.md
+      - name: Create immutable GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ matrix.release.tag }}
+          RELEASE_VERSION: ${{ matrix.release.version }}
+          RELEASE_SKILL: ${{ matrix.release.skill }}
+        shell: bash
+        run: |
+          gh auth status
+          if git rev-parse --verify "refs/tags/$RELEASE_TAG" >/dev/null 2>&1; then
+            target="$(git rev-list -n 1 "$RELEASE_TAG")"
+            if [ "$target" != "$GITHUB_SHA" ]; then
+              echo "Tag $RELEASE_TAG points to $target instead of $GITHUB_SHA" >&2
+              exit 1
+            fi
+          fi
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists at the expected commit."
+            exit 0
+          fi
+          prerelease=()
+          if [[ "$RELEASE_VERSION" == *-* ]]; then
+            prerelease=(--prerelease)
+          fi
+          gh release create "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "$RELEASE_SKILL v$RELEASE_VERSION" \
+            --notes-file release-notes.md \
+            "${prerelease[@]}"

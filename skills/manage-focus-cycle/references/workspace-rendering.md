@@ -6,10 +6,20 @@ Render a current human-readable view, not an immutable review artifact or projec
 
 - Windows: `%TEMP%\focus-cycle-workspace\<project-name>\index.html`
 - macOS/Linux: `${TMPDIR:-/tmp}/focus-cycle-workspace/<project-name>/index.html`
-- Sanitize the project directory name to lowercase letters, digits, and hyphens.
+- Run `scripts/render_workspace.py` with a schema-versioned JSON input; never replace HTML placeholders directly.
+- Sanitize the project directory name to lowercase letters, digits, and hyphens. The renderer uses a stable hash fallback when transliteration is empty.
 - Overwrite the same file on every Skill run; the durable project record owns history.
-- Match the language of the current user conversation.
+- Match the language of the current user conversation. Version 1 localizes `ko` inputs in Korean and uses English labels for other language codes.
 - Open the file with the platform browser when possible and always report the absolute path.
+
+## Input contract
+
+- Follow `references/workspace-input.schema.json` exactly and use `schemaVersion: 1`.
+- Use one Project and one Primary Focus Cycle. Do not encode competing Primary Cycles.
+- Use only `paragraph`, `list`, `table`, and `mermaid` blocks in Current Discussion.
+- Put project-provided values in scalar fields. Do not send HTML fragments, event handlers, or script.
+- Use `http` or `https` for clickable source URLs. Keep project-relative source paths as plain text.
+- Validate before render. Treat validation failure as an input defect and correct the JSON rather than bypassing the renderer.
 
 ## Required regions
 
@@ -35,13 +45,13 @@ Tie every visual to the Primary Focus Cycle. Do not render a generic project das
 
 ## HTML policy
 
-- Start from `assets/focus-cycle-workspace.html` and keep one portable HTML file.
+- Let the renderer consume `assets/focus-cycle-workspace.html` and produce one portable HTML file.
 - Keep core layout and styles inline.
-- Mermaid diagrams may use `https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs`.
+- Mermaid diagrams may use the pinned `https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.esm.min.mjs` dependency.
 - If the CDN fails, leave Mermaid source and all surrounding labels readable.
 - Use semantic headings, landmarks, tables with captions, high-contrast text, and responsive layouts.
 - Do not require JavaScript for Project Context, Completion Contract, evidence, sources, or requested decisions.
-- Remove unused placeholder sections instead of filling them with invented content.
+- Omit unsupported or unnecessary discussion blocks instead of filling them with invented content.
 
 ## Integrity rules
 
