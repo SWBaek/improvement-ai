@@ -1,6 +1,6 @@
 # Human-AI Interaction Patterns
 
-- 상태: Working Draft
+- 상태: Research Baseline
 - 기준일: 2026-08-06
 
 ## 목적
@@ -24,20 +24,21 @@ AI와 인간이 복잡한 작업을 함께 수행할 때 반복되는 interactio
 
 표준을 그대로 구현하기보다 필요한 개념과 호환 지점을 식별하고, Core의 단순성과 self-contained 전달 특성을 유지한다.
 
-## 초기 Interaction Taxonomy
+## Interaction Taxonomy v0.1
 
 | ID | Pattern | 인간의 목표 | AI의 책임 | 대표 응답 |
 |---|---|---|---|---|
 | `orient` | 상황 파악 | 범위와 현재 상태를 이해한다 | 요약, 구조, 상태와 한계를 제시한다 | 확인, 추가 설명 요청 |
-| `elicit` | 요구 명료화 | 목표, 선호와 제약을 제공한다 | 필요한 질문과 영향 범위를 제시한다 | 답변, 제약 추가, 모름 |
-| `explore` | 가능성 탐색 | 후보 방향을 발견하고 좁힌다 | 서로 다른 후보와 탐색 축을 제안한다 | 관심 표시, 후보 추가·제외 |
 | `compare` | 대안 비교 | 기준과 trade-off로 대안을 평가한다 | 동일 기준의 비교와 불확실성을 제공한다 | 선택, 순위, 평가, 기준 변경 |
-| `critique` | 산출물 검토 | 오류, 누락, 위험과 이견을 표현한다 | 주장과 검토 지점을 식별 가능하게 제시한다 | 의견, 반박, 변경 요청 |
 | `decide` | 결정 | 대안 중 하나를 채택하거나 보류한다 | 선택지, 근거, 영향과 되돌림 비용을 제시한다 | 선택, 거부, 보류 |
 | `revise` | 변경 확인 | 피드백이 올바르게 반영됐는지 본다 | 변경 전후와 미반영 항목을 보여준다 | 승인, 추가 변경 요청 |
 | `verify` | 조건 검증 | 주장이나 결과가 기준을 만족하는지 판단한다 | 기대값, 실제값, 증거와 한계를 제시한다 | 통과, 실패, 이의 제기 |
-| `plan` | 실행 조정 | 단계, 우선순위, 책임과 의존성을 정한다 | 작업 구조와 제약, 위험을 제시한다 | 우선순위·담당·일정 조정 |
-| `resolve` | 논의 종결 | 충돌과 미결 항목을 닫거나 이관한다 | 결정 상태, 잔여 위험과 후속 작업을 요약한다 | 종료, 재개, 이관 |
+
+다섯 pattern은 서로 다른 화면 모양이 아니라 서로 다른 인간 목표와 완료 조건을 갖는다. `compare`는 선호를 표현하지만 결정을 확정하지 않으며, `decide`는 명시적인 채택·거부·보류를 남긴다. `revise`는 피드백 반영 여부를, `verify`는 외부 기준 충족 여부를 판단한다.
+
+## 연구 후보
+
+`elicit`, `explore`, `critique`, `plan`, `resolve`는 유용한 대화 동작이지만 독립 Artifact pattern이어야 한다는 근거가 아직 부족하다. v0.1에서는 구현하지 않고 향후 사례 카탈로그에서 다시 평가한다.
 
 ## Pattern 공통 질문
 
@@ -63,8 +64,8 @@ AI와 인간이 복잡한 작업을 함께 수행할 때 반복되는 interactio
 - 여러 view, 표, 관계도 또는 timeline이 판단에 필요하다.
 - 인간 응답을 구조화해 후속 AI 작업으로 전달해야 한다.
 
-## Core 0.2 평가 과제
+## Core 0.2 Gap 결론
 
-현재 `inform`, `comment`, `decide`, `approve` review mode와 Response disposition이 위 pattern을 어느 정도 표현하는지 사례별로 검증한다. 특히 답변, 순위, 기준별 평가, 인라인 annotation, 근거 요청과 재검토 상태가 Core 변경 없이 Profile로 표현 가능한지 확인한다.
+현재 `inform`, `comment`, `decide`, `approve` review mode는 인간 목표와 허용 응답을 하나의 값으로 함께 표현한다. target별 허용 행동, 순위, challenge, 필수 응답과 pattern version을 명시할 수 없어 interaction 중심 계약의 기반으로 부족하다.
 
-평가가 끝나기 전에는 Core 0.2의 enum이나 Response Schema를 변경하지 않는다.
+Core 0.3은 `review.mode`를 first-class `interaction` 계약으로 교체하고, pattern과 target별 허용 action을 선언한다. Domain Profile은 interaction과 별도로 유지한다.
