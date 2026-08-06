@@ -1,109 +1,79 @@
 const path = require("path");
+const fs = require("fs");
 const { pathToFileURL } = require("url");
 const { test, expect } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
 
 const frameworkRoot = path.resolve(__dirname, "../..");
 const templatePath = path.join(frameworkRoot, "templates", "artifact.html");
-const decisionPath = path.join(frameworkRoot, "examples", "decision-review.html");
-const researchPath = path.join(frameworkRoot, "examples", "research-review.html");
-const examplePaths = [decisionPath, researchPath];
-const asUrl = (filePath) => pathToFileURL(filePath).href;
+const examplePaths = fs.readdirSync(path.join(frameworkRoot, "examples")).filter(name => name.endsWith(".html")).map(name => path.join(frameworkRoot, "examples", name));
+const asUrl = filePath => pathToFileURL(filePath).href;
 
-test("reference Artifact supports navigation, filtering and collapsing", async ({ page }) => {
-  const remoteRequests = [];
-  page.on("request", (request) => {
-    if (/^https?:/i.test(request.url())) remoteRequests.push(request.url());
-  });
+test("Core runtime creates the standard action Response", async ({ page }) => {
+  const remote = [];
+  page.on("request", request => { if (/^https?:/i.test(request.url())) remote.push(request.url()); });
   await page.goto(asUrl(templatePath));
-  await expect(page.locator("h1")).toHaveText("Human Review Artifact");
-  await expect(page.locator("#artifact-nav-list a")).toHaveCount(4);
-  await page.getByRole("button", { name: "가정" }).click();
-  await expect(page.locator('[data-artifact-kind="assumption"]')).toBeVisible();
-  await expect(page.locator('[data-artifact-kind="fact"]')).toBeHidden();
-  await page.getByRole("button", { name: "전체" }).click();
-  await page.getByRole("button", { name: "모두 접기" }).click();
-  for (const content of await page.locator(".section-content").all()) await expect(content).toBeHidden();
-  await page.getByRole("button", { name: "모두 펼치기" }).click();
-  await expect(page.locator('[data-artifact-section="summary"] .section-content')).toBeVisible();
-  expect(remoteRequests).toEqual([]);
+  await page.locator('[data-response-selection][value="single-file"]').check();
+  await page.locator("[data-response-comment]").fill("단일 전달 단위를 선택합니다.");
+  await page.getByRole("button", { name: "Response 생성" }).click();
+  const payload = JSON.parse(await page.locator("#response-output").textContent());
+  expect(payload.spec).toBe("human-review-artifacts/review-response@0.2");
+  expect(payload.artifact).toEqual({id:"artifact:template:core-0.3",spec:"human-review-artifacts/core@0.3",revision:"r1"});
+  expect(payload.interaction.pattern).toEqual({name:"decide",version:"0.1"});
+  expect(payload.responses).toEqual([{targetId:"decision-target",action:"select",selectionIds:["single-file"],comment:"단일 전달 단위를 선택합니다."}]);
+  expect(remote).toEqual([]);
 });
 
-test("review target exports the standard Response envelope and downloads locally", async ({ page }) => {
+test("Core runtime prevents invalid select and comment actions", async ({ page }) => {
   await page.goto(asUrl(templatePath));
-  await page.getByRole("button", { name: "JSON 만들기" }).click();
-  await expect(page.locator("#review-output")).toHaveValue("");
-  await expect(page.locator("#export-status")).toContainText("필요한 선택 또는 의견");
-  await page.locator("[data-review-disposition]").selectOption("selected");
-  await page.locator("[data-review-option]").first().check();
-  await page.locator("[data-review-comment]").fill("근거 링크를 추가합니다.");
-  await page.getByRole("button", { name: "JSON 만들기" }).click();
-  const payload = JSON.parse(await page.locator("#review-output").inputValue());
-  expect(payload.spec).toBe("human-review-artifacts/review-response@0.1");
-  expect(payload.artifact).toEqual({
-    id: "artifact:template:core-0.2",
-    spec: "human-review-artifacts/core@0.2",
-    revision: "r1"
-  });
-  expect(payload.responses).toEqual([{
-    targetId: "review-core",
-    disposition: "selected",
-    selectionIds: ["clarify-evidence"],
-    comment: "근거 링크를 추가합니다."
-  }]);
-  expect(new Date(payload.createdAt).toString()).not.toBe("Invalid Date");
+  await page.getByRole("button", { name: "Response 생성" }).click();
+  await expect(page.locator("#response-error")).toContainText("선택이 필요");
+  await page.locator("[data-response-action]").selectOption("request-changes");
+  await page.getByRole("button", { name: "Response 생성" }).click();
+  await expect(page.locator("#response-error")).toContainText("의견이 필요");
+});
+
+test("Response download is local and revisioned", async ({ page }) => {
+  await page.goto(asUrl(templatePath));
+  await page.locator('[data-response-selection][value="split-bundle"]').check();
   const downloadPromise = page.waitForEvent("download");
-  await page.getByRole("button", { name: "결과 다운로드" }).click();
+  await page.getByRole("button", { name: "다운로드" }).click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe("artifact-template-core-0.2-r1-review.json");
+  expect(download.suggestedFilename()).toBe("artifact-template-core-0.3-r1-response.json");
 });
 
-test("core content and review request remain readable without JavaScript", async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, locale: "ko-KR" });
-  const page = await context.newPage();
-  await page.goto(asUrl(templatePath));
-  for (const section of ["summary", "content", "review-request", "provenance"]) {
-    await expect(page.locator(`[data-artifact-section="${section}"]`)).toBeVisible();
-  }
+test("Core content and interaction remain readable without JavaScript", async ({ browser }) => {
+  const context = await browser.newContext({javaScriptEnabled:false,locale:"ko-KR"});
+  const page = await context.newPage(); await page.goto(asUrl(templatePath));
+  for (const section of ["summary","content","interaction","provenance"]) await expect(page.locator(`[data-artifact-section="${section}"]`)).toBeVisible();
   await expect(page.locator('[data-manifest-field="revision"]')).toHaveText("r1");
   await context.close();
 });
 
-test("print view keeps review content and provenance visible", async ({ page }) => {
-  await page.goto(asUrl(templatePath));
-  await page.emulateMedia({ media: "print" });
-  await expect(page.locator('[data-artifact-section="review-request"]')).toBeVisible();
+test("print and mobile views keep the requested action visible", async ({ page }) => {
+  await page.goto(asUrl(templatePath)); await page.emulateMedia({media:"print"});
+  await expect(page.locator('[data-artifact-section="interaction"]')).toBeVisible();
   await expect(page.locator('[data-artifact-section="provenance"]')).toBeVisible();
+  await page.setViewportSize({width:390,height:844});
+  await expect(page.locator("#decision-target")).toBeVisible();
 });
 
 test("reference Artifact has no automatically detectable accessibility violations", async ({ browser }) => {
-  const context = await browser.newContext({ bypassCSP: true, locale: "ko-KR" });
-  const page = await context.newPage();
-  await page.goto(asUrl(templatePath));
-  const results = await new AxeBuilder({ page }).analyze();
-  expect(results.violations).toEqual([]);
+  const context = await browser.newContext({bypassCSP:true,locale:"ko-KR"});
+  const page = await context.newPage(); await page.goto(asUrl(templatePath));
+  expect((await new AxeBuilder({page}).analyze()).violations).toEqual([]);
   await context.close();
 });
 
 for (const examplePath of examplePaths) {
-  test(`${path.basename(examplePath)} renders without runtime errors or remote requests`, async ({ page }) => {
-    const errors = [];
-    const remoteRequests = [];
-    page.on("pageerror", (error) => errors.push(error.message));
-    page.on("request", (request) => {
-      if (/^https?:/i.test(request.url())) remoteRequests.push(request.url());
-    });
+  test(`${path.basename(examplePath)} is a static readable Snapshot`, async ({ page }) => {
+    const errors=[]; const remote=[];
+    page.on("pageerror", error => errors.push(error.message));
+    page.on("request", request => { if (/^https?:/i.test(request.url())) remote.push(request.url()); });
     await page.goto(asUrl(examplePath));
     await expect(page.locator("main[data-artifact-root]")).toBeVisible();
-    await expect(page.locator('[data-manifest-field="revision"]')).toHaveText("r1");
-    expect(errors).toEqual([]);
-    expect(remoteRequests).toEqual([]);
+    await expect(page.locator('[data-artifact-section="interaction"]')).toBeVisible();
+    await expect(page.locator("script[data-artifact-runtime]")).toHaveCount(0);
+    expect(errors).toEqual([]); expect(remote).toEqual([]);
   });
 }
-
-test("research example is a static generated Snapshot with input provenance", async ({ page }) => {
-  await page.goto(asUrl(researchPath));
-  await expect(page.locator("script[data-artifact-runtime]")).toHaveCount(0);
-  await expect(page.locator('[data-artifact-section="review-request"]')).toHaveCount(0);
-  await expect(page.locator('[data-artifact-section="provenance"]')).toBeVisible();
-});
