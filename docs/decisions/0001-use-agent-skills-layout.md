@@ -1,6 +1,6 @@
 # 0001. Agent Skills 구조를 기본 배포 단위로 사용
 
-- 상태: Accepted
+- 상태: Superseded by 0008
 - 날짜: 2026-08-05
 
 ## 결정

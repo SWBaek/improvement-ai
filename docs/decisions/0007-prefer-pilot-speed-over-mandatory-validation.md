@@ -1,6 +1,6 @@
 # 0007. 강제 검증보다 Pilot 속도를 우선
 
-- 상태: Accepted
+- 상태: Partially superseded by 0008
 - 날짜: 2026-08-06
 
 ## 결정

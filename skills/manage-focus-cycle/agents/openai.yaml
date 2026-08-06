@@ -1,7 +1,0 @@
-interface:
-  display_name: "Manage Focus Cycle"
-  short_description: "Manage bounded project focus cycles"
-  default_prompt: "Use $manage-focus-cycle to establish or refresh the current bounded focus cycle and open its visual workspace."
-
-policy:
-  allow_implicit_invocation: true

@@ -1,24 +1,21 @@
 # Contributing
 
-Issues and pull requests are welcome. This is a maintainer-led personal capability portfolio; acceptance and response timing remain at the maintainer's discretion and no support SLA is provided.
+Issues and pull requests are welcome. This is a maintainer-led Capability Blueprint repository with no support SLA.
 
-## Before opening a change
+## Before proposing a Blueprint
 
-1. Search existing issues and choose the matching Issue Form.
-2. Describe the affected workflow, trigger or non-trigger, expected result, and verification evidence.
-3. Do not include credentials, private project data, session logs, caches, or generated runtime artifacts.
+1. Search existing issues and explain the repeated human-AI workflow problem.
+2. Describe the required outcomes and invariants without fixing a universal implementation.
+3. Identify the project contexts in which the capability should and should not be generated.
+4. Define how an AI will inspect a target project, propose local Skills, obtain approval, and verify the result.
+5. Exclude credentials, private project data, session logs, and generated project artifacts.
 
 ## Pull requests
 
-1. Create a focused branch and preserve the flat `skills/<skill-name>` layout.
-2. Update only documentation and tests that directly protect the changed behavior.
-3. Increase `skills/catalog.json` only when intentionally publishing a GitHub Release snapshot.
-4. When changing `manage-focus-cycle` behavior, optionally run:
+1. Keep the canonical entry point at `blueprints/<name>/BLUEPRINT.md`.
+2. Add references only when the Blueprint cannot remain concise without them; do not add executable implementations, schemas, generators, or installable Skills.
+3. Update the Blueprint index, tracking issue, architecture, or ADR only when their contract changes.
+4. Check changed links, run the label-sync dry run when labels change, and run `git diff --check`.
+5. Explain the human-visible capability outcome and the adaptation freedom left to target projects.
 
-   ```powershell
-   python -m unittest tests.test_manage_focus_cycle -v
-   ```
-
-5. Explain the user-visible outcome and any meaningful compatibility or security impact.
-
-GitHub service operations follow `AGENTS.md`: use authenticated `gh`, never place tokens in commands or files.
+GitHub service operations follow `AGENTS.md`: use authenticated `gh` and never place tokens in commands or files.

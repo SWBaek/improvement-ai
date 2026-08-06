@@ -1,17 +1,13 @@
 # Security policy
 
-## Supported versions
+## Supported state
 
-Only the latest published version of each Skill receives security fixes. During `0.x`, users should update to the latest minor and patch release.
+Only the latest `main` revision of each Blueprint is maintained. Commit-pinned revisions and the historical `manage-focus-cycle-v0.1.0` Skill Release remain available for audit but do not receive fixes.
 
-| Version | Supported |
-|---|---|
-| Latest published Skill version | Yes |
-| Older Skill versions | No |
-| Unreleased branches and forks | No |
+Generated Skills, scripts, assets, and project state are owned and supported by their target projects. This repository does not automatically update or execute them.
 
 ## Reporting a vulnerability
 
-Use GitHub's private vulnerability reporting for credentials exposure, unsafe generated content, command injection, path traversal, destructive behavior, or dependency compromise. Do not disclose exploitable details in a public issue.
+Use GitHub private vulnerability reporting for Blueprint instructions that could cause credential exposure, unsafe code generation, command injection, path traversal, unauthorized external writes, destructive behavior, provenance spoofing, or approval bypass. Do not disclose exploitable details in a public issue.
 
-Include the Skill and version, affected client and operating system, reproduction steps, impact, and any known mitigation. There is no guaranteed response SLA, but confirmed reports will be handled before public disclosure when practical.
+Include the Blueprint path and exact commit, affected Agent and project context, reproduction steps, impact, and any known mitigation. There is no guaranteed response SLA, but confirmed reports will be handled before public disclosure when practical.

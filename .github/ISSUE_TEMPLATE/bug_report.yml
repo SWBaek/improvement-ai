@@ -45,11 +45,8 @@ body:
     attributes:
       label: 관련 영역
       options:
-        - skills
-        - cli-packages
-        - tools
-        - configs
-        - github-automation
+        - blueprints
+        - github-governance
         - documentation
         - unknown
     validations:
@@ -59,7 +56,7 @@ body:
     attributes:
       label: 환경
       description: OS, AI agent, CLI와 관련 package 버전을 작성해 주세요.
-      placeholder: Windows 11, Codex, Python 3.13, gh 2.x
+      placeholder: Windows 11, Codex, Blueprint commit, gh 2.x
     validations:
       required: true
   - type: textarea
