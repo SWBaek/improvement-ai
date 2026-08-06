@@ -60,4 +60,4 @@ python scripts/sync_github_labels.py --repo SWBaek/improvement-ai
 | Artifact 생성 Skill | 계획 | Core 사용 경험을 반영해 self-contained Agent Skill로 개발합니다. |
 | 자체 CLI | 보류 | 반복되는 설치·배포 요구가 확인되면 도입합니다. |
 
-현재 개발의 중심은 [`human-review-artifacts`](frameworks/human-review-artifacts/README.md)의 [장기 목표](frameworks/human-review-artifacts/CHARTER.md)를 기준으로 AI-인간 interaction을 조사하고, GM-TechB-V2G에서 첫 적용 workflow를 검증하는 것입니다.
+현재 개발의 중심은 [`human-review-artifacts`](frameworks/human-review-artifacts/README.md)의 [장기 목표](frameworks/human-review-artifacts/CHARTER.md)를 기준으로 범용 AI-인간 interaction을 조사하고 중립 사례에서 검증하는 것입니다.

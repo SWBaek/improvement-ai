@@ -24,11 +24,13 @@
 | Candidate reuse | 다른 프로젝트에서 반복될 가능성 |
 | Evidence | 관련 파일, revision 또는 관찰 기록 |
 
-## 현재 사례
+## 현재 중립 사례
 
 | Case ID | 사례 | 주된 interaction | 상태 |
 |---|---|---|---|
-| `CASE-001` | GM-TechB-V2G 아키텍처 논의 | orient, critique, decide, revise | 분석 중 |
+| `CASE-001` | 연구 브리프 파악 | orient | baseline 작성 |
+| `CASE-002` | 백업 운영 방식 비교와 선택 | compare, decide | baseline 작성 |
+| `CASE-003` | 문서 정책 변경과 기준 검증 | revise, verify | baseline 작성 |
 
 ## 수집 규칙
 
@@ -38,3 +40,4 @@
 - 하나의 사례에 여러 pattern이 있으면 실제 순서를 보존한다.
 - 민감 정보, 개인 절대 경로와 전체 대화 원문은 복사하지 않는다.
 - 규격 승격은 사례 하나만으로 결정하지 않는다.
+- 특정 외부 프로젝트 사례는 범용 계약이 확정될 때까지 승격 근거에서 제외한다.
