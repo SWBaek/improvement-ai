@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="human-review-artifact" content="core@0.1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'sha256-LwlSJfZzUimSkcsvNPpB8SVEJIVVRhefs/WoUbDWHy4='; connect-src 'none'; font-src data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="human-review-artifact" content="core@0.2">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY='; connect-src 'none'; font-src data:; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>Human Review Artifact</title>
   <script type="application/json" id="artifact-manifest">
 {
-  "spec": "human-review-artifacts/core@0.1",
-  "id": "artifact:template:core-0.1",
+  "spec": "human-review-artifacts/core@0.2",
+  "id": "artifact:template:core-0.2",
+  "revision": "r1",
   "title": "Human Review Artifact",
   "status": "draft",
   "language": "ko",
@@ -17,12 +18,27 @@
   "updatedAt": "2026-08-06T00:00:00+09:00",
   "review": {
     "mode": "comment",
-    "prompt": "이 Artifact에서 보완할 내용을 검토해 주세요."
+    "prompt": "이 Artifact에서 보완할 내용을 검토해 주세요.",
+    "targets": ["review-core"]
   },
   "profiles": [],
   "provenance": {
     "origin": "ai-assisted",
-    "tool": "human-review-artifacts reference template"
+    "tool": "human-review-artifacts reference template",
+    "generator": {
+      "name": "human-review-artifacts template",
+      "version": "0.2"
+    }
+  },
+  "runtime": {
+    "scripts": [
+      {
+        "id": "artifact-runtime",
+        "owner": "core",
+        "version": "0.2",
+        "digest": "sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY="
+      }
+    ]
   }
 }
   </script>
@@ -53,8 +69,8 @@
     html { scroll-behavior: smooth; }
     body { margin: 0; background: var(--background); color: var(--text); line-height: 1.65; }
     a { color: var(--accent-strong); }
-    button, input, textarea { font: inherit; }
-    button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible {
+    button, input, select, textarea { font: inherit; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
       outline: 3px solid var(--focus);
       outline-offset: 3px;
     }
@@ -122,7 +138,9 @@
 
     .review-options { display: grid; gap: 0.65rem; padding: 0; border: 0; }
     .review-options label { display: flex; gap: 0.65rem; align-items: start; padding: 0.8rem; background: var(--surface-subtle); border: 1px solid var(--border); border-radius: 0.7rem; }
-    textarea { width: 100%; min-height: 8rem; padding: 0.8rem; color: var(--text); background: white; border: 1px solid var(--border); border-radius: 0.6rem; }
+    select, textarea { width: 100%; padding: 0.8rem; color: var(--text); background: white; border: 1px solid var(--border); border-radius: 0.6rem; }
+    textarea { min-height: 8rem; }
+    .review-item { display: grid; gap: 0.85rem; }
     .export-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; }
     .review-output { margin-top: 0.75rem; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
     .status-message { min-height: 1.5rem; color: var(--muted); }
@@ -151,11 +169,12 @@
 <body data-artifact-status="draft">
   <a class="skip-link" href="#artifact-content">본문으로 건너뛰기</a>
   <header class="artifact-header">
-    <p class="eyebrow">Human Review Artifact · Core 0.1</p>
+    <p class="eyebrow">Human Review Artifact · Core 0.2</p>
     <h1>Human Review Artifact</h1>
     <p class="lede">복잡한 AI 산출물을 사람이 탐색하고 검토하며 결정을 다시 전달하기 위한 참조 템플릿입니다.</p>
     <ul class="metadata" aria-label="Artifact metadata">
       <li>상태: <strong data-manifest-field="status">draft</strong></li>
+      <li>Revision: <strong data-manifest-field="revision">r1</strong></li>
       <li>검토: <strong data-manifest-field="review.mode">comment</strong></li>
       <li>업데이트: <time data-manifest-field="updatedAt" datetime="2026-08-06T00:00:00+09:00">2026-08-06</time></li>
     </ul>
@@ -225,14 +244,27 @@
         <div class="section-heading"><h2>검토 요청</h2></div>
         <p>이 Artifact에서 보완할 내용을 선택하거나 의견을 작성해 주세요.</p>
         <form id="review-form">
-          <fieldset class="review-options">
-            <legend>다음 작업에 포함할 항목</legend>
-            <label><input type="checkbox" data-review-option value="clarify-evidence"> 근거와 출처를 더 명확하게 정리한다.</label>
-            <label><input type="checkbox" data-review-option value="compare-alternatives"> 대안과 trade-off 비교를 보강한다.</label>
-            <label><input type="checkbox" data-review-option value="resolve-risks"> 미확인 위험과 후속 검증을 구체화한다.</label>
-          </fieldset>
-          <label for="review-note"><strong>추가 의견</strong></label>
-          <textarea id="review-note" placeholder="수정하거나 결정할 내용을 입력하세요."></textarea>
+          <article id="review-core" class="review-item" data-review-item data-artifact-kind="question">
+            <h3>Core 표현과 검토 흐름</h3>
+            <label for="review-disposition"><strong>응답</strong></label>
+            <select id="review-disposition" data-review-disposition>
+              <option value="">응답을 선택하세요</option>
+              <option value="commented">의견 남김</option>
+              <option value="selected">항목 선택</option>
+              <option value="approved">승인</option>
+              <option value="rejected">거절</option>
+              <option value="changes-requested">변경 요청</option>
+              <option value="deferred">보류</option>
+            </select>
+            <fieldset class="review-options">
+              <legend>다음 작업에 포함할 항목</legend>
+              <label><input type="checkbox" data-review-option value="clarify-evidence"> 근거와 출처를 더 명확하게 정리한다.</label>
+              <label><input type="checkbox" data-review-option value="compare-alternatives"> 대안과 trade-off 비교를 보강한다.</label>
+              <label><input type="checkbox" data-review-option value="resolve-risks"> 미확인 위험과 후속 검증을 구체화한다.</label>
+            </fieldset>
+            <label for="review-note"><strong>추가 의견</strong></label>
+            <textarea id="review-note" data-review-comment placeholder="수정하거나 결정할 내용을 입력하세요."></textarea>
+          </article>
           <div class="export-actions">
             <button type="button" class="primary" data-export="json">JSON 만들기</button>
             <button type="button" data-export="text">텍스트 만들기</button>
@@ -252,17 +284,17 @@
           Artifact 생성에 사용한 문서, 코드, 데이터와 기준 시점을 기록합니다.
         </p>
         <ul class="sources">
-          <li id="source-core-spec">Human Review Artifacts Core 0.1</li>
+          <li id="source-core-spec">Human Review Artifacts Core 0.2</li>
         </ul>
       </section>
     </main>
   </div>
 
   <footer>
-    <p>이 파일은 Human Review Artifacts Core 0.1 참조 템플릿입니다.</p>
+    <p>이 파일은 Human Review Artifacts Core 0.2 참조 템플릿입니다.</p>
   </footer>
 
-  <script id="artifact-runtime" data-core-runtime="0.1">
+  <script id="artifact-runtime" data-artifact-runtime="core@0.2">
 (() => {
   "use strict";
 
@@ -273,7 +305,6 @@
   const filterButtons = [...document.querySelectorAll("[data-kind-filter]")];
   const kindItems = [...document.querySelectorAll("[data-artifact-kind]")];
   const output = document.getElementById("review-output");
-  const note = document.getElementById("review-note");
   const status = document.getElementById("export-status");
   let exportFormat = "json";
 
@@ -329,24 +360,56 @@
   document.getElementById("collapse-all").addEventListener("click", () => sections.forEach((section) => setCollapsed(section, true)));
 
   const reviewData = () => ({
-    artifactId: manifest.id,
-    artifactSpec: manifest.spec,
-    selections: [...document.querySelectorAll("[data-review-option]:checked")].map((item) => item.value),
-    note: note.value.trim()
+    spec: "human-review-artifacts/review-response@0.1",
+    artifact: {
+      id: manifest.id,
+      spec: manifest.spec,
+      revision: manifest.revision
+    },
+    createdAt: new Date().toISOString(),
+    responses: manifest.review.targets.map((targetId) => {
+      const target = document.getElementById(targetId);
+      const disposition = target.querySelector("[data-review-disposition]").value;
+      const selectionIds = [...target.querySelectorAll("[data-review-option]:checked")].map((item) => item.value);
+      const comment = target.querySelector("[data-review-comment]").value.trim();
+      const response = { targetId, disposition };
+      if (selectionIds.length) response.selectionIds = selectionIds;
+      if (comment) response.comment = comment;
+      return response;
+    })
   });
 
   const renderExport = (format) => {
     exportFormat = format;
     const data = reviewData();
+    const invalid = data.responses.find((item) =>
+      !item.disposition
+      || (item.disposition === "selected" && !(item.selectionIds || []).length)
+      || (["commented", "changes-requested"].includes(item.disposition) && !item.comment)
+    );
+    if (invalid) {
+      output.value = "";
+      status.textContent = `${invalid.targetId}의 응답에 필요한 선택 또는 의견을 입력해 주세요.`;
+      return;
+    }
     output.value = format === "json"
       ? JSON.stringify(data, null, 2)
-      : [`Artifact: ${data.artifactId}`, `선택: ${data.selections.join(", ") || "없음"}`, `의견: ${data.note || "없음"}`].join("\n");
+      : [
+          `Artifact: ${data.artifact.id}@${data.artifact.revision}`,
+          ...data.responses.flatMap((item) => [
+            `Target: ${item.targetId}`,
+            `응답: ${item.disposition}`,
+            `선택: ${(item.selectionIds || []).join(", ") || "없음"}`,
+            `의견: ${item.comment || "없음"}`
+          ])
+        ].join("\n");
     status.textContent = `${format.toUpperCase()} 결과를 만들었습니다.`;
   };
 
   document.querySelectorAll("[data-export]").forEach((button) => button.addEventListener("click", () => renderExport(button.dataset.export)));
   document.querySelector("[data-copy-output]").addEventListener("click", async () => {
     if (!output.value) renderExport(exportFormat);
+    if (!output.value) return;
     output.focus();
     output.select();
     try {
@@ -358,16 +421,15 @@
   });
   document.querySelector("[data-download-output]").addEventListener("click", () => {
     if (!output.value) renderExport(exportFormat);
+    if (!output.value) return;
     const blob = new Blob([output.value], { type: exportFormat === "json" ? "application/json" : "text/plain" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `${manifest.id.replace(/[^A-Za-z0-9._-]/g, "-")}-review.${exportFormat === "json" ? "json" : "txt"}`;
+    link.download = `${manifest.id.replace(/[^A-Za-z0-9._-]/g, "-")}-${manifest.revision}-review.${exportFormat === "json" ? "json" : "txt"}`;
     link.click();
     URL.revokeObjectURL(link.href);
     status.textContent = "검토 결과를 다운로드했습니다.";
   });
-
-  renderExport("json");
 })();
   </script>
 </body>

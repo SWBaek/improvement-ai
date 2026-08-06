@@ -20,8 +20,11 @@ REQUIRED_FILES = [
     "external/catalog.yaml",
     "frameworks/README.md",
     "frameworks/human-review-artifacts/README.md",
-    "frameworks/human-review-artifacts/spec/core-0.1.md",
-    "frameworks/human-review-artifacts/schemas/manifest-0.1.schema.json",
+    "frameworks/human-review-artifacts/spec/core-0.2.md",
+    "frameworks/human-review-artifacts/schemas/manifest-0.2.schema.json",
+    "frameworks/human-review-artifacts/schemas/review-response-0.1.schema.json",
+    "frameworks/human-review-artifacts/scripts/validate_artifact.py",
+    "frameworks/human-review-artifacts/scripts/validate_review_response.py",
     "frameworks/human-review-artifacts/templates/artifact.html",
     "templates/skill/SKILL.md",
 ]
