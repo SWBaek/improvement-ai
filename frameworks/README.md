@@ -5,11 +5,12 @@
 각 framework는 다음 원칙을 따릅니다.
 
 - 특정 에이전트나 소비 도구에 종속되지 않습니다.
-- 규격과 스키마의 버전을 명시합니다.
-- 참조 구현과 검증 수단을 함께 제공합니다.
-- framework 내부 결정은 자체 `decisions/`에 기록합니다.
-- domain 확장은 Core 계약을 완화하지 않습니다.
+- 공개한 규격과 스키마에는 버전을 명시합니다.
+- 도입한 계약에는 그 규모에 맞는 검증 수단을 함께 제공합니다.
+- framework 내부 결정이 필요하면 자체 `decisions/`에 기록합니다.
+- Core가 존재할 때 domain 확장은 Core 계약을 완화하지 않습니다.
+- 실제 프로젝트에서 반복 사용 가치가 확인된 최소 계약만 추출합니다.
 
-현재 framework:
+## 현재 상태
 
-- [`human-review-artifacts`](human-review-artifacts/README.md): 복잡한 AI 산출물을 사람이 검토하고 결정하기 위한 self-contained HTML Artifact 계약
+현재 유지 중인 framework는 없습니다. `human-review-artifacts`는 실제 사용 전에 문제 정의가 어긋났음을 확인해 제거했습니다. 다음 구현은 Project Workspace의 최소 형태를 실제 프로젝트에서 검증한 뒤 이 디렉터리로 추출합니다.

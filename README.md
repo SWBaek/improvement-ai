@@ -25,7 +25,7 @@ tests/         저장소 계약 및 동작 검증
 docs/          아키텍처와 의사결정 기록
 ```
 
-자세한 설계는 [저장소 아키텍처](docs/architecture.md), 첫 framework는 [Human Review Artifacts](frameworks/human-review-artifacts/README.md), 이슈 작성과 메타데이터 규칙은 [GitHub Issue 표준](docs/github/issues.md)을 참고하세요.
+자세한 설계는 [저장소 아키텍처](docs/architecture.md), 현재 제품 방향은 [기존 Artifact 구현 폐기와 Project Workspace 재설계 결정](docs/decisions/0003-retire-human-review-artifacts.md), 이슈 작성과 메타데이터 규칙은 [GitHub Issue 표준](docs/github/issues.md)을 참고하세요.
 
 ## 시작하기
 
@@ -54,10 +54,8 @@ python scripts/sync_github_labels.py --repo SWBaek/improvement-ai
 | 항목 | 상태 | 설명 |
 |---|---|---|
 | 저장소 기반 | 완료 | 공통 구조, 운영 규칙, Issue 표준과 CI 검증을 구축했습니다. |
-| `human-review-artifacts` Core 0.3 | 인간 검토 대기 | 자동 검증을 통과했으며 중립 사례의 직접 검토 후 외부 pilot 준비 상태를 확정합니다. |
-| Interaction 연구 | 핵심 taxonomy 확정 | `orient`, `compare`, `decide`, `revise`, `verify` v0.1을 중립 사례로 정의했습니다. |
-| Representation Component | 0.1 구현 | 일곱 semantic component와 pattern 조합 규칙을 제공합니다. |
-| Artifact 생성 Skill | 계획 | Core 사용 경험을 반영해 self-contained Agent Skill로 개발합니다. |
+| Human-AI Project Workspace | 재설계 준비 | 진행 상황, 현재 Focus와 적응형 시각 논의 영역을 중심으로 최소 구현을 정의합니다. |
+| `human-review-artifacts` | 폐기 | 실제 사용 전 잘못된 문제 정의를 확인해 구현과 전용 도구를 제거했습니다. 이력은 Git에 남아 있습니다. |
 | 자체 CLI | 보류 | 반복되는 설치·배포 요구가 확인되면 도입합니다. |
 
-현재 개발의 중심은 [`human-review-artifacts`](frameworks/human-review-artifacts/README.md)의 [장기 목표](frameworks/human-review-artifacts/CHARTER.md)를 기준으로 범용 AI-인간 interaction을 조사하고 중립 사례에서 검증하는 것입니다.
+현재 개발의 중심은 실제 프로젝트에서 사람이 진행 상황과 현재 논의를 빠르게 이해하도록 돕는 최소 Project Workspace를 검증하는 것입니다. 범용 framework는 이 검증에서 반복 사용 가치가 확인된 뒤 추출합니다.

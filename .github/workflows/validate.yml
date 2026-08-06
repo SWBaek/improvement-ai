@@ -18,26 +18,5 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.13"
-      - name: Set up Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: "24"
-          cache: npm
-      - name: Install browser test dependencies
-        run: npm ci
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
       - name: Validate repository contracts
         run: python scripts/validate_repository.py
-      - name: Test Artifact validator
-        run: python -m unittest discover -s frameworks/human-review-artifacts/tests -p "test_*.py"
-      - name: Validate reference Artifacts
-        shell: bash
-        run: |
-          python frameworks/human-review-artifacts/scripts/validate_artifact.py frameworks/human-review-artifacts/templates/artifact.html
-          for artifact in frameworks/human-review-artifacts/examples/*.html; do
-            python frameworks/human-review-artifacts/scripts/validate_artifact.py "$artifact"
-            python frameworks/human-review-artifacts/scripts/validate_interaction.py "$artifact"
-          done
-      - name: Test Artifact browser runtime
-        run: npm run test:artifacts:browser

@@ -16,40 +16,14 @@ REQUIRED_FILES = [
     ".github/issue-labels.json",
     ".github/ISSUE_TEMPLATE/config.yml",
     "docs/architecture.md",
+    "docs/decisions/0003-retire-human-review-artifacts.md",
     "docs/github/issues.md",
     "external/catalog.yaml",
     "frameworks/README.md",
-    "frameworks/human-review-artifacts/README.md",
-    "frameworks/human-review-artifacts/CHARTER.md",
-    "frameworks/human-review-artifacts/ADOPTION.md",
-    "frameworks/human-review-artifacts/decisions/0004-adopt-interaction-centered-direction.md",
-    "frameworks/human-review-artifacts/research/README.md",
-    "frameworks/human-review-artifacts/research/human-ai-interaction-patterns.md",
-    "frameworks/human-review-artifacts/research/interaction-case-catalog.md",
-    "frameworks/human-review-artifacts/research/source-matrix.md",
-    "frameworks/human-review-artifacts/research/artifact-trigger.md",
-    "frameworks/human-review-artifacts/research/deferred/gm-techb-v2g-case-study.md",
-    "frameworks/human-review-artifacts/research/evaluations/session-001-instructions.md",
-    "frameworks/human-review-artifacts/research/readiness-core-0.3.md",
-    "frameworks/human-review-artifacts/spec/core-0.3.md",
-    "frameworks/human-review-artifacts/schemas/manifest-0.3.schema.json",
-    "frameworks/human-review-artifacts/schemas/review-response-0.2.schema.json",
-    "frameworks/human-review-artifacts/interactions/catalog-0.1.json",
-    "frameworks/human-review-artifacts/components/README.md",
-    "frameworks/human-review-artifacts/scripts/validate_artifact.py",
-    "frameworks/human-review-artifacts/scripts/validate_interaction.py",
-    "frameworks/human-review-artifacts/scripts/validate_review_response.py",
-    "frameworks/human-review-artifacts/templates/artifact.html",
     "templates/skill/SKILL.md",
 ]
 REQUIRED_DIRECTORIES = [
     "frameworks",
-    "frameworks/human-review-artifacts/decisions",
-    "frameworks/human-review-artifacts/examples",
-    "frameworks/human-review-artifacts/profiles",
-    "frameworks/human-review-artifacts/research",
-    "frameworks/human-review-artifacts/scripts",
-    "frameworks/human-review-artifacts/tests",
     "skills",
     "tools",
     "packages",
@@ -176,20 +150,11 @@ def validate_frameworks(errors: list[str]) -> None:
     if not frameworks_directory.is_dir():
         return
 
-    required_children = {
-        "README.md",
-        "components",
-        "decisions",
-        "examples",
-        "interactions",
-        "profiles",
-        "schemas",
-        "scripts",
-        "spec",
-        "templates",
-        "tests",
-    }
+    required_children = {"README.md"}
     for directory in sorted(path for path in frameworks_directory.iterdir() if path.is_dir()):
+        # Git does not track empty directories; ignore local remnants with no files.
+        if not any(path.is_file() for path in directory.rglob("*")):
+            continue
         relative = directory.relative_to(ROOT)
         if not KEBAB_CASE.fullmatch(directory.name):
             errors.append(f"framework name must be kebab-case: {relative}")
@@ -252,7 +217,11 @@ def main() -> int:
     )
     skill_count = len([path for path in (ROOT / "skills").iterdir() if path.is_dir()])
     framework_count = len(
-        [path for path in (ROOT / "frameworks").iterdir() if path.is_dir()]
+        [
+            path
+            for path in (ROOT / "frameworks").iterdir()
+            if path.is_dir() and any(item.is_file() for item in path.rglob("*"))
+        ]
     )
     print(
         f"repository validation passed: {len(label_names)} labels, "
