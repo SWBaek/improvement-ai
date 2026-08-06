@@ -1,6 +1,6 @@
 # improvement-ai
 
-> A versioned portfolio of reusable AI collaboration capabilities, proven in real projects and distributed as Agent Skills.
+> A fast-moving portfolio of reusable AI collaboration capabilities, refined through real project use and shared as Agent Skills.
 
 [한국어](README.ko.md)
 
@@ -12,7 +12,7 @@
 - **Real use before abstraction:** promote capabilities based on observed project use, not speculative generality.
 - **One source:** maintain common capability sources here and keep client-specific adapters thin.
 - **Human-readable outcomes:** use concise text, tables, diagrams, or HTML according to the decision being reviewed.
-- **Safe, verifiable distribution:** declare triggers, non-triggers, expected outcomes, versions, dependencies, and checks.
+- **Proportionate verification:** keep only tests that protect real Skill behavior and add broader checks after failures justify them.
 
 ## Capability lifecycle
 
@@ -23,19 +23,19 @@
 | Promoted | Repeated use has confirmed its value, triggers, and safeguards. |
 | Deprecated | The capability has a documented replacement or retirement reason. |
 
-Release maturity and capability maturity are independent. A public `0.x` release can remain `In Progress` until pilot evidence supports promotion.
+Capability maturity comes from Pilot evidence. GitHub Releases are optional snapshots, not a required step for every change.
 
 ## Available Skills
 
-| Skill | Version | Status | Supported client | Purpose |
-|---|---:|---|---|---|
-| [`manage-focus-cycle`](skills/manage-focus-cycle/SKILL.md) | 0.1.0 | In Progress | Codex | Manage one bounded Focus Cycle inside finite, long-lived, maintenance, or research projects. |
+| Skill | Status | Primary client | Purpose |
+|---|---|---|---|
+| [`manage-focus-cycle`](skills/manage-focus-cycle/SKILL.md) | In Progress | Codex | Manage one bounded Focus Cycle inside finite, long-lived, maintenance, or research projects. |
 
-`manage-focus-cycle` defines a Completion Contract, keeps one Primary Focus Cycle, renders a safe temporary HTML Workspace, and closes work without inventing a final endpoint or whole-project completion percentage. See [release history](docs/releases/manage-focus-cycle.md) and [tracking issue #10](https://github.com/SWBaek/improvement-ai/issues/10).
+`manage-focus-cycle` defines a Completion Contract, keeps one Primary Focus Cycle, renders a safe temporary HTML Workspace, and closes work without inventing a final endpoint or whole-project completion percentage. See [GitHub Releases](https://github.com/SWBaek/improvement-ai/releases) and [tracking issue #10](https://github.com/SWBaek/improvement-ai/issues/10).
 
 ## Install and use
 
-Node.js 22.20 or later is required by the tested `skills` installer. The Workspace renderer requires Python 3.13. Codex is the verified client; other Agent Skills clients are currently unverified.
+Use the current `skills` installer for discovery and installation. The Workspace renderer uses Python 3.13. Codex is the primary client; other Agent Skills clients are best effort until real use demonstrates a need for broader support.
 
 List and install the Skill for one project:
 
@@ -57,7 +57,7 @@ npx skills@latest update manage-focus-cycle --project -y
 npx skills@latest update manage-focus-cycle --global -y
 ```
 
-The installer tracks content changes on the Git ref originally installed. Default installs follow `main`; version tags provide reproducible installs and rollback points. Watch this repository's GitHub Releases to receive release notifications.
+The installer tracks content changes on the Git ref originally installed. Default installs follow the latest development state on `main`; version tags are deliberate, reproducible snapshots. Watch this repository's GitHub Releases to receive snapshot notifications.
 
 ## Repository layout
 
@@ -68,18 +68,17 @@ packages/      Installable CLI and package sources
 frameworks/    Versioned contracts proven to be shared by capabilities
 configs/       Common configuration and client adapters
 external/      External source, version, and license records
-scripts/       Repository validation and release automation
-tests/         Contract and behavior verification
-docs/          Architecture, decisions, issue policy, and release history
+scripts/       Small maintenance helpers justified by repeated use
+tests/         Skill behavior tests that protect real user outcomes
+docs/          Architecture, decisions, and issue policy
 ```
 
 Project-specific implementations, credentials, session logs, caches, and regenerable runtime output do not belong here.
 
-## Validate and contribute
+## Optional local check
 
 ```powershell
-python scripts/validate_repository.py
-python -m unittest discover -s tests -p "test_*.py" -v
+python -m unittest tests.test_manage_focus_cycle -v
 ```
 
 Issues and pull requests are welcome without a support SLA. Read [CONTRIBUTING.md](CONTRIBUTING.md), report vulnerabilities through the private path described in [SECURITY.md](SECURITY.md), and review the [MIT license](LICENSE).
@@ -88,7 +87,6 @@ Issues and pull requests are welcome without a support SLA. Read [CONTRIBUTING.m
 
 - [Agent operating rules](AGENTS.md)
 - [Repository architecture](docs/architecture.md)
-- [Skill release policy](docs/releases/README.md)
 - [Architecture decisions](docs/decisions/)
 - [GitHub Issue standard](docs/github/issues.md)
 - [GitHub repository settings](docs/github/repository-settings.md)

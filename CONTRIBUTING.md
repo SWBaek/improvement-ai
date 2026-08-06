@@ -11,15 +11,14 @@ Issues and pull requests are welcome. This is a maintainer-led personal capabili
 ## Pull requests
 
 1. Create a focused branch and preserve the flat `skills/<skill-name>` layout.
-2. Keep user-facing release history outside the Skill folder.
-3. When a released Skill changes, increase its independent version in `skills/catalog.json` and update its release history.
-4. Run:
+2. Update only documentation and tests that directly protect the changed behavior.
+3. Increase `skills/catalog.json` only when intentionally publishing a GitHub Release snapshot.
+4. When changing `manage-focus-cycle` behavior, optionally run:
 
    ```powershell
-   python scripts/validate_repository.py
-   python -m unittest discover -s tests -p "test_*.py" -v
+   python -m unittest tests.test_manage_focus_cycle -v
    ```
 
-5. Explain compatibility, migration, security, and verification impact in the pull request.
+5. Explain the user-visible outcome and any meaningful compatibility or security impact.
 
 GitHub service operations follow `AGENTS.md`: use authenticated `gh`, never place tokens in commands or files.
