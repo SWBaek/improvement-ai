@@ -3,433 +3,107 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="human-review-artifact" content="core@0.2">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY='; connect-src 'none'; font-src data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="human-review-artifact" content="core@0.3">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; connect-src 'none'; font-src data:; object-src 'none'; base-uri 'none'; form-action 'none'; script-src 'sha256-2bwSj34uiJqiC2cZ3+9BAOeXJzvgWh4PXUgB3NGoIPo='">
   <title>Human Review Artifact</title>
   <script type="application/json" id="artifact-manifest">
 {
-  "spec": "human-review-artifacts/core@0.2",
-  "id": "artifact:template:core-0.2",
+  "spec": "human-review-artifacts/core@0.3",
+  "id": "artifact:template:core-0.3",
   "revision": "r1",
   "title": "Human Review Artifact",
   "status": "draft",
   "language": "ko",
   "createdAt": "2026-08-06T00:00:00+09:00",
   "updatedAt": "2026-08-06T00:00:00+09:00",
-  "review": {
-    "mode": "comment",
-    "prompt": "이 Artifact에서 보완할 내용을 검토해 주세요.",
-    "targets": ["review-core"]
+  "interaction": {
+    "pattern": {"name": "decide", "version": "0.1"},
+    "prompt": "두 대안 중 하나를 선택하거나 변경을 요청하세요.",
+    "targets": [
+      {"id": "decision-target", "required": true, "allowedActions": ["select", "request-changes", "defer", "comment"]}
+    ]
   },
   "profiles": [],
-  "provenance": {
-    "origin": "ai-assisted",
-    "tool": "human-review-artifacts reference template",
-    "generator": {
-      "name": "human-review-artifacts template",
-      "version": "0.2"
-    }
-  },
-  "runtime": {
-    "scripts": [
-      {
-        "id": "artifact-runtime",
-        "owner": "core",
-        "version": "0.2",
-        "digest": "sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY="
-      }
-    ]
-  }
+  "provenance": {"origin": "ai-assisted", "generator": {"name": "human-review-artifacts-reference", "version": "0.3"}},
+  "runtime": {"scripts": [{"id": "artifact-runtime", "owner": "core", "version": "0.3", "digest": "sha256-2bwSj34uiJqiC2cZ3+9BAOeXJzvgWh4PXUgB3NGoIPo="}]}
 }
   </script>
   <style>
-    :root {
-      color-scheme: light;
-      --background: #f4f7fb;
-      --surface: #ffffff;
-      --surface-subtle: #eef3f8;
-      --text: #172033;
-      --muted: #5d687b;
-      --border: #cbd5e1;
-      --accent: #1457d9;
-      --accent-strong: #0b3c9d;
-      --focus: #ffbf47;
-      --fact: #e8f2ff;
-      --assumption: #fff3cd;
-      --proposal: #efe8ff;
-      --decision: #dff6e8;
-      --question: #ffe7d6;
-      --risk: #ffe2e2;
-      --evidence: #e3f7f5;
-      --shadow: 0 12px 32px rgba(23, 32, 51, 0.08);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--background); color: var(--text); line-height: 1.65; }
-    a { color: var(--accent-strong); }
-    button, input, select, textarea { font: inherit; }
-    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
-      outline: 3px solid var(--focus);
-      outline-offset: 3px;
-    }
-    [hidden] { display: none !important; }
-
-    .skip-link {
-      position: fixed;
-      left: 1rem;
-      top: -5rem;
-      z-index: 100;
-      padding: 0.7rem 1rem;
-      background: var(--text);
-      color: white;
-      border-radius: 0.5rem;
-    }
-    .skip-link:focus { top: 1rem; }
-
-    .artifact-header {
-      padding: 3.5rem max(1.25rem, calc((100vw - 1180px) / 2));
-      color: white;
-      background: linear-gradient(125deg, #0b2459, #1457d9 65%, #3b82f6);
-    }
-    .eyebrow { margin: 0 0 0.5rem; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
-    h1 { max-width: 820px; margin: 0; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.08; }
-    .lede { max-width: 760px; margin: 1rem 0 0; font-size: 1.1rem; color: #e4edff; }
-    .metadata { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.4rem 0 0; padding: 0; list-style: none; }
-    .metadata li { padding: 0.35rem 0.7rem; border: 1px solid rgba(255,255,255,0.4); border-radius: 999px; }
-
-    .layout { display: grid; grid-template-columns: minmax(220px, 280px) minmax(0, 1fr); gap: 1.5rem; max-width: 1180px; margin: 0 auto; padding: 1.5rem; }
-    .sidebar { position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow: auto; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; box-shadow: var(--shadow); }
-    .sidebar h2 { margin: 0 0 0.6rem; font-size: 1rem; }
-    .sidebar ol { margin: 0; padding-left: 1.25rem; }
-    .sidebar a { display: inline-block; padding: 0.25rem 0; }
-    .toolbar { display: grid; gap: 0.75rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-    .toolbar-group { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-
-    button {
-      min-height: 2.4rem;
-      padding: 0.45rem 0.75rem;
-      color: var(--text);
-      background: var(--surface-subtle);
-      border: 1px solid var(--border);
-      border-radius: 0.55rem;
-      cursor: pointer;
-    }
-    button:hover { border-color: var(--accent); }
-    button[aria-pressed="true"], .primary { color: white; background: var(--accent); border-color: var(--accent); }
-
-    main { min-width: 0; }
-    section { scroll-margin-top: 1rem; margin-bottom: 1.25rem; padding: clamp(1.1rem, 3vw, 2rem); background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; box-shadow: var(--shadow); }
-    .section-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
-    section h2 { margin: 0 0 0.75rem; font-size: clamp(1.35rem, 3vw, 1.85rem); }
-    section h3 { margin-top: 1.4rem; }
-    .collapse-button { flex: none; min-width: 2.4rem; }
-
-    .callout { margin: 0.75rem 0; padding: 1rem; border-left: 0.35rem solid var(--accent); border-radius: 0.4rem; background: var(--surface-subtle); }
-    [data-artifact-kind="fact"] { background: var(--fact); border-left-color: #2563eb; }
-    [data-artifact-kind="assumption"] { background: var(--assumption); border-left-color: #b7791f; }
-    [data-artifact-kind="proposal"] { background: var(--proposal); border-left-color: #7c3aed; }
-    [data-artifact-kind="decision"] { background: var(--decision); border-left-color: #16803b; }
-    [data-artifact-kind="question"] { background: var(--question); border-left-color: #c05621; }
-    [data-artifact-kind="risk"] { background: var(--risk); border-left-color: #c53030; }
-    [data-artifact-kind="evidence"] { background: var(--evidence); border-left-color: #0f766e; }
-    .kind-label { display: block; margin-bottom: 0.25rem; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
-
-    .review-options { display: grid; gap: 0.65rem; padding: 0; border: 0; }
-    .review-options label { display: flex; gap: 0.65rem; align-items: start; padding: 0.8rem; background: var(--surface-subtle); border: 1px solid var(--border); border-radius: 0.7rem; }
-    select, textarea { width: 100%; padding: 0.8rem; color: var(--text); background: white; border: 1px solid var(--border); border-radius: 0.6rem; }
-    textarea { min-height: 8rem; }
-    .review-item { display: grid; gap: 0.85rem; }
-    .export-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; }
-    .review-output { margin-top: 0.75rem; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
-    .status-message { min-height: 1.5rem; color: var(--muted); }
-    .sources { padding-left: 1.25rem; }
-
-    footer { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem 2rem; color: var(--muted); }
-
-    @media (max-width: 800px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { position: static; max-height: none; }
-    }
-
-    @media print {
-      body { background: white; color: black; }
-      .artifact-header { padding: 1rem 0; color: black; background: white; }
-      .lede { color: black; }
-      .metadata li { border-color: #777; }
-      .layout { display: block; max-width: none; padding: 0; }
-      .sidebar, .collapse-button, .export-actions, .status-message { display: none !important; }
-      section { break-inside: avoid; box-shadow: none; border-color: #999; }
-      [hidden] { display: block !important; }
-      footer { max-width: none; padding: 0; }
-    }
+    :root{color-scheme:light;--bg:#f4f7fb;--surface:#fff;--text:#172033;--muted:#58657a;--line:#ccd6e3;--accent:#2457c5;--soft:#eaf0ff;--warn:#8a5200}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,"Segoe UI",sans-serif}header,main,footer{max-width:1040px;margin:auto;padding:1.5rem}header{padding-top:2.5rem}.eyebrow{color:var(--accent);font-weight:700}.meta{display:flex;gap:1rem;flex-wrap:wrap;color:var(--muted)}section{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.25rem;margin:1rem 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}.card{border:1px solid var(--line);border-radius:12px;padding:1rem}.proposal{background:var(--soft)}label{display:block;font-weight:650;margin:.8rem 0 .3rem}select,textarea,button,input{font:inherit}select,textarea{width:100%;padding:.65rem;border:1px solid var(--line);border-radius:8px}textarea{min-height:7rem}.options label{font-weight:400}.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}button{border:1px solid var(--accent);border-radius:8px;padding:.65rem 1rem;background:var(--accent);color:#fff;cursor:pointer}button.secondary{background:#fff;color:var(--accent)}button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #f0a500;outline-offset:2px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#111827;color:#f8fafc;padding:1rem;border-radius:10px}.warning{color:var(--warn)}[hidden]{display:none!important}@media print{body{background:#fff}button{display:none}section{break-inside:avoid}}@media(max-width:600px){header,main,footer{padding:1rem}}
   </style>
 </head>
 <body data-artifact-status="draft">
-  <a class="skip-link" href="#artifact-content">본문으로 건너뛰기</a>
-  <header class="artifact-header">
-    <p class="eyebrow">Human Review Artifact · Core 0.2</p>
-    <h1>Human Review Artifact</h1>
-    <p class="lede">복잡한 AI 산출물을 사람이 탐색하고 검토하며 결정을 다시 전달하기 위한 참조 템플릿입니다.</p>
-    <ul class="metadata" aria-label="Artifact metadata">
-      <li>상태: <strong data-manifest-field="status">draft</strong></li>
-      <li>Revision: <strong data-manifest-field="revision">r1</strong></li>
-      <li>검토: <strong data-manifest-field="review.mode">comment</strong></li>
-      <li>업데이트: <time data-manifest-field="updatedAt" datetime="2026-08-06T00:00:00+09:00">2026-08-06</time></li>
-    </ul>
-  </header>
-
-  <div class="layout">
-    <aside class="sidebar" aria-label="Artifact navigation and controls">
-      <nav aria-labelledby="contents-title">
-        <h2 id="contents-title">목차</h2>
-        <ol id="artifact-nav-list">
-          <li><a href="#summary">요약</a></li>
-          <li><a href="#content">주요 내용</a></li>
-          <li><a href="#review-request">검토 요청</a></li>
-          <li><a href="#provenance">근거와 출처</a></li>
-        </ol>
-      </nav>
-      <div class="toolbar" aria-label="Artifact controls">
-        <div>
-          <h2>표시 필터</h2>
-          <div class="toolbar-group" id="kind-filters">
-            <button type="button" data-kind-filter="all" aria-pressed="true">전체</button>
-            <button type="button" data-kind-filter="fact" aria-pressed="false">사실</button>
-            <button type="button" data-kind-filter="assumption" aria-pressed="false">가정</button>
-            <button type="button" data-kind-filter="proposal" aria-pressed="false">제안</button>
-            <button type="button" data-kind-filter="decision" aria-pressed="false">결정</button>
-            <button type="button" data-kind-filter="risk" aria-pressed="false">위험</button>
-          </div>
-        </div>
-        <div class="toolbar-group">
-          <button type="button" id="expand-all">모두 펼치기</button>
-          <button type="button" id="collapse-all">모두 접기</button>
-        </div>
-      </div>
-    </aside>
-
-    <main id="artifact-content" data-artifact-root>
-      <section id="summary" data-artifact-section="summary">
-        <div class="section-heading"><h2>요약</h2></div>
-        <p>Artifact의 목적, 현재 결론, 검토 범위와 사용자가 알아야 할 핵심 내용을 짧게 설명합니다.</p>
-        <div class="callout" data-artifact-kind="decision">
-          <span class="kind-label">현재 결정</span>
-          합의가 끝난 내용과 아직 검토 중인 내용을 명시합니다.
-        </div>
-      </section>
-
-      <section id="content" data-artifact-section="content">
-        <div class="section-heading"><h2>주요 내용</h2></div>
-        <div class="callout" data-artifact-kind="fact">
-          <span class="kind-label">사실</span>
-          검증된 사실에는 근거 또는 출처를 연결합니다.
-        </div>
-        <div class="callout" data-artifact-kind="assumption">
-          <span class="kind-label">가정</span>
-          확인되지 않은 전제는 사실과 시각적·의미적으로 구분합니다.
-        </div>
-        <div class="callout" data-artifact-kind="proposal">
-          <span class="kind-label">제안</span>
-          제안에는 기대 효과, 비용과 대안을 함께 설명합니다.
-        </div>
-        <div class="callout" data-artifact-kind="risk">
-          <span class="kind-label">위험</span>
-          실패 가능성, 영향과 완화 방법을 기록합니다.
-        </div>
-      </section>
-
-      <section id="review-request" data-artifact-section="review-request">
-        <div class="section-heading"><h2>검토 요청</h2></div>
-        <p>이 Artifact에서 보완할 내용을 선택하거나 의견을 작성해 주세요.</p>
-        <form id="review-form">
-          <article id="review-core" class="review-item" data-review-item data-artifact-kind="question">
-            <h3>Core 표현과 검토 흐름</h3>
-            <label for="review-disposition"><strong>응답</strong></label>
-            <select id="review-disposition" data-review-disposition>
-              <option value="">응답을 선택하세요</option>
-              <option value="commented">의견 남김</option>
-              <option value="selected">항목 선택</option>
-              <option value="approved">승인</option>
-              <option value="rejected">거절</option>
-              <option value="changes-requested">변경 요청</option>
-              <option value="deferred">보류</option>
-            </select>
-            <fieldset class="review-options">
-              <legend>다음 작업에 포함할 항목</legend>
-              <label><input type="checkbox" data-review-option value="clarify-evidence"> 근거와 출처를 더 명확하게 정리한다.</label>
-              <label><input type="checkbox" data-review-option value="compare-alternatives"> 대안과 trade-off 비교를 보강한다.</label>
-              <label><input type="checkbox" data-review-option value="resolve-risks"> 미확인 위험과 후속 검증을 구체화한다.</label>
-            </fieldset>
-            <label for="review-note"><strong>추가 의견</strong></label>
-            <textarea id="review-note" data-review-comment placeholder="수정하거나 결정할 내용을 입력하세요."></textarea>
-          </article>
-          <div class="export-actions">
-            <button type="button" class="primary" data-export="json">JSON 만들기</button>
-            <button type="button" data-export="text">텍스트 만들기</button>
-            <button type="button" data-copy-output>결과 복사</button>
-            <button type="button" data-download-output>결과 다운로드</button>
-          </div>
-          <label for="review-output"><strong>내보내기 결과</strong></label>
-          <textarea id="review-output" class="review-output" readonly></textarea>
-          <p id="export-status" class="status-message" role="status" aria-live="polite"></p>
-        </form>
-      </section>
-
-      <section id="provenance" data-artifact-section="provenance">
-        <div class="section-heading"><h2>근거와 출처</h2></div>
-        <p data-artifact-kind="evidence" class="callout">
-          <span class="kind-label">근거</span>
-          Artifact 생성에 사용한 문서, 코드, 데이터와 기준 시점을 기록합니다.
-        </p>
-        <ul class="sources">
-          <li id="source-core-spec">Human Review Artifacts Core 0.2</li>
-        </ul>
-      </section>
-    </main>
-  </div>
-
-  <footer>
-    <p>이 파일은 Human Review Artifacts Core 0.2 참조 템플릿입니다.</p>
-  </footer>
-
-  <script id="artifact-runtime" data-artifact-runtime="core@0.2">
+<header>
+  <p class="eyebrow">Human Review Artifact · Core 0.3 · decide@0.1</p>
+  <h1>Human Review Artifact</h1>
+  <p>하나의 명확한 결정을 위한 공통 shell과 response runtime 참조입니다.</p>
+  <p class="meta"><span>상태: <strong data-manifest-field="status">draft</strong></span><span>Revision: <strong data-manifest-field="revision">r1</strong></span></p>
+</header>
+<main data-artifact-root>
+  <section id="summary" data-artifact-section="summary">
+    <h2>요약</h2><p>대안의 차이와 근거를 확인하고 하나를 선택하거나 변경을 요청합니다.</p>
+  </section>
+  <section id="content" data-artifact-section="content">
+    <h2>검토 내용</h2>
+    <div id="decision-panel" data-hra-component="decision-panel">
+      <h3>결정 질문</h3><p data-artifact-kind="question">어느 전달 방식을 기본값으로 정할까요?</p>
+      <div class="grid"><article class="card" data-artifact-kind="proposal"><h4>단일 파일</h4><p>공유와 보존이 단순하지만 파일 크기가 커집니다.</p></article><article class="card" data-artifact-kind="proposal"><h4>분리 bundle</h4><p>자산 재사용이 쉽지만 전달 단위가 복잡합니다.</p></article></div>
+    </div>
+    <div id="evidence-list" data-hra-component="evidence-list">
+      <h3>근거와 한계</h3><ul><li data-artifact-kind="evidence">브라우저에서 바로 열 수 있어야 합니다.</li><li data-artifact-kind="assumption">파일 크기는 현재 검토 범위에서 감당할 수 있다고 가정합니다.</li></ul>
+    </div>
+  </section>
+  <section id="interaction" data-artifact-section="interaction">
+    <h2>요청된 행동</h2>
+    <form id="response-form">
+      <fieldset id="decision-target" data-interaction-target data-hra-component="response-panel">
+        <legend>두 대안 중 하나를 선택하거나 변경을 요청하세요.</legend>
+        <div class="options"><label><input type="checkbox" data-interaction-option data-response-selection value="single-file"> 단일 파일</label><label><input type="checkbox" data-interaction-option data-response-selection value="split-bundle"> 분리 bundle</label></div>
+        <label for="action-decision">응답 행동</label><select id="action-decision" data-response-action><option value="select">선택</option><option value="request-changes">변경 요청</option><option value="defer">보류</option><option value="comment">의견</option></select>
+        <label for="comment-decision">의견 또는 변경 요청</label><textarea id="comment-decision" data-response-comment></textarea>
+      </fieldset>
+      <p id="response-error" class="warning" role="alert" hidden></p>
+      <div class="actions"><button type="button" data-generate-response>Response 생성</button><button type="button" class="secondary" data-copy-response>복사</button><button type="button" class="secondary" data-download-response>다운로드</button></div>
+      <h3>Response JSON</h3><pre id="response-output" tabindex="0">아직 생성되지 않았습니다.</pre>
+    </form>
+  </section>
+  <section id="provenance" data-artifact-section="provenance">
+    <h2>출처와 생성 맥락</h2><p>Human Review Artifacts Core 0.3 참조 구현에서 생성한 중립 예시입니다.</p>
+  </section>
+</main>
+<footer><p>응답은 사용자의 명시적 동작으로만 복사하거나 로컬에 다운로드합니다.</p></footer>
+<script id="artifact-runtime" data-artifact-runtime="core@0.3">
 (() => {
   "use strict";
-
-  const manifestElement = document.getElementById("artifact-manifest");
-  const manifest = JSON.parse(manifestElement.textContent);
-  const sections = [...document.querySelectorAll("[data-artifact-section]")];
-  const navList = document.getElementById("artifact-nav-list");
-  const filterButtons = [...document.querySelectorAll("[data-kind-filter]")];
-  const kindItems = [...document.querySelectorAll("[data-artifact-kind]")];
-  const output = document.getElementById("review-output");
-  const status = document.getElementById("export-status");
-  let exportFormat = "json";
-
-  const sectionTitle = (section) => {
-    const heading = section.querySelector("h2, h3");
-    return heading ? heading.textContent.trim() : section.id;
-  };
-
-  const setCollapsed = (section, collapsed) => {
-    const content = section.querySelector(":scope > .section-content");
-    const button = section.querySelector(":scope > .section-heading .collapse-button");
-    if (!content || !button) return;
-    content.hidden = collapsed;
-    button.setAttribute("aria-expanded", String(!collapsed));
-    button.textContent = collapsed ? "+" : "−";
-    button.setAttribute("aria-label", `${sectionTitle(section)} ${collapsed ? "펼치기" : "접기"}`);
-  };
-
-  navList.replaceChildren();
-  sections.forEach((section) => {
-    const listItem = document.createElement("li");
-    const link = document.createElement("a");
-    link.href = `#${section.id}`;
-    link.textContent = sectionTitle(section);
-    listItem.append(link);
-    navList.append(listItem);
-
-    const heading = section.querySelector(":scope > .section-heading");
-    if (!heading) return;
-    const content = document.createElement("div");
-    content.className = "section-content";
-    while (heading.nextSibling) content.append(heading.nextSibling);
-    section.append(content);
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "collapse-button";
-    button.setAttribute("aria-expanded", "true");
-    button.textContent = "−";
-    button.setAttribute("aria-label", `${sectionTitle(section)} 접기`);
-    button.addEventListener("click", () => setCollapsed(section, !content.hidden));
-    heading.append(button);
-  });
-
-  filterButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const selected = button.dataset.kindFilter;
-      filterButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
-      kindItems.forEach((item) => { item.hidden = selected !== "all" && item.dataset.artifactKind !== selected; });
-    });
-  });
-
-  document.getElementById("expand-all").addEventListener("click", () => sections.forEach((section) => setCollapsed(section, false)));
-  document.getElementById("collapse-all").addEventListener("click", () => sections.forEach((section) => setCollapsed(section, true)));
-
-  const reviewData = () => ({
-    spec: "human-review-artifacts/review-response@0.1",
-    artifact: {
-      id: manifest.id,
-      spec: manifest.spec,
-      revision: manifest.revision
-    },
-    createdAt: new Date().toISOString(),
-    responses: manifest.review.targets.map((targetId) => {
-      const target = document.getElementById(targetId);
-      const disposition = target.querySelector("[data-review-disposition]").value;
-      const selectionIds = [...target.querySelectorAll("[data-review-option]:checked")].map((item) => item.value);
-      const comment = target.querySelector("[data-review-comment]").value.trim();
-      const response = { targetId, disposition };
-      if (selectionIds.length) response.selectionIds = selectionIds;
+  const manifest = JSON.parse(document.getElementById("artifact-manifest").textContent);
+  const output = document.getElementById("response-output");
+  const error = document.getElementById("response-error");
+  let current = null;
+  function build() {
+    const responses = [];
+    for (const target of manifest.interaction.targets) {
+      const root = document.getElementById(target.id);
+      const action = root.querySelector("[data-response-action]").value;
+      const comment = root.querySelector("[data-response-comment]").value.trim();
+      const response = {targetId: target.id, action};
+      if (action === "select") {
+        response.selectionIds = [...root.querySelectorAll("[data-response-selection]:checked")].map(item => item.value);
+        if (!response.selectionIds.length) throw new Error(`${target.id}: 선택이 필요합니다.`);
+      }
+      if (action === "rank") {
+        response.rankingIds = [...root.querySelectorAll("[data-response-ranking]")].sort((a,b) => Number(a.value)-Number(b.value)).map(item => item.dataset.optionId);
+        if (response.rankingIds.length < 2 || new Set(response.rankingIds).size !== response.rankingIds.length) throw new Error(`${target.id}: 중복 없는 순위가 필요합니다.`);
+      }
+      if (["answer","comment","request-changes","challenge"].includes(action) && !comment) throw new Error(`${target.id}: 의견이 필요합니다.`);
       if (comment) response.comment = comment;
-      return response;
-    })
-  });
-
-  const renderExport = (format) => {
-    exportFormat = format;
-    const data = reviewData();
-    const invalid = data.responses.find((item) =>
-      !item.disposition
-      || (item.disposition === "selected" && !(item.selectionIds || []).length)
-      || (["commented", "changes-requested"].includes(item.disposition) && !item.comment)
-    );
-    if (invalid) {
-      output.value = "";
-      status.textContent = `${invalid.targetId}의 응답에 필요한 선택 또는 의견을 입력해 주세요.`;
-      return;
+      responses.push(response);
     }
-    output.value = format === "json"
-      ? JSON.stringify(data, null, 2)
-      : [
-          `Artifact: ${data.artifact.id}@${data.artifact.revision}`,
-          ...data.responses.flatMap((item) => [
-            `Target: ${item.targetId}`,
-            `응답: ${item.disposition}`,
-            `선택: ${(item.selectionIds || []).join(", ") || "없음"}`,
-            `의견: ${item.comment || "없음"}`
-          ])
-        ].join("\n");
-    status.textContent = `${format.toUpperCase()} 결과를 만들었습니다.`;
-  };
-
-  document.querySelectorAll("[data-export]").forEach((button) => button.addEventListener("click", () => renderExport(button.dataset.export)));
-  document.querySelector("[data-copy-output]").addEventListener("click", async () => {
-    if (!output.value) renderExport(exportFormat);
-    if (!output.value) return;
-    output.focus();
-    output.select();
-    try {
-      await navigator.clipboard.writeText(output.value);
-      status.textContent = "결과를 클립보드에 복사했습니다.";
-    } catch {
-      status.textContent = "자동 복사를 사용할 수 없습니다. 선택된 결과를 직접 복사해 주세요.";
-    }
-  });
-  document.querySelector("[data-download-output]").addEventListener("click", () => {
-    if (!output.value) renderExport(exportFormat);
-    if (!output.value) return;
-    const blob = new Blob([output.value], { type: exportFormat === "json" ? "application/json" : "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${manifest.id.replace(/[^A-Za-z0-9._-]/g, "-")}-${manifest.revision}-review.${exportFormat === "json" ? "json" : "txt"}`;
-    link.click();
-    URL.revokeObjectURL(link.href);
-    status.textContent = "검토 결과를 다운로드했습니다.";
-  });
+    return {spec:"human-review-artifacts/review-response@0.2",artifact:{id:manifest.id,spec:manifest.spec,revision:manifest.revision},interaction:{pattern:manifest.interaction.pattern},createdAt:new Date().toISOString(),responses};
+  }
+  function generate() { try { current=build(); output.textContent=JSON.stringify(current,null,2); error.hidden=true; return true; } catch (reason) { current=null; error.textContent=reason.message; error.hidden=false; return false; } }
+  document.querySelector("[data-generate-response]").addEventListener("click", generate);
+  document.querySelector("[data-copy-response]").addEventListener("click", async () => { if (!current && !generate()) return; await navigator.clipboard.writeText(JSON.stringify(current,null,2)); });
+  document.querySelector("[data-download-response]").addEventListener("click", () => { if (!current && !generate()) return; const blob=new Blob([JSON.stringify(current,null,2)],{type:"application/json"}); const link=document.createElement("a"); link.href=URL.createObjectURL(blob); link.download=`${manifest.id.replace(/[^A-Za-z0-9._-]+/g,"-")}-${manifest.revision}-response.json`; link.click(); URL.revokeObjectURL(link.href); });
 })();
   </script>
 </body>

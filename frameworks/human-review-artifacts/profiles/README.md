@@ -1,6 +1,6 @@
 # Profiles
 
-Profile은 Human Review Artifacts Core에 재사용 가능한 interaction, representation 또는 domain 의미와 검증 규칙을 추가합니다. Profile의 분류와 조합 방식은 interaction 연구가 끝난 뒤 확정하며, 프로젝트 고유 vocabulary를 곧바로 Profile로 승격하지 않습니다.
+Profile은 Human Review Artifacts Core에 domain vocabulary와 추가 의미 검증을 제공합니다. 인간의 목표는 `interactions/`, 표현 계약은 `components/`에서 별도로 관리하며 프로젝트 고유 vocabulary를 곧바로 Profile로 승격하지 않습니다.
 
 ## 계약
 

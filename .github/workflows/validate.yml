@@ -37,6 +37,7 @@ jobs:
           python frameworks/human-review-artifacts/scripts/validate_artifact.py frameworks/human-review-artifacts/templates/artifact.html
           for artifact in frameworks/human-review-artifacts/examples/*.html; do
             python frameworks/human-review-artifacts/scripts/validate_artifact.py "$artifact"
+            python frameworks/human-review-artifacts/scripts/validate_interaction.py "$artifact"
           done
       - name: Test Artifact browser runtime
         run: npm run test:artifacts:browser
