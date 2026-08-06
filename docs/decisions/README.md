@@ -7,4 +7,5 @@
 | [0001](0001-use-agent-skills-layout.md) | Accepted | Agent Skills 구조를 기본 배포 단위로 사용 |
 | [0002](0002-introduce-frameworks-as-first-class-capabilities.md) | Accepted, constrained by 0004 | 검증된 공통 계약을 `frameworks/`에서 관리 |
 | [0003](0003-retire-human-review-artifacts.md) | Partially superseded by 0004 | 미사용 Human Review Artifacts 구현 폐기 |
-| [0004](0004-adopt-capability-portfolio.md) | Accepted | Capability 포트폴리오와 Skill-first lifecycle 채택 |
+| [0004](0004-adopt-capability-portfolio.md) | Accepted, candidate example superseded by 0005 | Capability 포트폴리오와 Skill-first lifecycle 채택 |
+| [0005](0005-narrow-workspace-to-focus-cycle-management.md) | Accepted | 첫 capability를 Focus Cycle Management로 축소 |
