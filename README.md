@@ -49,6 +49,14 @@ gh auth status
 python scripts/sync_github_labels.py --repo SWBaek/improvement-ai
 ```
 
-## 현재 단계
+## 개발 현황
 
-초기 기반을 구축하는 단계입니다. 첫 framework인 `human-review-artifacts`를 통해 복잡한 AI 산출물을 사람이 검토하고 결정할 수 있는 HTML Artifact 계약을 개발합니다. 자체 CLI는 반복되는 배포 요구가 확인될 때까지 확장 지점으로 유지합니다.
+| 항목 | 상태 | 설명 |
+|---|---|---|
+| 저장소 기반 | 완료 | 공통 구조, 운영 규칙, Issue 표준과 CI 검증을 구축했습니다. |
+| `human-review-artifacts` Core 0.1 | 사용 가능 | 규격, Manifest Schema, HTML 템플릿, 예시와 validator를 제공합니다. |
+| Domain Profile | 계획 | Architecture, Research 등 실제 사용 사례부터 순차적으로 추가합니다. |
+| Artifact 생성 Skill | 계획 | Core 사용 경험을 반영해 self-contained Agent Skill로 개발합니다. |
+| 자체 CLI | 보류 | 반복되는 설치·배포 요구가 확인되면 도입합니다. |
+
+현재 개발의 중심은 [`human-review-artifacts`](frameworks/human-review-artifacts/README.md)의 실제 사용과 Core 개선입니다.
