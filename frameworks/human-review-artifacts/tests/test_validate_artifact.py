@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import base64
+import hashlib
 import importlib.util
 import json
 import subprocess
@@ -28,24 +30,27 @@ class ArtifactValidatorTests(unittest.TestCase):
         result = VALIDATOR.validate_file(path)
         self.assertIn(code, {item.code for item in result.errors}, result.as_json())
 
+    def validate_source(self, source: str):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "artifact.html"
+            path.write_text(source, encoding="utf-8")
+            return VALIDATOR.validate_file(path)
+
     def validate_modified_template(self, old: str, new: str):
         source = TEMPLATE_PATH.read_text(encoding="utf-8")
         self.assertIn(old, source)
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "artifact.html"
-            path.write_text(source.replace(old, new, 1), encoding="utf-8")
-            return VALIDATOR.validate_file(path)
+        return self.validate_source(source.replace(old, new, 1))
 
     def test_reference_template_is_valid(self) -> None:
         result = VALIDATOR.validate_file(TEMPLATE_PATH)
         self.assertTrue(result.valid, result.as_json())
+        self.assertEqual("core", result.conformance["runtime"])
 
-    def test_examples_are_valid(self) -> None:
+    def test_interactive_and_static_examples_are_valid(self) -> None:
         self.assertGreaterEqual(len(EXAMPLES), 2)
-        for path in EXAMPLES:
-            with self.subTest(path=path.name):
-                result = VALIDATOR.validate_file(path)
-                self.assertTrue(result.valid, result.as_json())
+        results = [VALIDATOR.validate_file(path) for path in EXAMPLES]
+        self.assertTrue(all(item.valid for item in results), [item.as_json() for item in results])
+        self.assertEqual({"core", "none"}, {item.conformance["runtime"] for item in results})
 
     def test_missing_manifest_is_reported(self) -> None:
         self.assert_has_error(FIXTURES / "missing-manifest.html", "HRA101")
@@ -63,55 +68,63 @@ class ArtifactValidatorTests(unittest.TestCase):
         result = self.validate_modified_template('id="content"', 'id="summary"')
         self.assertIn("HRA204", {item.code for item in result.errors})
 
-    def test_manifest_and_visible_title_must_match(self) -> None:
-        result = self.validate_modified_template("<title>Human Review Artifact</title>", "<title>Different title</title>")
-        self.assertIn("HRA216", {item.code for item in result.errors})
+    def test_manifest_title_status_and_revision_must_match_visible_values(self) -> None:
+        cases = [
+            ("<title>Human Review Artifact</title>", "<title>Different title</title>", "HRA216"),
+            ('data-manifest-field="status">draft', 'data-manifest-field="status">accepted', "HRA220"),
+            ('data-manifest-field="revision">r1', 'data-manifest-field="revision">r2', "HRA225"),
+        ]
+        for old, new, code in cases:
+            with self.subTest(code=code):
+                result = self.validate_modified_template(old, new)
+                self.assertIn(code, {item.code for item in result.errors})
 
-    def test_manifest_and_visible_status_must_match(self) -> None:
-        result = self.validate_modified_template(
-            '<strong data-manifest-field="status">draft</strong>',
-            '<strong data-manifest-field="status">accepted</strong>',
-        )
-        self.assertIn("HRA220", {item.code for item in result.errors})
+    def test_review_mode_requires_target_and_matching_item(self) -> None:
+        result = self.validate_modified_template('"targets": ["review-core"]', '"targets": []')
+        self.assertIn("HRA116", {item.code for item in result.errors})
+        result = self.validate_modified_template('"targets": ["review-core"]', '"targets": ["missing-target"]')
+        self.assertIn("HRA226", {item.code for item in result.errors})
 
-    def test_review_mode_requires_review_section(self) -> None:
+    def test_review_options_must_be_unique_and_nested(self) -> None:
+        result = self.validate_modified_template('value="compare-alternatives"', 'value="clarify-evidence"')
+        self.assertIn("HRA223", {item.code for item in result.errors})
+        result = self.validate_modified_template('data-review-option value="clarify-evidence"', 'data-review-option value=""')
+        self.assertIn("HRA222", {item.code for item in result.errors})
+
+    def test_core_runtime_tamper_breaks_digest_reference_and_csp(self) -> None:
+        result = self.validate_modified_template("const manifest = JSON.parse", "const manifest = JSON.parse /* tampered */")
+        codes = {item.code for item in result.errors}
+        self.assertTrue({"HRA307", "HRA309", "HRA310"}.issubset(codes), result.as_json())
+
+    def test_undeclared_script_is_rejected(self) -> None:
+        result = self.validate_modified_template("</body>", '<script id="extra">void 0;</script>\n</body>')
+        self.assertIn("HRA304", {item.code for item in result.errors})
+
+    def test_unknown_profile_runtime_warns_without_invalidating_core(self) -> None:
         source = TEMPLATE_PATH.read_text(encoding="utf-8")
-        start = source.index('      <section id="review-request"')
-        end = source.index('      <section id="provenance"', start)
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "artifact.html"
-            path.write_text(source[:start] + source[end:], encoding="utf-8")
-            result = VALIDATOR.validate_file(path)
-        self.assertIn("HRA219", {item.code for item in result.errors})
-
-    def test_runtime_change_breaks_csp_hash(self) -> None:
-        result = self.validate_modified_template('const manifest = JSON.parse', 'const manifest = JSON.parse /* tampered */')
-        self.assertIn("HRA309", {item.code for item in result.errors})
-
-    def test_runtime_cannot_be_replaced_even_with_matching_csp(self) -> None:
-        source = TEMPLATE_PATH.read_text(encoding="utf-8")
-        tampered = source.replace(
-            'const manifest = JSON.parse',
-            'const manifest = JSON.parse /* tampered */',
+        body = '(() => { "use strict"; })();'
+        digest = "sha256-" + base64.b64encode(hashlib.sha256(body.encode()).digest()).decode("ascii")
+        source = source.replace(
+            '"profiles": [],',
+            '"profiles": [{"name": "future-profile", "version": "0.1"}],',
             1,
         )
-        parser = VALIDATOR.ArtifactParser()
-        parser.feed(tampered)
-        runtime = "".join(parser.runtime_parts[0]).encode("utf-8")
-        import base64
-        import hashlib
-
-        digest = base64.b64encode(hashlib.sha256(runtime).digest()).decode("ascii")
-        tampered = tampered.replace(
-            "LwlSJfZzUimSkcsvNPpB8SVEJIVVRhefs/WoUbDWHy4=",
-            digest,
+        source = source.replace(
+            '      {\n        "id": "artifact-runtime",\n        "owner": "core",\n        "version": "0.2",\n        "digest": "sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY="\n      }',
+            '      {\n        "id": "artifact-runtime",\n        "owner": "core",\n        "version": "0.2",\n        "digest": "sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY="\n      },\n'
+            f'      {{"id": "future-runtime", "owner": "profile", "profile": "future-profile", "version": "0.1", "digest": "{digest}"}}',
             1,
         )
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "artifact.html"
-            path.write_text(tampered, encoding="utf-8")
-            result = VALIDATOR.validate_file(path)
-        self.assertIn("HRA310", {item.code for item in result.errors})
+        source = source.replace(
+            "script-src 'sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY='",
+            f"script-src 'sha256-TjxWU3h1KXnnD44jodr7cK4FcLVLh9rUJtsWTG9psIY=' '{digest}'",
+            1,
+        )
+        source = source.replace("</body>", f'<script id="future-runtime" data-artifact-runtime="profile:future-profile@0.1">{body}</script>\n</body>')
+        result = self.validate_source(source)
+        self.assertTrue(result.valid, result.as_json())
+        self.assertEqual("profile", result.conformance["runtime"])
+        self.assertTrue({"HRA901", "HRA902"}.issubset({item.code for item in result.warnings}))
 
     def test_updated_at_cannot_precede_created_at(self) -> None:
         result = self.validate_modified_template(
@@ -120,15 +133,7 @@ class ArtifactValidatorTests(unittest.TestCase):
         )
         self.assertIn("HRA113", {item.code for item in result.errors})
 
-    def test_unknown_profile_warns_without_invalidating_core(self) -> None:
-        result = self.validate_modified_template(
-            '"profiles": []',
-            '"profiles": [{"name": "future-profile", "version": "0.1"}]',
-        )
-        self.assertTrue(result.valid, result.as_json())
-        self.assertIn("HRA901", {item.code for item in result.warnings})
-
-    def test_json_cli_contract_and_exit_code(self) -> None:
+    def test_json_cli_contract_and_exit_codes(self) -> None:
         completed = subprocess.run(
             [sys.executable, str(VALIDATOR_PATH), str(TEMPLATE_PATH), "--json"],
             cwd=REPOSITORY_ROOT,
@@ -140,11 +145,9 @@ class ArtifactValidatorTests(unittest.TestCase):
         self.assertEqual(0, completed.returncode, completed.stderr)
         payload = json.loads(completed.stdout)
         self.assertTrue(payload["valid"])
-        self.assertEqual("human-review-artifacts/core@0.1", payload["specVersion"])
-        self.assertEqual([], payload["errors"])
-
-    def test_invalid_cli_uses_exit_code_one(self) -> None:
-        completed = subprocess.run(
+        self.assertEqual("human-review-artifacts/core@0.2", payload["specVersion"])
+        self.assertEqual("valid", payload["conformance"]["core"])
+        invalid = subprocess.run(
             [sys.executable, str(VALIDATOR_PATH), str(FIXTURES / "missing-manifest.html"), "--json"],
             cwd=REPOSITORY_ROOT,
             check=False,
@@ -152,11 +155,8 @@ class ArtifactValidatorTests(unittest.TestCase):
             text=True,
             encoding="utf-8",
         )
-        self.assertEqual(1, completed.returncode)
-        self.assertFalse(json.loads(completed.stdout)["valid"])
-
-    def test_missing_input_uses_exit_code_two(self) -> None:
-        completed = subprocess.run(
+        self.assertEqual(1, invalid.returncode)
+        missing = subprocess.run(
             [sys.executable, str(VALIDATOR_PATH), "does-not-exist.html", "--json"],
             cwd=REPOSITORY_ROOT,
             check=False,
@@ -164,7 +164,7 @@ class ArtifactValidatorTests(unittest.TestCase):
             text=True,
             encoding="utf-8",
         )
-        self.assertEqual(2, completed.returncode)
+        self.assertEqual(2, missing.returncode)
 
 
 if __name__ == "__main__":

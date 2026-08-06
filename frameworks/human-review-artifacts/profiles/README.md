@@ -8,7 +8,9 @@ Domain Profile은 Human Review Artifacts Core에 분야별 의미, 섹션, 시�
 - Profile은 자체 `major.minor` 버전을 가집니다.
 - Artifact Manifest의 `profiles` 배열에 이름과 버전을 선언합니다.
 - Manifest 확장은 `extensions.<profile-name>` 아래에 둡니다.
+- Profile runtime은 정적 semantic HTML을 보강할 때만 사용하며 Manifest `runtime.scripts`와 CSP에 이름, 버전과 digest를 선언합니다.
+- Core Validator는 알 수 없는 Profile runtime의 무결성과 보안 경계만 검사하고 동작 미검증 경고를 제공합니다. Profile 의미 적합성은 별도 Profile Validator가 담당합니다.
 - Core의 필수 필드, semantic section, 보안 또는 접근성 요구를 완화할 수 없습니다.
 - Profile 전용 결정은 Profile 내부 또는 상위 framework의 `decisions/`에 적용 범위를 명시해 기록합니다.
 
-첫 Profile은 Core가 중립 예시와 실제 사용에서 안정화된 뒤 추가합니다.
+첫 Profile은 GM TechB V2G의 Architecture 실사용 결과를 입력 사례로 삼아 별도 추가합니다.
