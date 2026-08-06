@@ -1,7 +1,9 @@
 # 0003. Human Review Artifacts를 폐기하고 Project Workspace로 재설계
 
-- 상태: Accepted
+- 상태: Partially Superseded by 0004
 - 날짜: 2026-08-06
+
+> `human-review-artifacts` 폐기 결정과 이유는 유효하다. Project Workspace를 다음 중심 구현으로 삼는 미래 방향은 ADR 0004가 대체한다.
 
 ## 결정
 
