@@ -1,6 +1,6 @@
-# Domain Profiles
+# Profiles
 
-Domain Profile은 Human Review Artifacts Core에 분야별 의미, 섹션, 시각화와 검증 규칙을 추가합니다.
+Profile은 Human Review Artifacts Core에 재사용 가능한 interaction, representation 또는 domain 의미와 검증 규칙을 추가합니다. Profile의 분류와 조합 방식은 interaction 연구가 끝난 뒤 확정하며, 프로젝트 고유 vocabulary를 곧바로 Profile로 승격하지 않습니다.
 
 ## 계약
 
@@ -13,4 +13,4 @@ Domain Profile은 Human Review Artifacts Core에 분야별 의미, 섹션, 시�
 - Core의 필수 필드, semantic section, 보안 또는 접근성 요구를 완화할 수 없습니다.
 - Profile 전용 결정은 Profile 내부 또는 상위 framework의 `decisions/`에 적용 범위를 명시해 기록합니다.
 
-첫 Profile은 GM TechB V2G의 Architecture 실사용 결과를 입력 사례로 삼아 별도 추가합니다.
+첫 Profile 후보는 GM TechB V2G를 포함한 실제 interaction 사례 연구를 마친 뒤 결정합니다. 장기 방향은 [`../CHARTER.md`](../CHARTER.md), 현재 연구는 [`../research/`](../research/README.md)를 따릅니다.
