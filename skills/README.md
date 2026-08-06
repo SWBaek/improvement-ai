@@ -21,10 +21,10 @@ skills/<skill-name>/
 
 ## Registered Skills
 
-`skills/catalog.json`이 version과 lifecycle 상태의 원본입니다. 아래 index는 `python scripts/render_skill_index.py --write`로 갱신하고 `--check`로 검증합니다. 상태는 `In Progress`, `Promoted`, `Deprecated` 중 하나를 사용합니다.
+모든 Skill은 아래 index에 한 번 등록합니다. 상태는 `In Progress`, `Promoted`, `Deprecated` 중 하나를 사용하고 tracking issue에서 실제 Pilot 근거를 관리합니다. `skills/catalog.json`은 lifecycle index가 아니라 명시적인 GitHub Release를 만들 때만 version을 올리는 작은 trigger입니다.
 
 <!-- skill-index:start -->
-| Skill | Version | Status | Release | Tracking |
-|---|---|---|---|---|
-| [manage-focus-cycle](manage-focus-cycle/SKILL.md) | `0.1.0` | In Progress | [manage-focus-cycle-v0.1.0](https://github.com/SWBaek/improvement-ai/releases/tag/manage-focus-cycle-v0.1.0) | [#10](https://github.com/SWBaek/improvement-ai/issues/10) |
+| Skill | Status | Tracking |
+|---|---|---|
+| [manage-focus-cycle](manage-focus-cycle/SKILL.md) | In Progress | [#10](https://github.com/SWBaek/improvement-ai/issues/10) |
 <!-- skill-index:end -->

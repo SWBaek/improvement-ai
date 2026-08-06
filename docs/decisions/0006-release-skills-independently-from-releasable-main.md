@@ -1,6 +1,6 @@
 # 0006. Releasable main에서 Skill을 독립 version으로 배포
 
-- 상태: Accepted
+- 상태: Partially superseded by 0007
 - 날짜: 2026-08-06
 
 ## 결정

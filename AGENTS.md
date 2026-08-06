@@ -13,7 +13,7 @@
 - **하나의 원본**: 공통 capability는 이 저장소에서 작성하고 agent별 파일은 가능한 한 생성하거나 얇게 연결한다.
 - **도구 중립성**: 공통 지식과 workflow는 Codex, Claude Code 등 특정 agent의 인터페이스와 분리한다.
 - **사람 중심 표현**: Markdown을 고정하지 않고 표, 도형, HTML 등 사람이 이해하기 좋은 표현을 선택한다.
-- **검증과 안전**: 사용 조건, 기대 결과, 검증 방법과 변경 안전장치를 capability의 일부로 취급한다.
+- **비례하는 검증**: 실제 Skill 동작을 보호하는 작은 테스트만 유지하고 실패 근거 없이 platform matrix나 meta-validation을 추가하지 않는다.
 
 ## Capability lifecycle
 
@@ -101,19 +101,19 @@ Candidate 단계에서는 speculative 디렉터리, schema나 package를 만들�
 1. 관련 문서와 기존 구현을 먼저 확인한다.
 2. 실제 사용 근거와 현재 lifecycle 단계를 확인한다.
 3. 가장 작은 재사용 가능한 단위로 구현한다.
-4. 문서, template과 검증 코드를 함께 갱신한다.
-5. 배포된 Skill을 변경하면 `skills/catalog.json`의 독립 version을 올리고 `docs/releases/`의 해당 변경 이력을 갱신한다.
-6. `python scripts/validate_repository.py`와 관련 테스트를 실행한다.
+4. 동작 계약이 바뀌면 관련 문서와 직접적인 capability 테스트만 갱신한다.
+5. 정식 snapshot을 배포하라는 명시적 요청이 있을 때만 `skills/catalog.json`의 version을 올린다.
+6. 관련 테스트가 있으면 해당 테스트만 실행한다. 저장소 전체 build, OS matrix와 설치 smoke test를 기본 완료 조건으로 요구하지 않는다.
 7. commit 전에 diff에서 비밀 정보, 생성 파일과 불필요한 범위가 없는지 확인한다.
-8. GitHub 작업은 인증된 `gh` 정책을 따른다. `main` 병합 후 version 증가를 감지한 workflow가 인증된 `gh`로 tag와 Release를 생성한다.
+8. GitHub 작업은 인증된 `gh` 정책을 따른다. Catalog version이 바뀐 경우에만 최소 workflow가 인증된 `gh`로 tag와 Release를 생성한다.
 
 ## 완료 기준
 
 - 요청된 동작과 문서가 일치한다.
 - Capability의 trigger, non-trigger, 기대 결과와 검증 방법이 명확하다.
 - 상태와 tracking 정보가 `skills/README.md` 또는 GitHub issue에 반영된다.
-- 저장소 검증과 관련 테스트가 통과한다.
+- 변경한 capability에 직접 관련된 테스트가 있으면 통과한다.
 - 새 경로와 명령이 README 또는 관련 문서에서 발견 가능하다.
 - 외부 의존성과 license가 기록되어 있다.
-- 배포된 Skill 변경에는 version, 변경 이력과 호환성 설명이 있다.
+- 명시적으로 Release하는 변경에는 catalog version이 있다.
 - 비밀 정보와 개인 runtime 상태가 commit에 포함되지 않는다.

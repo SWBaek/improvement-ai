@@ -12,4 +12,4 @@
 - 설치 또는 동기화 방식
 - runtime dependency가 실패했을 때의 fallback
 
-CDN 또는 package URL은 재현 가능한 exact version으로 고정합니다. Skill asset의 URL과 catalog version drift는 저장소 validator가 차단합니다.
+고정 재현이 실제로 필요하면 CDN 또는 package URL에 exact version을 기록합니다. 자동 drift validator는 두지 않고 문제가 발견됐을 때 갱신합니다.

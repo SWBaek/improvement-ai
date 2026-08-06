@@ -1,15 +1,15 @@
 # GitHub repository settings
 
-The public repository `SWBaek/improvement-ai` uses settings that keep `main` releasable and make security reports private.
+The public repository `SWBaek/improvement-ai` protects history without imposing automated validation on fast Skill iteration.
 
 ## Required remote state
 
 - Delete a merged pull request branch automatically.
 - Enable Issues and private vulnerability reporting.
-- Apply the active `Protect releasable main` branch ruleset to the default branch.
+- Apply the active `Protect main history` branch ruleset to the default branch.
 - Prevent branch deletion and non-fast-forward pushes.
 - Require a pull request with resolved review threads.
-- Require `Validate (ubuntu-latest)` and `Validate (windows-latest)` against the latest target branch state.
+- Do not require status checks or platform validation.
 - Require no approval count for the single-maintainer workflow; code-owner assignment remains informational.
 
 ## Verification
@@ -23,4 +23,4 @@ gh api repos/SWBaek/improvement-ai/private-vulnerability-reporting
 gh api repos/SWBaek/improvement-ai/rulesets
 ```
 
-If workflow job names change, update the ruleset required checks only after the replacement checks have run successfully on a pull request.
+Add required checks only after repeated failures show that the check protects a real user outcome at acceptable development cost.
