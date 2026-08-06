@@ -14,30 +14,44 @@ REQUIRED_FILES = [
     "AGENTS.md",
     "README.md",
     ".github/issue-labels.json",
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
     ".github/ISSUE_TEMPLATE/config.yml",
+    ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/ISSUE_TEMPLATE/skill_request.yml",
+    ".github/ISSUE_TEMPLATE/tool_request.yml",
+    ".github/workflows/validate.yml",
+    "configs/README.md",
     "docs/architecture.md",
-    "docs/decisions/0003-retire-human-review-artifacts.md",
+    "docs/decisions/README.md",
     "docs/github/issues.md",
+    "external/README.md",
     "external/catalog.yaml",
     "frameworks/README.md",
+    "packages/README.md",
+    "skills/README.md",
     "templates/skill/SKILL.md",
+    "tests/README.md",
+    "tools/README.md",
 ]
 REQUIRED_DIRECTORIES = [
-    "frameworks",
-    "skills",
-    "tools",
-    "packages",
-    "configs/shared",
-    "configs/codex",
-    "configs/claude",
-    "external",
-    "scripts",
-    "tests",
+    "configs",
     "docs/decisions",
+    "external",
+    "frameworks",
+    "packages",
+    "scripts",
+    "skills",
+    "tests",
+    "tools",
 ]
 ISSUE_FORM_KEYS = ("name", "description", "title", "labels", "body")
 KEBAB_CASE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 HEX_COLOR = re.compile(r"^[0-9A-Fa-f]{6}$")
+DECISION_FILE = re.compile(r"^[0-9]{4}-[a-z0-9]+(?:-[a-z0-9]+)*\.md$")
+SKILL_INDEX_ROW = re.compile(
+    r"^\|\s*\[([a-z0-9]+(?:-[a-z0-9]+)*)\]\(([^)]+)\)\s*"
+    r"\|\s*(In Progress|Promoted|Deprecated)\s*\|\s*(\S.*?)\s*\|$"
+)
 
 
 def validate_paths(errors: list[str]) -> None:
@@ -118,9 +132,56 @@ def validate_issue_forms(label_names: set[str], errors: list[str]) -> None:
             )
 
 
+def load_skill_index(errors: list[str]) -> dict[str, tuple[str, str]]:
+    path = ROOT / "skills" / "README.md"
+    if not path.is_file():
+        return {}
+
+    text = path.read_text(encoding="utf-8")
+    start_marker = "<!-- skill-index:start -->"
+    end_marker = "<!-- skill-index:end -->"
+    if text.count(start_marker) != 1 or text.count(end_marker) != 1:
+        errors.append("skills/README.md must contain one skill index marker pair")
+        return {}
+
+    block = text.split(start_marker, 1)[1].split(end_marker, 1)[0]
+    entries: dict[str, tuple[str, str]] = {}
+    for line in block.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("| ["):
+            continue
+        match = SKILL_INDEX_ROW.fullmatch(stripped)
+        if not match:
+            errors.append(f"malformed skill index row: {stripped}")
+            continue
+        name, target, status, _tracking = match.groups()
+        if name in entries:
+            errors.append(f"duplicate skill index entry: {name}")
+            continue
+        expected_target = f"{name}/SKILL.md"
+        if target != expected_target:
+            errors.append(
+                f"skill index target for {name} must be {expected_target}: {target}"
+            )
+        entries[name] = (target, status)
+    return entries
+
+
 def validate_skills(errors: list[str]) -> None:
     skills_directory = ROOT / "skills"
-    for directory in sorted(path for path in skills_directory.iterdir() if path.is_dir()):
+    if not skills_directory.is_dir():
+        return
+
+    index = load_skill_index(errors)
+    directories = {
+        path.name: path for path in skills_directory.iterdir() if path.is_dir()
+    }
+    for name in sorted(set(directories) - set(index)):
+        errors.append(f"skill is not registered in skills/README.md: {name}")
+    for name in sorted(set(index) - set(directories)):
+        errors.append(f"skill index references missing directory: {name}")
+
+    for directory in sorted(directories.values()):
         skill_file = directory / "SKILL.md"
         if not skill_file.is_file():
             errors.append(f"skill directory has no SKILL.md: {directory.relative_to(ROOT)}")
@@ -143,6 +204,44 @@ def validate_skills(errors: list[str]) -> None:
             )
         if not description_match:
             errors.append(f"skill has no description: {skill_file.relative_to(ROOT)}")
+
+
+def validate_decisions(errors: list[str]) -> None:
+    directory = ROOT / "docs" / "decisions"
+    index_path = directory / "README.md"
+    if not directory.is_dir() or not index_path.is_file():
+        return
+
+    decision_paths = sorted(
+        path for path in directory.glob("*.md") if path.name != "README.md"
+    )
+    index_text = index_path.read_text(encoding="utf-8")
+    index_entries = re.findall(r"\[([0-9]{4})\]\(([^)]+\.md)\)", index_text)
+    indexed_targets = [target for _number, target in index_entries]
+
+    for number, target in index_entries:
+        if not target.startswith(f"{number}-"):
+            errors.append(f"decision index number {number} does not match target: {target}")
+        if not (directory / target).is_file():
+            errors.append(f"decision index references missing file: {target}")
+    for target in sorted({item for item in indexed_targets if indexed_targets.count(item) > 1}):
+        errors.append(f"duplicate decision index entry: {target}")
+
+    for path in decision_paths:
+        relative = path.relative_to(ROOT)
+        if not DECISION_FILE.fullmatch(path.name):
+            errors.append(f"decision must use numbered kebab-case filename: {relative}")
+        if indexed_targets.count(path.name) != 1:
+            errors.append(f"decision must appear exactly once in index: {relative}")
+
+        text = path.read_text(encoding="utf-8")
+        if not re.search(r"^- 상태:\s*\S.*$", text, re.MULTILINE):
+            errors.append(f"decision has no status: {relative}")
+        if not re.search(r"^- 날짜:\s*[0-9]{4}-[0-9]{2}-[0-9]{2}\s*$", text, re.MULTILINE):
+            errors.append(f"decision has invalid date: {relative}")
+        for heading in ("## 결정", "## 이유", "## 결과"):
+            if heading not in text:
+                errors.append(f"decision is missing {heading}: {relative}")
 
 
 def validate_frameworks(errors: list[str]) -> None:
@@ -180,7 +279,7 @@ def validate_frameworks(errors: list[str]) -> None:
                 )
 
         for decision_path in sorted((directory / "decisions").glob("*.md")):
-            if not re.fullmatch(r"[0-9]{4}-[a-z0-9-]+\.md", decision_path.name):
+            if not DECISION_FILE.fullmatch(decision_path.name):
                 errors.append(
                     f"framework decision must use numbered kebab-case filename: "
                     f"{decision_path.relative_to(ROOT)}"
@@ -200,6 +299,7 @@ def main() -> int:
     label_names = load_label_names(errors)
     validate_issue_forms(label_names, errors)
     validate_skills(errors)
+    validate_decisions(errors)
     validate_frameworks(errors)
 
     if errors:

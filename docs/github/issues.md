@@ -69,6 +69,19 @@ status: triage → status: ready → status: in-progress → closed
 4. 범위가 크면 독립적으로 검증 가능한 하위 issue로 나눈다.
 5. 구현 결정이 장기 구조에 영향을 주면 `docs/decisions/`에 ADR을 추가한다.
 
+## Capability lifecycle과 issue
+
+Capability의 성숙도와 issue 작업 상태는 다음과 같이 연결합니다.
+
+| Capability 단계 | Issue 상태 | 저장소 산출물 |
+|---|---|---|
+| Candidate | `status: triage` 또는 `status: ready` | 문제, trigger, 기대 결과와 pilot 조건 |
+| In Progress | `status: in-progress` | `skills/<name>/SKILL.md`, `skills/README.md` index 등록 |
+| Promoted | acceptance criteria 충족 후 issue 종료 | 동일한 Skill 경로와 검증 근거 |
+| Deprecated | 별도 폐기 issue를 종료 | index 상태, 대체 경로 또는 폐기 이유 |
+
+Candidate는 실제 pilot이 시작되기 전까지 Skill 디렉터리를 만들지 않습니다. Promoted와 Deprecated 전환도 경로를 이동하지 않고 `skills/README.md`와 issue 기록만 갱신합니다.
+
 ## Label 동기화
 
 GitHub 서비스 변경은 `AGENTS.md` 정책에 따라 인증된 `gh`만 사용한다.

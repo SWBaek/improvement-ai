@@ -1,100 +1,117 @@
 # Improvement AI Agent Guide
 
-## 프로젝트 목표
+## 저장소 정체성
 
-이 저장소는 여러 프로젝트에서 반복해서 사용할 개인 AI 역량의 원본 저장소다. AI와 함께 일하며 발견한 개선 사항을 일회성 대화로 남기지 않고, 재사용 가능한 skill, CLI, 자동화 도구, 설정과 운영 규칙으로 축적한다.
+`improvement-ai`는 여러 프로젝트에서 재사용할 AI 협업 capability를 발견하고, 실제 작업에서 검증하고, 배포 가능한 형태로 발전시키는 개인 capability repository다. 하나의 애플리케이션이나 서비스가 저장소 전체의 목적이 되지 않는다.
 
-## 핵심 컨셉
+## 목표와 원칙
 
-- **하나의 원본**: 공통 역량은 이 저장소에서 작성하고 각 AI 도구용 파일은 가능한 한 생성하거나 얇게 연결한다.
-- **전역 재사용**: 특정 프로젝트에 종속되지 않는 skill과 도구를 우선 관리한다.
-- **표준 우선**: skill은 Agent Skills의 `SKILL.md` 관례를 따르고 기존 설치 생태계를 먼저 활용한다.
-- **점진적 확장**: 초기에는 단순한 디렉터리와 검증으로 시작하고, 실제 필요가 확인된 뒤 CLI, pack, registry를 추가한다.
-- **검증 가능한 개선**: 새 역량에는 사용 조건, 기대 결과와 확인 방법을 함께 둔다.
-- **안전한 배포**: 인증 정보와 로컬 런타임 상태는 저장하지 않으며 외부에서 가져온 자산의 출처와 라이선스를 기록한다.
+- **Skill-first**: 새로운 capability는 가능한 한 작은 Agent Skill로 시작한다.
+- **작고 조합 가능하게**: 하나의 거대한 workflow보다 책임과 trigger가 분명한 capability를 선호한다.
+- **실사용 우선**: 추측한 범용성보다 실제 프로젝트에서 확인된 불편과 효과를 근거로 발전시킨다.
+- **점진적 승격**: 반복성이 증명될 때만 tool, package, framework 또는 독립 서비스로 확장한다.
+- **하나의 원본**: 공통 capability는 이 저장소에서 작성하고 agent별 파일은 가능한 한 생성하거나 얇게 연결한다.
+- **도구 중립성**: 공통 지식과 workflow는 Codex, Claude Code 등 특정 agent의 인터페이스와 분리한다.
+- **사람 중심 표현**: Markdown을 고정하지 않고 표, 도형, HTML 등 사람이 이해하기 좋은 표현을 선택한다.
+- **검증과 안전**: 사용 조건, 기대 결과, 검증 방법과 변경 안전장치를 capability의 일부로 취급한다.
 
-## 현재 핵심 탐색 방향
+## Capability lifecycle
 
-AI가 만든 긴 Markdown을 사람이 읽고 해석하는 부담을 줄이고, 프로젝트의 전체 진행 상황과 현재 논의를 시각적으로 파악할 수 있는 **Human-AI Project Workspace**를 탐색한다.
+| 단계 | 저장소 상태 | 진입 조건 |
+|---|---|---|
+| Candidate | GitHub issue와 짧은 설계 기록만 존재 | 반복되는 실제 문제가 식별됨 |
+| In Progress | `skills/<name>/`과 tracking issue 존재 | 한 프로젝트에서 pilot을 시작함 |
+| Promoted | 동일 경로의 검증된 Skill | 여러 사용에서 trigger와 효과가 확인됨 |
+| Deprecated | 동일 경로에 대체 경로를 명시 | 더 나은 capability로 대체됐거나 유효하지 않음 |
 
-- 사람이 보는 기본 표현층은 HTML로 두며, 프로젝트 진행 상황, 현재 Focus와 결정 필요 사항, 문제에 맞게 바뀌는 시각적 논의 영역을 제공한다.
-- 프로젝트 상태의 원본은 구조화된 데이터로 관리하고 HTML은 그 상태에서 생성되는 표현으로 취급한다.
-- 인간의 질문, 선택과 피드백은 기존 채팅에서 주고받는 것을 기본으로 하며 HTML 입력 UI를 필수로 만들지 않는다.
-- AI는 채팅 맥락과 프로젝트 변경을 구조화된 상태에 반영하고 HTML 표현을 갱신하는 조정자 역할을 한다.
-- 계속 갱신되는 프로젝트 Workspace와 특정 시점의 불변 Review Snapshot은 별개 개념이다. 초기 구현은 Workspace에 집중한다.
-- 범용 계약을 먼저 크게 설계하지 않는다. 실제 프로젝트에 최소 구현을 적용하고 반복해서 유효한 요소만 framework로 추출한다.
+Candidate 단계에서는 speculative 디렉터리, schema나 package를 만들지 않는다. 성숙도가 바뀌어도 Skill 경로는 이동하지 않으며 `skills/README.md`와 tracking issue의 상태만 갱신한다.
 
 ## 저장소 범위
 
 포함한다:
 
 - `skills/`: 여러 프로젝트에서 재사용할 Agent Skills
-- `frameworks/`: 여러 skill과 도구가 공유하는 규약, 스키마, 템플릿과 확장 체계
-- `tools/`: 독립 실행 자동화 및 개발 도구
-- `packages/`: 배포 가능한 CLI와 npm 패키지
-- `configs/`: 공통 설정과 에이전트별 adapter
-- `external/`: 외부 역량의 출처, 버전, 라이선스 메타데이터
-- `scripts/`: 설치, 동기화, 검증 자동화
-- `tests/`: 저장소 계약과 도구 동작 검증
-- `docs/`: 아키텍처와 의사결정 기록
+- `tools/`: Skill을 지원하는 독립 실행 자동화와 개발 도구
+- `packages/`: 설치·배포 가능한 CLI와 package
+- `frameworks/`: 둘 이상의 capability가 공유하는 검증된 계약
+- `configs/`: 공통 설정과 agent별 adapter
+- `templates/`: 새 capability를 시작하기 위한 최소 template
+- `external/`: 외부 capability의 출처, 버전과 라이선스 metadata
+- `scripts/`, `tests/`: 저장소 유지·검증 자동화
+- `docs/`: 아키텍처, 운영 정책과 의사결정 기록
 
-프로젝트 고유 구현, 비밀 정보, 세션 로그, 캐시와 내려받아 재생성할 수 있는 런타임 파일은 포함하지 않는다.
+포함하지 않는다:
+
+- 특정 프로젝트에만 유효한 구현, 상태와 생성 결과
+- 비밀 정보, 세션 로그, 캐시와 재생성 가능한 runtime 파일
+- 사용 사례 없이 먼저 만든 범용 schema와 추상화
+- 독립 제품으로 운영돼야 하는 전체 서비스 코드
 
 ## GitHub 명령 정책
 
 - GitHub 서비스의 조회나 변경에는 **인증된 GitHub CLI(`gh`)만 사용한다**.
-- GitHub API를 `curl`, 임의 HTTP 클라이언트 또는 비인증 요청으로 직접 호출하지 않는다.
+- GitHub API를 `curl`, 임의 HTTP client 또는 비인증 요청으로 직접 호출하지 않는다.
 - issue, pull request, label, release, workflow, repository 설정을 다루기 전에 `gh auth status`가 성공하는지 확인한다.
 - 로컬 버전 관리에는 `git`을 사용할 수 있다. `git push` 전에 `gh auth status`와 `git remote -v`로 인증 계정과 대상 저장소를 확인한다.
-- 토큰을 명령행, 파일, 로그 또는 커밋에 기록하지 않는다. `gh`가 관리하는 인증 정보를 사용한다.
+- token을 명령행, 파일, 로그 또는 commit에 기록하지 않는다. `gh`가 관리하는 인증 정보를 사용한다.
 - 파괴적이거나 되돌리기 어려운 GitHub 작업은 정확한 저장소와 대상을 먼저 출력해 확인한다.
 
 ## 작성 규칙
 
 ### Skills
 
-- 각 skill은 `skills/<skill-name>/SKILL.md`를 진입점으로 사용한다.
-- 이름은 소문자 kebab-case로 작성한다.
-- `SKILL.md` frontmatter에는 최소한 `name`과 구체적인 `description`을 둔다.
-- 큰 참고자료와 실행 코드는 각각 `references/`, `scripts/`, `assets/`로 분리한다.
-- 특정 에이전트 전용 동작은 명시하고, 공통 본문은 도구 중립적으로 유지한다.
+- 각 Skill은 flat 경로 `skills/<skill-name>/SKILL.md`를 진입점으로 사용한다.
+- 이름은 소문자 kebab-case로 작성하고 frontmatter의 `name`과 디렉터리 이름을 일치시킨다.
+- `description`은 실제 trigger와 non-trigger를 구분할 수 있을 만큼 구체적으로 작성한다.
+- 큰 참고자료, 실행 코드와 정적 자산은 각각 `references/`, `scripts/`, `assets/`로 분리한다.
+- 특정 agent 전용 동작은 명시하고 공통 본문은 도구 중립적으로 유지한다.
+- 모든 Skill은 `skills/README.md` index에 정확히 한 번 등록하고 상태와 tracking issue를 기록한다.
+
+### Tools와 packages
+
+- 같은 변환, 검증 또는 rendering을 결정적으로 반복해야 할 때 companion script나 tool을 추가한다.
+- 여러 Skill이나 프로젝트가 설치 가능한 실행 기능을 공유할 때만 package 또는 CLI를 추가한다.
+- 사람이 읽는 출력과 자동화용 구조화 출력의 경계를 명확히 한다.
+- 변경 작업에는 가능한 경우 `--dry-run` 또는 이에 준하는 읽기 전용 확인 경로를 제공한다.
+- 지원하는 Windows와 Unix 환경을 문서화하고 해당 환경에서 검증한다.
 
 ### Frameworks
 
-- 각 framework는 `frameworks/<framework-name>/README.md`를 진입점으로 사용한다.
-- framework는 특정 skill이나 에이전트에 의존하지 않는 canonical source로 유지한다.
-- skill, tool과 adapter는 framework를 소비할 수 있지만 framework가 이들을 참조하지 않는다.
-- 구체적인 프로젝트에서 반복 사용 가치가 확인되기 전에는 schema, profile, component taxonomy 또는 전용 CLI를 미리 확정하지 않는다.
-- 사람용 표현, 기계가 관리하는 상태와 대화형 상호작용의 책임을 구분하고, 하나의 산출물에 모두 강제하지 않는다.
-- 둘 이상의 최상위 영역에 영향을 주는 결정은 `docs/decisions/`에, framework 내부 결정은 해당 framework의 `decisions/`에 기록한다.
-- 규격과 스키마는 버전을 명시하며 이미 배포한 버전의 의미를 호환성 없이 변경하지 않는다.
+- Framework는 둘 이상의 capability가 동일한 versioned contract를 실제로 공유할 때만 만든다.
+- 각 Framework는 `frameworks/<framework-name>/README.md`를 진입점으로 사용한다.
+- Framework는 특정 Skill, agent나 소비 도구에 의존하지 않는 canonical source로 유지한다.
+- Skill, tool과 adapter는 Framework를 소비할 수 있지만 Framework는 이들을 참조하지 않는다.
+- 공개한 규격과 schema는 version을 명시하며 배포된 의미를 호환성 없이 변경하지 않는다.
 
-### CLI와 도구
+### 독립 서비스
 
-- 자체 CLI는 기존 도구로 해결할 수 없는 반복 작업이 확인된 뒤 추가한다.
-- 사람이 읽는 출력과 자동화용 구조화 출력의 경계를 명확히 한다.
-- 변경 작업에는 가능하면 `--dry-run` 또는 이에 준하는 읽기 전용 확인 경로를 제공한다.
-- Windows와 Unix 지원 범위를 문서화하고, 지원한다고 명시한 환경에서 검증한다.
+- 독립 실행 환경, 배포, 인증, 원격 동기화 또는 자체 release lifecycle이 필요하면 별도 저장소로 분리한다.
+- 이 저장소에는 분리된 서비스를 호출하거나 설치하는 Skill과 adapter만 남긴다.
 
-### 외부 자산
+### 외부 자산과 결정
 
-- 외부 skill이나 도구를 그대로 복사하지 말고 `external/catalog.yaml`에 출처와 사용 목적을 기록한다.
+- 외부 Skill이나 도구를 그대로 복사하지 않고 `external/catalog.yaml`에 출처, version, license와 사용 목적을 기록한다.
 - 고정 재현이 필요하면 commit 또는 release tag를 기록한다.
-- 라이선스가 불명확한 자산은 저장소에 포함하지 않는다.
+- license가 불명확한 자산은 포함하지 않는다.
+- 둘 이상의 최상위 영역에 영향을 주는 결정은 `docs/decisions/`에, Framework 내부 결정은 해당 Framework의 `decisions/`에 기록한다.
+- 기존 ADR을 지우거나 의미를 덮어쓰지 않고 새 ADR에서 대체 관계를 기록한다.
 
 ## 변경 절차
 
 1. 관련 문서와 기존 구현을 먼저 확인한다.
-2. 가장 작은 재사용 가능한 단위로 구현한다.
-3. 문서, 템플릿과 검증 코드를 함께 갱신한다.
-4. `python scripts/validate_repository.py`를 실행한다.
-5. 커밋 전에 diff에서 비밀 정보, 생성 파일과 불필요한 범위가 없는지 확인한다.
-6. GitHub 작업은 위의 인증된 `gh` 정책을 따른다.
+2. 실제 사용 근거와 현재 lifecycle 단계를 확인한다.
+3. 가장 작은 재사용 가능한 단위로 구현한다.
+4. 문서, template과 검증 코드를 함께 갱신한다.
+5. `python scripts/validate_repository.py`와 관련 테스트를 실행한다.
+6. commit 전에 diff에서 비밀 정보, 생성 파일과 불필요한 범위가 없는지 확인한다.
+7. GitHub 작업은 인증된 `gh` 정책을 따른다.
 
 ## 완료 기준
 
 - 요청된 동작과 문서가 일치한다.
-- 저장소 검증이 통과한다.
+- Capability의 trigger, non-trigger, 기대 결과와 검증 방법이 명확하다.
+- 상태와 tracking 정보가 `skills/README.md` 또는 GitHub issue에 반영된다.
+- 저장소 검증과 관련 테스트가 통과한다.
 - 새 경로와 명령이 README 또는 관련 문서에서 발견 가능하다.
-- 외부 의존성과 라이선스가 기록되어 있다.
-- 비밀 정보와 개인 런타임 상태가 커밋에 포함되지 않는다.
+- 외부 의존성과 license가 기록되어 있다.
+- 비밀 정보와 개인 runtime 상태가 commit에 포함되지 않는다.
