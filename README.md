@@ -54,9 +54,9 @@ python scripts/sync_github_labels.py --repo SWBaek/improvement-ai
 | 항목 | 상태 | 설명 |
 |---|---|---|
 | 저장소 기반 | 완료 | 공통 구조, 운영 규칙, Issue 표준과 CI 검증을 구축했습니다. |
-| `human-review-artifacts` Core 0.3 | 사용 가능 | Interaction 중심 Review Snapshot, Manifest/Response Schema, 다섯 pattern, component와 validator를 제공합니다. |
-| Interaction 연구 | 진행 중 | AI-인간 논의 유형과 Artifact 생성 조건을 실제 사례에서 조사합니다. |
-| Profile과 Component | 연구 후 설계 | interaction pattern, representation component와 domain vocabulary의 경계를 조사 후 확정합니다. |
+| `human-review-artifacts` Core 0.3 | 인간 검토 대기 | 자동 검증을 통과했으며 중립 사례의 직접 검토 후 외부 pilot 준비 상태를 확정합니다. |
+| Interaction 연구 | 핵심 taxonomy 확정 | `orient`, `compare`, `decide`, `revise`, `verify` v0.1을 중립 사례로 정의했습니다. |
+| Representation Component | 0.1 구현 | 일곱 semantic component와 pattern 조합 규칙을 제공합니다. |
 | Artifact 생성 Skill | 계획 | Core 사용 경험을 반영해 self-contained Agent Skill로 개발합니다. |
 | 자체 CLI | 보류 | 반복되는 설치·배포 요구가 확인되면 도입합니다. |
 

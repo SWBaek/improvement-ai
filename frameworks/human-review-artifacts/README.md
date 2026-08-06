@@ -16,6 +16,7 @@ Core v0.3은 하나의 self-contained HTML Review Snapshot을 전달 단위로 �
 - [`templates/artifact.html`](templates/artifact.html): 인터랙티브 참조 템플릿
 - [`profiles/README.md`](profiles/README.md): Domain Profile 확장 계약
 - [`research/`](research/README.md): AI-인간 interaction 사례와 pattern 연구
+- [`ADOPTION.md`](ADOPTION.md): 외부 프로젝트 적용 계약과 pilot 체크리스트
 - `examples/`: Core만 사용하는 중립 예시
 - `scripts/validate_artifact.py`: Core 적합성 validator
 - `scripts/validate_interaction.py`: Interaction Pattern 적합성 validator
@@ -35,4 +36,4 @@ python -m unittest discover -s frameworks/human-review-artifacts/tests -p "test_
 
 ## 현재 상태
 
-Core v0.3과 Interaction Taxonomy v0.1입니다. Core v0.2는 외부 적용 전에 interaction 중심 계약으로 교체했으며 호환 대상으로 유지하지 않습니다. 현재는 중립 사례의 직접 인간 검토와 외부 적용 가이드를 준비하고 있습니다.
+Core v0.3과 Interaction Taxonomy v0.1입니다. 자동 적합성 및 브라우저 검증을 통과했으며, 외부 pilot 진입 전 [직접 인간 검토](research/evaluations/session-001-instructions.md)를 기다리고 있습니다.
