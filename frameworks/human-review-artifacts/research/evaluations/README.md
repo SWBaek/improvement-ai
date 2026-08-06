@@ -25,3 +25,5 @@
 - 2점 이하 항목이 없다.
 
 평가가 수행되기 전에는 readiness를 완료로 표시하지 않습니다.
+
+첫 평가 절차는 [`session-001-instructions.md`](session-001-instructions.md)를 따릅니다.
