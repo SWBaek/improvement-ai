@@ -54,6 +54,9 @@ consumer project
 ## 배포와 검증
 
 - Skill 설치는 가능한 동안 기존 Agent Skills 생태계를 사용한다.
+- 각 Skill은 `skills/catalog.json`에서 독립적인 Semantic Version을 가지며, `<skill-name>-v<version>` tag로 배포한다.
+- `main`은 항상 설치 가능한 최신 channel이다. 배포된 Skill의 폴더 변경은 같은 PR에서 version과 release history를 갱신한다.
+- GitHub Release는 변경 공지와 재현 가능한 rollback 지점이며, Capability의 In Progress/Promoted/Deprecated 상태와 별개다.
 - 자체 CLI는 Skill 외 설정, hook, pack 또는 version 고정까지 함께 관리해야 할 때만 도입한다.
 - 외부 자산은 vendoring보다 출처와 version을 기록하는 방식을 우선한다.
 - 저장소 전역 계약은 `scripts/validate_repository.py`, capability 고유 동작은 해당 Skill 또는 tool의 테스트가 검증한다.

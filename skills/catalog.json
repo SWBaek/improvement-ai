@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "name": "manage-focus-cycle",
+      "version": "0.1.0",
+      "status": "In Progress",
+      "trackingIssue": 10,
+      "changelog": "docs/releases/manage-focus-cycle.md",
+      "support": {
+        "codex": "supported",
+        "otherAgentSkillsClients": "unverified"
+      },
+      "workspaceSchemaVersion": 1
+    }
+  ]
+}

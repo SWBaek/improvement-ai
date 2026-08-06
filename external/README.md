@@ -10,3 +10,6 @@
 - 라이선스
 - 이 저장소에서 사용하는 이유
 - 설치 또는 동기화 방식
+- runtime dependency가 실패했을 때의 fallback
+
+CDN 또는 package URL은 재현 가능한 exact version으로 고정합니다. Skill asset의 URL과 catalog version drift는 저장소 validator가 차단합니다.

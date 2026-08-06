@@ -10,15 +10,33 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    name: Validate (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.13"
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22.20.0"
       - name: Validate repository contracts
         run: python scripts/validate_repository.py
+      - name: Check generated Skill index
+        run: python scripts/render_skill_index.py --check
       - name: Test repository validator
         run: python -m unittest discover -s tests -p "test_*.py" -v
+      - name: Check Skill release metadata changes
+        if: github.event_name == 'pull_request'
+        run: python scripts/release_skills.py check-changes --base "origin/${{ github.base_ref }}" --head HEAD
+      - name: Smoke test Codex installation
+        run: python scripts/smoke_install.py

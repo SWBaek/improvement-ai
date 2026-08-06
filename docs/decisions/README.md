@@ -9,3 +9,4 @@
 | [0003](0003-retire-human-review-artifacts.md) | Partially superseded by 0004 | 미사용 Human Review Artifacts 구현 폐기 |
 | [0004](0004-adopt-capability-portfolio.md) | Accepted, candidate example superseded by 0005 | Capability 포트폴리오와 Skill-first lifecycle 채택 |
 | [0005](0005-narrow-workspace-to-focus-cycle-management.md) | Accepted | 첫 capability를 Focus Cycle Management로 축소 |
+| [0006](0006-release-skills-independently-from-releasable-main.md) | Accepted | Releasable main과 Skill별 독립 version·Release 채택 |
