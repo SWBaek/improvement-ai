@@ -1,6 +1,6 @@
 # 0005. Project Workspace 후보를 Focus Cycle Management로 축소
 
-- 상태: Accepted
+- 상태: Partially superseded by 0008
 - 날짜: 2026-08-06
 
 ## 결정

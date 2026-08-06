@@ -1,92 +1,67 @@
 # improvement-ai
 
-> A fast-moving portfolio of reusable AI collaboration capabilities, refined through real project use and shared as Agent Skills.
+> Canonical Capability Blueprints that AI agents adapt into project-owned Skills and workflows.
 
 [한국어](README.ko.md)
 
-`improvement-ai` is not one application or service. It is the canonical source for small, composable workflows discovered while working with AI: start with a Skill, validate it in real projects, and add deterministic scripts, packages, frameworks, or separate services only when evidence justifies them.
+`improvement-ai` is not an application, Skill catalog, package registry, or source of installable runtime implementations. It records reusable capability designs as compact Blueprints. A human gives a Blueprint to an AI working inside a target project; the AI inspects that project's conventions, proposes a local design, and creates project-owned Skills only after approval.
 
 ## Principles
 
-- **Skill first:** begin with the smallest reusable Agent Skill.
-- **Real use before abstraction:** promote capabilities based on observed project use, not speculative generality.
-- **One source:** maintain common capability sources here and keep client-specific adapters thin.
-- **Human-readable outcomes:** use concise text, tables, diagrams, or HTML according to the decision being reviewed.
-- **Proportionate verification:** keep only tests that protect real Skill behavior and add broader checks after failures justify them.
+- **Blueprint, not product:** preserve the problem, invariants, operations, adaptation points, and acceptance criteria rather than one universal implementation.
+- **Inspect before designing:** ground every proposal in the target project's instructions, records, tools, and Agent clients.
+- **Propose before writing:** show the Skill decomposition, paths, permissions, and verification method before changing files.
+- **Project ownership:** generated Skills and supporting assets belong to the consuming project and do not automatically track upstream changes.
+- **Revision provenance:** record the exact Blueprint path and 40-character Git commit in every generated Skill.
+- **Human authority:** keep approval boundaries explicit for generation, external writes, activation, and irreversible decisions.
+- **Evidence-led promotion:** promote a Blueprint only after successful use in two different projects.
 
-## Capability lifecycle
+## Available Blueprints
+
+| Blueprint | Status | Purpose |
+|---|---|---|
+| [`manage-focus-cycle`](blueprints/manage-focus-cycle/BLUEPRINT.md) | In Progress | Generate project-local capabilities for managing one bounded Focus Cycle without inventing a final endpoint for the containing project. |
+
+See the [Blueprint index](blueprints/README.md) and [tracking issue #15](https://github.com/SWBaek/improvement-ai/issues/15).
+
+## Use
+
+Give the Blueprint URL to the AI that is already working in the target project:
+
+```text
+Apply the following Capability Blueprint to this project.
+First inspect the project and propose the local Skills and supporting assets you would create.
+Do not create or modify files until I approve the proposal.
+
+https://github.com/SWBaek/improvement-ai/blob/main/blueprints/manage-focus-cycle/BLUEPRINT.md
+```
+
+Use a `main` URL for the latest design. Replace `main` with an exact commit for reproducible instantiation. The AI must resolve and record the exact revision even when starting from `main`.
+
+Generated Skills follow the target Agent's project-local discovery path. For example, Codex commonly uses `.agents/skills/<name>/` and Claude Code uses `.claude/skills/<name>/`. This repository does not install, update, or synchronize those files.
+
+## Lifecycle
 
 | Status | Meaning |
 |---|---|
-| Candidate | A real problem exists, but the reusable workflow is not yet clear. |
-| In Progress | A Skill is being piloted and refined in real work. |
-| Promoted | Repeated use has confirmed its value, triggers, and safeguards. |
-| Deprecated | The capability has a documented replacement or retirement reason. |
-
-Capability maturity comes from Pilot evidence. GitHub Releases are optional snapshots, not a required step for every change.
-
-## Available Skills
-
-| Skill | Status | Primary client | Purpose |
-|---|---|---|---|
-| [`manage-focus-cycle`](skills/manage-focus-cycle/SKILL.md) | In Progress | Codex | Manage one bounded Focus Cycle inside finite, long-lived, maintenance, or research projects. |
-
-`manage-focus-cycle` defines a Completion Contract, keeps one Primary Focus Cycle, renders a safe temporary HTML Workspace, and closes work without inventing a final endpoint or whole-project completion percentage. See [GitHub Releases](https://github.com/SWBaek/improvement-ai/releases) and [tracking issue #10](https://github.com/SWBaek/improvement-ai/issues/10).
-
-## Install and use
-
-Use the current `skills` installer for discovery and installation. The Workspace renderer uses Python 3.13. Codex is the primary client; other Agent Skills clients are best effort until real use demonstrates a need for broader support.
-
-List and install the Skill for one project:
-
-```powershell
-npx skills@latest add SWBaek/improvement-ai --list
-npx skills@latest add SWBaek/improvement-ai --skill manage-focus-cycle --agent codex -y
-```
-
-Invoke it explicitly in a new Codex session:
-
-```text
-$manage-focus-cycle Establish the current bounded objective and completion contract, then open the visual Workspace.
-```
-
-Update an existing project or global installation:
-
-```powershell
-npx skills@latest update manage-focus-cycle --project -y
-npx skills@latest update manage-focus-cycle --global -y
-```
-
-The installer tracks content changes on the Git ref originally installed. Default installs follow the latest development state on `main`; version tags are deliberate, reproducible snapshots. Watch this repository's GitHub Releases to receive snapshot notifications.
+| Candidate | A repeated problem exists as an issue, but no Blueprint has been written. |
+| In Progress | A Blueprint exists and generated results are being piloted in real projects. |
+| Promoted | Two different projects have generated and used the capability successfully. |
+| Deprecated | A replacement or retirement reason and consumer guidance are recorded. |
 
 ## Repository layout
 
 ```text
-skills/        Agent Skills and their bundled runtime resources
-tools/         Independent automation that supports capabilities
-packages/      Installable CLI and package sources
-frameworks/    Versioned contracts proven to be shared by capabilities
-configs/       Common configuration and client adapters
-external/      External source, version, and license records
-scripts/       Small maintenance helpers justified by repeated use
-tests/         Skill behavior tests that protect real user outcomes
-docs/          Architecture, decisions, and issue policy
+blueprints/    Canonical generative capability designs and evaluation scenarios
+docs/          Architecture, decisions, and GitHub operating policy
+scripts/       Repository-governance helpers only
+.github/       Blueprint issue forms, labels, ownership, and pull-request guidance
 ```
 
-Project-specific implementations, credentials, session logs, caches, and regenerable runtime output do not belong here.
+Project-specific generated Skills, runtime implementations, credentials, session logs, and private Pilot artifacts do not belong here.
 
-## Optional local check
+## Historical snapshot
 
-```powershell
-python -m unittest tests.test_manage_focus_cycle -v
-```
+The [`manage-focus-cycle-v0.1.0` GitHub Release](https://github.com/SWBaek/improvement-ai/releases/tag/manage-focus-cycle-v0.1.0) is an immutable historical snapshot of the retired installable-Skill approach. It is not the current distribution path and receives no updates from `main`.
 
-Issues and pull requests are welcome without a support SLA. Read [CONTRIBUTING.md](CONTRIBUTING.md), report vulnerabilities through the private path described in [SECURITY.md](SECURITY.md), and review the [MIT license](LICENSE).
-
-## Maintainer documentation
-
-- [Agent operating rules](AGENTS.md)
-- [Repository architecture](docs/architecture.md)
-- [Architecture decisions](docs/decisions/)
-- [GitHub Issue standard](docs/github/issues.md)
-- [GitHub repository settings](docs/github/repository-settings.md)
+Issues and pull requests are accepted without a support SLA. See [Contributing](CONTRIBUTING.md), [Security](SECURITY.md), [Architecture](docs/architecture.md), and the [MIT License](LICENSE).

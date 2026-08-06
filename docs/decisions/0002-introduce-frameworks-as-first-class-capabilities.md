@@ -1,6 +1,6 @@
 # 0002. Framework를 최상위 capability로 관리
 
-- 상태: Accepted
+- 상태: Superseded by 0008
 - 날짜: 2026-08-06
 
 ## 결정

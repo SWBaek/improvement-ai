@@ -1,6 +1,6 @@
 # 0004. Capability 포트폴리오와 Skill-first lifecycle을 채택
 
-- 상태: Accepted; Candidate example superseded by 0005
+- 상태: Partially superseded by 0008; Candidate example superseded by 0005
 - 날짜: 2026-08-06
 
 ## 결정

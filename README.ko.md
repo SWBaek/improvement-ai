@@ -1,92 +1,67 @@
 # improvement-ai
 
-> 여러 프로젝트에서 다시 사용할 AI 협업 역량을 실제 작업에서 빠르게 조정하고 Agent Skill로 공유하는 개인 capability 저장소입니다.
+> AI가 대상 프로젝트에 맞는 Skill과 workflow를 만들도록 안내하는 Capability Blueprint의 원본 저장소입니다.
 
 [English](README.md)
 
-`improvement-ai`는 하나의 애플리케이션이나 서비스가 아닙니다. AI와 일하며 발견한 반복 문제를 작고 조합 가능한 Skill로 시작하고, 실사용 근거가 확인될 때만 결정적 script, package, framework 또는 별도 서비스로 확장하는 역량 포트폴리오입니다.
+`improvement-ai`는 애플리케이션, Skill catalog, package registry 또는 설치형 runtime 구현 저장소가 아닙니다. 반복 가능한 capability 설계를 간결한 Blueprint로 기록합니다. 사람은 Blueprint를 대상 프로젝트에서 작업 중인 AI에게 전달하고, AI는 프로젝트 관례를 조사해 로컬 설계를 제안한 뒤 승인 후에만 프로젝트 소유의 Skill을 생성합니다.
 
 ## 운영 원칙
 
-- **Skill-first:** 가장 작은 재사용 단위인 Agent Skill로 시작합니다.
-- **실사용 우선:** 추측한 범용성보다 실제 프로젝트에서 확인된 효과를 근거로 발전시킵니다.
-- **하나의 원본:** 공통 capability는 이 저장소에서 관리하고 client별 adapter는 얇게 유지합니다.
-- **사람 중심 표현:** 결정에 따라 간결한 텍스트, 표, 도형 또는 HTML을 사용합니다.
-- **비례하는 검증:** 실제 Skill 동작을 보호하는 테스트만 유지하고, 실패 근거가 생길 때 넓은 검증을 추가합니다.
+- **제품보다 Blueprint:** 하나의 범용 구현 대신 문제, 불변 조건, operation, 적응 지점과 acceptance criteria를 보존합니다.
+- **설계 전 조사:** 대상 프로젝트의 지침, 기록, 도구와 Agent client를 근거로 제안합니다.
+- **작성 전 제안:** 파일 변경 전에 Skill 분해, 경로, 권한과 검증 방법을 보여줍니다.
+- **프로젝트 소유:** 생성된 Skill과 지원 자산은 소비 프로젝트가 소유하며 upstream 변경을 자동 추적하지 않습니다.
+- **Revision provenance:** 모든 생성 Skill에 정확한 Blueprint 경로와 40자리 Git commit을 기록합니다.
+- **인간 권한:** 생성, 외부 쓰기, 활성화와 되돌리기 어려운 결정의 승인 경계를 명시합니다.
+- **실사용 승격:** 서로 다른 두 프로젝트에서 생성·실사용된 뒤에만 Blueprint를 Promoted로 판단합니다.
 
-## Capability lifecycle
+## 제공 중인 Blueprint
+
+| Blueprint | 상태 | 목적 |
+|---|---|---|
+| [`manage-focus-cycle`](blueprints/manage-focus-cycle/BLUEPRINT.md) | In Progress | 전체 프로젝트의 가짜 종료점을 만들지 않고 하나의 제한된 Focus Cycle을 관리하는 프로젝트 로컬 capability를 생성합니다. |
+
+[Blueprint index](blueprints/README.md)와 [tracking issue #15](https://github.com/SWBaek/improvement-ai/issues/15)을 참고하세요.
+
+## 사용 방법
+
+대상 프로젝트에서 이미 작업 중인 AI에게 Blueprint URL을 전달합니다.
+
+```text
+다음 Capability Blueprint를 현재 프로젝트에 적용해 주세요.
+먼저 프로젝트를 조사하고 필요한 로컬 Skill과 지원 자산의 구성을 제안하세요.
+내가 승인하기 전에는 파일을 만들거나 수정하지 마세요.
+
+https://github.com/SWBaek/improvement-ai/blob/main/blueprints/manage-focus-cycle/BLUEPRINT.md
+```
+
+최신 설계는 `main` URL을 사용하고, 재현 가능한 생성에는 `main`을 정확한 commit으로 바꿉니다. `main`에서 시작한 경우에도 AI는 실제 생성에 사용한 revision을 확인해 기록해야 합니다.
+
+생성 Skill은 대상 Agent의 프로젝트 로컬 탐색 경로를 따릅니다. 예를 들어 Codex는 일반적으로 `.agents/skills/<name>/`, Claude Code는 `.claude/skills/<name>/`을 사용합니다. 이 저장소는 생성물을 설치·업데이트·동기화하지 않습니다.
+
+## Lifecycle
 
 | 상태 | 의미 |
 |---|---|
-| Candidate | 실제 문제는 있지만 재사용 workflow가 아직 불명확합니다. |
-| In Progress | 실제 작업에서 Skill을 Pilot하며 조정합니다. |
-| Promoted | 반복 사용으로 효과, trigger와 안전장치가 확인됐습니다. |
-| Deprecated | 대체 capability 또는 폐기 이유가 기록됐습니다. |
-
-Capability 성숙도는 Pilot 근거로 판단합니다. GitHub Release는 모든 변경의 의무 단계가 아니라 필요할 때 만드는 snapshot입니다.
-
-## 제공 중인 Skill
-
-| Skill | 상태 | 주요 client | 목적 |
-|---|---|---|---|
-| [`manage-focus-cycle`](skills/manage-focus-cycle/SKILL.md) | In Progress | Codex | 유한·장기 유지보수·연구 프로젝트 안에서 하나의 제한된 Focus Cycle을 관리합니다. |
-
-`manage-focus-cycle`은 Completion Contract와 하나의 Primary Focus Cycle을 관리하고, 안전한 임시 HTML Workspace를 생성하며, 전체 프로젝트 완료율이나 가짜 최종 종료점을 만들지 않고 현재 작업을 닫도록 돕습니다. [GitHub Releases](https://github.com/SWBaek/improvement-ai/releases)와 [tracking issue #10](https://github.com/SWBaek/improvement-ai/issues/10)을 참고하세요.
-
-## 설치와 사용
-
-현재 `skills` installer로 조회하고 설치합니다. Workspace renderer는 Python 3.13을 사용합니다. Codex가 주요 client이며 다른 Agent Skills client는 실제 필요가 확인될 때 지원 범위를 넓힙니다.
-
-프로젝트에서 Skill을 조회하고 설치합니다.
-
-```powershell
-npx skills@latest add SWBaek/improvement-ai --list
-npx skills@latest add SWBaek/improvement-ai --skill manage-focus-cycle --agent codex -y
-```
-
-새 Codex session에서 명시적으로 호출합니다.
-
-```text
-$manage-focus-cycle 현재의 제한된 목표와 완료 계약을 설정하고 시각적 Workspace를 열어 주세요.
-```
-
-기존 프로젝트 또는 전역 설치를 갱신합니다.
-
-```powershell
-npx skills@latest update manage-focus-cycle --project -y
-npx skills@latest update manage-focus-cycle --global -y
-```
-
-Installer는 처음 설치한 Git ref의 폴더 변경을 추적합니다. 기본 설치는 빠르게 변하는 `main`을 따르고 version tag는 의도적으로 만드는 재현 가능한 snapshot입니다. Release 알림은 GitHub의 Releases 구독으로 받을 수 있습니다.
+| Candidate | 반복되는 문제가 issue에 존재하지만 Blueprint는 아직 없습니다. |
+| In Progress | Blueprint가 존재하며 실제 프로젝트에서 생성 결과를 Pilot 중입니다. |
+| Promoted | 서로 다른 두 프로젝트에서 capability가 생성·실사용됐습니다. |
+| Deprecated | 대체 또는 폐기 이유와 소비자 안내가 기록됐습니다. |
 
 ## 저장소 구조
 
 ```text
-skills/        Agent Skills와 실행에 필요한 bundled resource
-tools/         Capability를 지원하는 독립 자동화
-packages/      설치 가능한 CLI와 package source
-frameworks/    여러 capability가 실제로 공유하는 versioned contract
-configs/       공통 설정과 client adapter
-external/      외부 자산의 출처, version과 license
-scripts/       반복 사용으로 필요성이 확인된 작은 유지보수 helper
-tests/         실제 사용자 결과를 보호하는 Skill 동작 테스트
-docs/          아키텍처, 결정과 issue 정책
+blueprints/    생성형 capability 설계와 평가 시나리오
+docs/          아키텍처, 결정과 GitHub 운영 정책
+scripts/       저장소 governance용 helper만 허용
+.github/       Blueprint issue form, label, ownership와 PR 지침
 ```
 
-특정 프로젝트의 구현과 상태, 인증 정보, session log, cache와 재생성 가능한 runtime 출력은 포함하지 않습니다.
+프로젝트별 생성 Skill, runtime 구현, 인증 정보, session log와 비공개 Pilot 자료는 포함하지 않습니다.
 
-## 선택적 로컬 확인
+## 과거 Snapshot
 
-```powershell
-python -m unittest tests.test_manage_focus_cycle -v
-```
+[`manage-focus-cycle-v0.1.0` GitHub Release](https://github.com/SWBaek/improvement-ai/releases/tag/manage-focus-cycle-v0.1.0)는 폐기된 설치형 Skill 접근의 변경하지 않는 역사적 snapshot입니다. 현재 배포 경로가 아니며 `main`에서 더 이상 업데이트되지 않습니다.
 
-지원 SLA 없이 issue와 pull request를 받습니다. [기여 안내](CONTRIBUTING.md), [보안 정책](SECURITY.md), [MIT license](LICENSE)를 확인하세요.
-
-## 운영 문서
-
-- [Agent 운영 규칙](AGENTS.md)
-- [저장소 아키텍처](docs/architecture.md)
-- [아키텍처 결정](docs/decisions/)
-- [GitHub Issue 표준](docs/github/issues.md)
-- [GitHub 저장소 설정](docs/github/repository-settings.md)
+지원 SLA 없이 issue와 pull request를 받습니다. [기여 안내](CONTRIBUTING.md), [보안 정책](SECURITY.md), [아키텍처](docs/architecture.md)와 [MIT License](LICENSE)를 확인하세요.
