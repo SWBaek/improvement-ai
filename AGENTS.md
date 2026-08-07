@@ -35,7 +35,11 @@
 
 ## Blueprint 작성 규칙
 
-- 각 Blueprint의 진입점은 `blueprints/<name>/BLUEPRINT.md`다.
+- 각 Blueprint directory에는 사람용 설치 landing page인 `README.md`와 AI용 canonical 계약인 `BLUEPRINT.md`를 둔다.
+- `blueprints/<name>/README.md`는 해결하는 문제, 적합한 사용 조건, 복사 가능한 설치 프롬프트, 설치 흐름, 최신·재현 가능 revision 사용법과 canonical Blueprint·tracking issue 링크만 간결하게 제공한다.
+- 개별 README의 설치 프롬프트는 해당 Blueprint의 정확한 `main` URL을 포함하고 `읽기 전용 조사 → 설치안 제안 → 인간 승인 → 프로젝트 로컬 생성·검증` 경계를 명시한다. 사용자가 URL이나 capability 이름을 조립하게 하지 않는다.
+- 개별 README는 Core 정보 모델, invariants, 상태 전이, operation과 acceptance criteria를 복제하지 않고 `BLUEPRINT.md`로 연결한다.
+- 사람의 진입점은 `blueprints/<name>/README.md`, AI가 적용할 canonical 진입점은 `blueprints/<name>/BLUEPRINT.md`다. “설치”는 package 복사가 아니라 Blueprint 기반 프로젝트 로컬 capability 생성이라는 뜻임을 README에 설명한다.
 - 이름은 소문자 kebab-case로 작성하고 `blueprints/README.md`에 정확히 한 번 등록한다.
 - 본문은 문제, required outcomes, invariants, capability operations, project adaptation, instantiation protocol, human authority, non-goals와 acceptance criteria를 포함한다.
 - Operation은 필요한 behavior를 정의하며 생성할 Skill의 이름이나 개수를 고정하지 않는다.
@@ -96,6 +100,8 @@ Capability 상태와 issue 작업 상태를 혼동하지 않는다. 실제 Pilot
 
 ## 완료 기준
 
+- 저장소와 Blueprint index에서 각 capability의 사람용 설치 안내와 canonical 계약에 바로 접근할 수 있다.
+- 개별 설치 안내의 프롬프트를 수정 없이 대상 프로젝트의 AI에게 전달해 읽기 전용 조사와 설치 제안을 시작할 수 있다.
 - Blueprint만 읽은 AI가 대상 프로젝트 조사와 생성 제안을 시작할 수 있다.
 - required behavior와 project adaptation의 자유도가 구분된다.
 - 인간 승인 전 mutation 금지와 외부 권한 경계가 명확하다.
