@@ -62,6 +62,13 @@ Continuity Core                     Project Profile
 - Profile은 Core 의미를 바꾸거나 필수 정보를 조용히 생략할 수 없다.
 - 기존 ADR, tracker와 연구 문서를 복제하지 않고 그 원본 위치와 권위를 Profile에 선언한다.
 
+각 정보 영역은 도입 시 다음 중 하나를 선택한다.
+
+- **Integration**: 기존 문서나 tracker를 원본으로 유지하고 Profile이 그 위치와 역할을 연결한다.
+- **Migration**: 기존 정보를 Continuity 구조로 이전하고 이후 Continuity record를 원본으로 사용한다.
+
+선택은 프로젝트 전체가 아니라 Project Brief, Work Item, Decision, Knowledge 등의 영역별로 할 수 있다. 그러나 한 영역의 같은 정보에 두 원본을 두는 이중 관리는 어떤 mode에서도 허용하지 않는다.
+
 ### 프로젝트가 기억을 소유한다
 
 Canonical record는 대상 프로젝트가 통제하는 로컬 파일이어야 한다. Agent 제품의 자동 메모리는 보조 수단일 수 있지만 공식 결정이나 필수 규칙의 유일한 원본이 되어서는 안 된다.
@@ -72,8 +79,8 @@ Canonical record는 대상 프로젝트가 통제하는 로컬 파일이어야 �
 
 ### 저장, 교환과 표현을 분리한다
 
-- 사람이 관리하는 canonical record는 Markdown과 YAML처럼 직접 읽고 수정할 수 있어야 한다.
-- JSON Schema는 공통 구조의 검증과 Agent·도구 간 교환 계약에 사용한다.
+- 사람이 감사할 canonical record는 Markdown 본문과 제한된 YAML metadata로 구성한다. 사람은 AI에게 변경을 지시하는 운영을 기본으로 하되 전용 도구 없이 내용을 읽을 수 있어야 한다.
+- JSON Schema는 YAML metadata의 검증과 Agent·도구 간 교환 계약에 사용한다.
 - HTML dashboard, 검색 index, embedding과 graph는 canonical record에서 생성되는 파생물이다.
 
 ## 최소 공통 정보 모델
@@ -83,21 +90,22 @@ Canonical record는 대상 프로젝트가 통제하는 로컬 파일이어야 �
 | 영역 | 반드시 답할 질문 | 갱신 원칙 |
 |---|---|---|
 | Project Brief | 이 프로젝트는 무엇이며 어떤 제약 아래 운영되는가? | 기존 README 등을 원본으로 연결하고 임시 상태를 섞지 않는다. |
-| Active Focus | 지금 집중하는 유한한 목표와 완료 조건은 무엇인가? | 활성 Focus를 명확히 하고 완료·중단 시 닫는다. |
-| Work State | 어디까지 진행했고 blocker, 검증 결과와 다음 행동은 무엇인가? | 재개 가능한 최신 authoritative record를 하나만 둔다. |
+| Work Items | 현재 열려 있는 유한한 목표와 각각의 완료 조건은 무엇인가? | 여러 항목을 동시에 열 수 있으며 항목별 authoritative record는 하나만 둔다. |
+| Session Focus | 이번 세션에서 어떤 Work Item을 다루는가? | 열린 항목을 요약·추천한 뒤 인간이 세션마다 선택한다. |
 | Decisions | 무엇을 누가 어떤 근거와 범위로 결정했는가? | 인간 승인과 `supersedes` 관계를 보존한다. |
 | Knowledge and Evidence | 어떤 조사·실험·실패가 재사용되는가? | 관찰, 추론과 출처를 구분하고 결정으로 자동 승격하지 않는다. |
-| Handoff | 다른 Agent가 즉시 이어서 작업하려면 무엇을 알아야 하는가? | 세션 요약보다 정확한 재개 지점과 미완료 위험을 남긴다. |
-| Archive | 무엇이 종료·폐기·대체되었는가? | 검색 가능하게 보존하되 현재 정보처럼 노출하지 않는다. |
+| Handoff | 다음 Agent가 현재 시점에서 즉시 이어받으려면 무엇을 알아야 하는가? | 최신 인수인계서 하나에 정확한 재개 지점과 미완료 위험을 남긴다. |
+| Historical Records | 무엇이 완료·취소·대체되었는가? | 파일을 이동·삭제하지 않고 상태로 구분하며 현재 Brief에서 기본 제외한다. |
 
 ## 최소 물리 구조 가설
 
-첫 Pilot에서는 개념별 파일을 모두 만들지 않고 네 요소만 검토한다.
+첫 Pilot에서는 다음 최소 구조를 검토한다. Integration으로 연결한 영역에는 대응하는 Continuity record를 중복 생성하지 않는다.
 
 ```text
 .project-continuity/
 ├─ profile.yaml
-├─ state.md
+├─ work-items/
+│  └─ WI-0001-*.md
 ├─ decisions/
 │  └─ DR-0001-*.md
 └─ handoff.md
@@ -110,6 +118,11 @@ Canonical record는 대상 프로젝트가 통제하는 로컬 파일이어야 �
 ```yaml
 schema_version: "0.1"
 project_id: "example-project"
+ownership:
+  project_brief: integration
+  work_items: integration
+  decisions: continuity
+  handoff: continuity
 sources:
   project_brief: README.md
   instructions:
@@ -120,21 +133,37 @@ sources:
   knowledge:
     - docs/
 authority:
-  decision_approval: human
-  state_owner: project
+  decision_approval: project-owner
+  work_item_completion: project-owner
 ```
 
-### `state.md`
+### `work-items/`
 
-Active Focus와 Work State를 한 파일에 둔다. 최소 내용은 Focus 식별자, 상태, 갱신 시점, 완료 조건, 현재 위치, 다음 행동과 blocker다. 장기 프로젝트 전체의 완료를 강요하지 않고 현재 Focus만 유한하게 닫는다.
+Migration mode에서 Continuity가 Work Item을 소유할 때 작업 하나당 파일 하나를 둔다. 여러 Work Item이 동시에 `active`일 수 있으며, 각 파일은 완료 조건, 현재 위치, 다음 행동, blocker와 마지막 검증 결과를 가진다. 상태는 다음 다섯 개로 제한한다.
+
+```text
+planned → active → completed
+             ↕
+          blocked
+
+어느 열린 상태에서든 → cancelled
+```
+
+`paused`는 별도로 두지 않고 필요하면 이유와 함께 `planned`로 되돌린다. `completed`와 `cancelled` record는 이동하거나 삭제하지 않는다. AI는 진행 상태와 증거를 자동 갱신할 수 있지만 완료 조건별 증거를 제시한 뒤 인간 승인을 받아야 `completed`로 전환할 수 있다.
 
 ### `decisions/`
 
-중요한 결정 하나를 짧은 record 하나로 관리한다. 초기 상태는 `proposed`, `accepted`, `rejected`, `superseded`만 검토한다. 최소 내용은 식별자, 상태, 날짜, 승인 권위, 맥락, 결정, 결과와 대체 관계다.
+중요한 결정 하나를 짧은 record 하나로 관리한다. 상태는 `proposed`, `accepted`, `rejected`, `superseded`로 제한한다. AI는 장기 영향 기준을 충족하는 초안을 자동으로 `proposed`로 기록할 수 있지만 인간의 명확한 선택이 있어야 `accepted`로 전환한다. “이 방식을 사용하자”처럼 명시적인 응답은 승인으로 인정하며 이중 확인하지 않는다.
+
+모든 승인된 결정은 `Context`, `Decision`, `Consequences`를 포함한다. 외부 `source_refs`는 실제 근거가 있을 때만 추가한다. 승인 주체는 Profile에 정의된 `project-owner`, `maintainer` 같은 역할 또는 식별자로 기록하고 실명은 강제하지 않는다.
+
+승인된 결정의 의미가 바뀌면 새 Decision Record가 기존 record를 `supersedes`한다. 기존 record는 `superseded`로 남기며, 직접 수정은 의미가 변하지 않는 오탈자나 깨진 링크 정정에만 허용한다.
 
 ### `handoff.md`
 
-마지막으로 완료한 것, 정확한 재개 지점, 미검증 사항과 관련 참조만 유지한다. Git 저장소에서는 과거 이력을 Git에 맡기고, Git이 없는 프로젝트에서 필요가 입증될 때만 별도 handoff archive를 추가한다.
+현재 시점에서 마지막으로 완료한 것, Session Focus, 정확한 재개 지점, 미검증 사항과 관련 참조만 유지한다. 최신 Handoff 하나를 계속 갱신하며 세션별 파일을 누적하지 않는다. 지속할 내용은 Work Item이나 Decision에 반영하고 Git 저장소의 과거 변경은 Git history에 맡긴다.
+
+Work Item의 시작·상태 변경, 의미 있는 단계 완료, blocker 발생·해소, 중요한 검증 결과, 작업 종료나 전환처럼 의미 있는 경계에서 AI가 별도 승인 없이 Work Item과 Handoff를 갱신한다. 상태 변화가 없는 단순 질의응답에서는 갱신하지 않는다.
 
 이 구조는 아직 확정안이 아니다. 기존 구조가 있는 프로젝트에서는 새 파일을 중복 생성하지 않고 Profile을 통해 대응할 수 있어야 한다.
 
@@ -150,7 +179,7 @@ schemas/
 └─ record.schema.json
 ```
 
-`record.schema.json`은 유형별 모든 내용을 고정하지 않고 공통 envelope만 정의한다.
+`record.schema.json`은 유형별 모든 내용을 고정하지 않고 공통 envelope만 정의한다. Continuity 소유 record는 `WI-0001`, `DR-0001`처럼 유형 접두사와 재사용하지 않는 증가 번호를 사용한다. 연결된 외부 record는 원래 식별자를 유지한다.
 
 ```json
 {
@@ -159,23 +188,29 @@ schemas/
   "type": "decision",
   "status": "accepted",
   "updated_at": "2026-08-07T12:00:00+09:00",
-  "authority": "human-approved",
+  "authority": {
+    "kind": "human-approved",
+    "approved_by": "project-owner"
+  },
   "supersedes": [],
-  "source_refs": []
+  "source_refs": [],
+  "extensions": {
+    "example-domain": {}
+  }
 }
 ```
 
-Schema는 필드 형식만 검증한다. 참조 대상의 존재, 순환하는 `supersedes`, 복수 활성 Focus, 실제 인간 승인과 stale 상태는 operation의 semantic audit가 확인해야 한다. 유형별 schema는 두 Pilot에서 공통 필요가 확인된 뒤에만 분리한다.
+Core의 최상위 필드는 고정하며 프로젝트·도메인별 metadata는 이름이 구분된 `extensions` 아래에서만 허용한다. Schema는 필드 형식만 검증한다. 참조 대상의 존재, 순환하는 `supersedes`, 실제 인간 승인과 stale 상태는 operation의 semantic audit가 확인해야 한다. 유형별 schema는 두 Pilot에서 공통 필요가 확인된 뒤에만 분리한다.
 
 ## 최소 operation
 
 사용자가 많은 명령을 기억하지 않도록 처음에는 다섯 동작으로 제한한다. 이름과 Skill 분할은 아직 확정하지 않지만 의미와 기대 결과는 프로젝트마다 같아야 한다.
 
-1. **Initialize**: 기존 문서와 도구를 읽기 전용으로 조사하고 Profile과 최소 구조를 제안한 뒤 인간 승인 후 생성한다.
-2. **Brief**: Profile과 현재 상태를 우선 읽고 현재 Focus에 관련된 결정과 증거만 추가해 제한된 Context를 복구한다.
-3. **Record Decision**: 중요한 결정 후보를 `proposed`로 작성하고 인간 승인 후에만 `accepted`로 전환한다.
-4. **Handoff**: 현재 상태, 검증 결과, 다음 행동과 정확한 재개 지점을 갱신한다.
-5. **Audit**: 깨진 참조, 복수 활성 Focus, 충돌·대체된 결정, stale 상태와 과도한 Context를 찾는다.
+1. **Initialize**: 기존 문서와 도구를 읽기 전용으로 조사한다. 영역별 Integration/Migration, 기존 원본, 생성·이전할 파일과 충돌을 구체적으로 제안하고 인간 승인 후에만 변경한다.
+2. **Brief**: 먼저 열린 Work Item을 한 줄씩 요약하고 근거와 함께 우선 항목을 추천한다. 사용자가 Session Focus를 선택한 뒤 그 항목에 관련된 결정과 증거만 상세히 불러온다.
+3. **Record Decision**: 장기 영향 기준에 해당하는 결정 후보를 `proposed`로 작성하고 인간의 명확한 선택 후 `accepted`로 전환한다.
+4. **Handoff**: 의미 있는 작업 경계에서 Work Item과 최신 인수인계서의 검증 결과, 다음 행동과 정확한 재개 지점을 자동 갱신한다.
+5. **Audit**: 깨진 참조, source-of-truth 충돌, 잘못된 상태·대체 관계, stale 상태와 과도한 Context를 읽기 전용으로 찾고 근거와 수정안을 제시한다.
 
 Capture, Query, Supersede와 Consolidate는 우선 이 다섯 operation 내부 행동으로 둔다. 반복 사용에서 독립된 사용자 의도가 확인될 때만 별도 operation으로 승격한다.
 
@@ -196,12 +231,15 @@ Capture, Query, Supersede와 Consolidate는 우선 이 다섯 operation 내부 �
 - Agent의 추론을 인간이 승인한 결정처럼 저장하지 않는다.
 - 관찰, 추론, 미확인 정보와 인간 결정을 구분한다.
 - 현재 상태의 authoritative record를 중복 생성하지 않는다.
+- Integration과 Migration은 영역별로 선택할 수 있지만 같은 정보의 원본은 하나만 둔다.
 - 오래된 사실을 조용히 덮어쓰지 않고 대체 관계를 남긴다.
 - 기존 문서와 tracker를 Continuity 전용 파일에 불필요하게 복제하지 않는다.
 - 사람이 모든 canonical record를 읽고 수정하거나 폐기할 수 있어야 한다.
 - Agent 메모리, 검색 index와 HTML projection을 source of truth로 취급하지 않는다.
 - 네트워크나 특정 AI 제공자가 없어도 canonical record를 열람할 수 있어야 한다.
 - 인증 정보, 원본 대화 전체와 개인 세션 기록을 기본 수집하지 않는다.
+- 기록 간 의미 있는 충돌은 자동 해결하지 않고 출처, 시점과 실행 증거를 인간에게 제시한다.
+- Audit은 읽기 전용이며 수정은 별도 인간 승인 후 수행한다.
 
 ## 복잡도 예산
 
@@ -246,7 +284,7 @@ Capture, Query, Supersede와 Consolidate는 우선 이 다섯 operation 내부 �
 
 서로 다른 유형의 로컬 프로젝트 두 곳에서 다음을 확인해야 한다.
 
-- 이전 대화를 볼 수 없는 새 Agent가 현재 Focus, 완료 조건과 다음 행동을 정확히 설명하는가?
+- 이전 대화를 볼 수 없는 새 Agent가 열린 Work Item을 요약하고 선택된 Session Focus의 완료 조건과 다음 행동을 정확히 설명하는가?
 - 다른 Agent 제품이나 모델에서도 같은 Core 의미를 해석하는가?
 - 기존 README, ADR, tracker와 중복 source of truth가 생기지 않는가?
 - 결정의 승인, 근거, 적용 범위와 대체 관계를 추적할 수 있는가?
@@ -257,10 +295,8 @@ Capture, Query, Supersede와 Consolidate는 우선 이 다섯 operation 내부 �
 
 ## 향후 결정할 사항
 
-- 최소 공통 metadata와 허용 상태 전이
 - Project Profile이 Core 의미를 훼손하지 않았음을 판정하는 기준
 - Markdown/YAML과 JSON interchange 사이의 정규 변환 규칙
-- Decision으로 승격할 중요도와 인간 승인 절차
 - stale state의 기준과 Audit 주기
 - Git이 없는 폴더에서 history와 archive를 유지하는 최소 방법
 - 여러 Agent가 같은 구조를 해석하는 상호운용성 평가 scenario
