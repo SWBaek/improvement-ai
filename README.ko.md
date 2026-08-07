@@ -21,8 +21,9 @@
 | Blueprint | 상태 | 목적 |
 |---|---|---|
 | [`manage-focus-cycle`](blueprints/manage-focus-cycle/BLUEPRINT.md) | In Progress | 전체 프로젝트의 가짜 종료점을 만들지 않고 하나의 제한된 Focus Cycle을 관리하는 프로젝트 로컬 capability를 생성합니다. |
+| [`maintain-project-continuity`](blueprints/maintain-project-continuity/BLUEPRINT.md) | In Progress | 세션·Agent·모델이 바뀌어도 작업, 결정, 근거와 인수인계를 보존하는 프로젝트 로컬 capability를 생성합니다. |
 
-[Blueprint index](blueprints/README.md)와 [tracking issue #15](https://github.com/SWBaek/improvement-ai/issues/15)을 참고하세요.
+[Blueprint index](blueprints/README.md)와 각 Blueprint의 tracking issue를 참고하세요.
 
 ## 사용 방법
 

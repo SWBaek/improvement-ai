@@ -36,6 +36,7 @@ Blueprint는 생성할 Skill의 개수를 고정하지 않는다. AI는 서로 �
 | Blueprint | Status | Tracking |
 |---|---|---|
 | [manage-focus-cycle](manage-focus-cycle/BLUEPRINT.md) | In Progress | [#15](https://github.com/SWBaek/improvement-ai/issues/15) |
+| [maintain-project-continuity](maintain-project-continuity/BLUEPRINT.md) | In Progress | [#21](https://github.com/SWBaek/improvement-ai/issues/21) |
 
 ## 작성 원칙
 
