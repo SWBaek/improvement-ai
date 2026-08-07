@@ -41,6 +41,15 @@ Repeated runs in one project strengthen one Pilot; they do not count as a second
 
 An Idea note must distinguish the problem, observations, current hypothesis, non-goals, risks, validation questions, and sources. It is not a decision, Candidate issue, or implementation promise. Follow the guidance in [`docs/idea/README.md`](docs/idea/README.md).
 
+Every Idea note and its index row must use exactly one of these states and record `Last reviewed` plus a concrete `Next trigger`:
+
+- `Exploring`: active investigation;
+- `Parked`: intentionally paused until the stated resume condition;
+- `Promoted`: continued in a linked issue or Blueprint;
+- `Dropped`: deliberately closed with a recorded reason.
+
+Do not copy Blueprint or Pilot execution status back into a promoted Idea. Preserve the original exploration context and link to the canonical Blueprint and tracking issue instead.
+
 ### Research and benchmarks
 
 Research must state the research date, purpose, comparison criteria, primary sources, limitations, and implications for the current strategy. Keep observed evidence separate from inference. Research does not change a Blueprint contract by itself.

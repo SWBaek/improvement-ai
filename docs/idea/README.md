@@ -12,9 +12,24 @@
 
 Idea 단계에서는 실행 가능한 runtime, 설치형 Skill, formal schema나 speculative Blueprint directory를 만들지 않는다. 외부에서 얻은 개념은 출처와 이 Idea에 유용한 이유를 기록한다.
 
+## 상태 관리
+
+각 Idea note는 다음 상태 중 정확히 하나를 사용한다.
+
+| 상태 | 의미 |
+|---|---|
+| `Exploring` | 현재 조사하거나 구체화하고 있다. |
+| `Parked` | 명시한 재개 조건까지 의도적으로 중단한다. |
+| `Promoted` | issue 또는 Blueprint로 승격되어 후속 위치에서 관리한다. |
+| `Dropped` | 진행하지 않기로 결정했으며 그 이유를 보존한다. |
+
+각 note의 첫 `Status` 섹션에는 `State`, `Last reviewed`, `Next trigger`를 기록하고 index에도 같은 값을 반영한다. `Parked`는 반드시 관찰 가능한 재개 조건을 가져야 하며, `Dropped`는 종료 이유를 `Next trigger`에 기록한다.
+
+`Promoted`는 Idea의 lifecycle 상태일 뿐 Blueprint의 Pilot 진행률을 뜻하지 않는다. 승격 후의 계약과 실행 상태는 canonical Blueprint와 tracking issue에서 관리하며, Idea note에는 최초 문제와 탐색 근거, 후속 링크와 가설을 다시 검토할 조건만 남긴다.
+
 ## 권장 구성
 
-- 상태
+- Status (`State`, `Last reviewed`, `Next trigger`, 필요한 후속 링크)
 - 문제와 배경
 - 현재 개념 또는 설계 가설
 - 기대 효과와 비목표
@@ -27,7 +42,7 @@ Idea 단계에서는 실행 가능한 runtime, 설치형 Skill, formal schema나
 
 ## Idea index
 
-| Idea | 상태 | 요약 |
-|---|---|---|
-| [AI–Human Interactive Decision Workbench](ai-human-interactive-decision-workbench.md) | Idea note | 많은 인간 결정을 구조화된 시각적 Workbench에서 검토하고 AI에 전달하는 상호작용 방식 |
-| [Local Project Continuity](local-project-continuity.md) | In Progress로 승격 | [`maintain-project-continuity`](../../blueprints/maintain-project-continuity/BLUEPRINT.md)의 탐색 배경과 v0.1 설계 가설 |
+| Idea | 상태 | 마지막 검토 | 다음 조건 |
+|---|---|---|---|
+| [AI–Human Interactive Decision Workbench](ai-human-interactive-decision-workbench.md) | `Parked` | 2026-08-07 | 실제 프로젝트에서 채팅 기반 다중 결정 검토의 반복 실패와 Pilot 후보가 확인되면 재개 |
+| [Local Project Continuity](local-project-continuity.md) | `Promoted` | 2026-08-07 | Pilot evidence가 최초 문제나 핵심 가설을 반박할 때 탐색 배경 재검토 |

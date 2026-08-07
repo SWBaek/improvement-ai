@@ -1,8 +1,12 @@
 # AI–Human Interactive Decision Workbench
 
-## 상태
+## Status
 
-Idea note. 아직 Capability Blueprint, 실행 가능한 도구, Schema 또는 구현 사양이 아니다.
+- State: `Parked`
+- Last reviewed: 2026-08-07
+- Next trigger: 실제 프로젝트에서 채팅 기반 다중 결정 검토의 반복 실패와 Pilot 후보가 확인되면 재개한다.
+
+현재는 의도적으로 탐색을 중단했다. 아직 Capability Blueprint, 실행 가능한 도구, Schema 또는 구현 사양이 아니다.
 
 ## 문제
 
