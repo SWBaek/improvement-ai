@@ -18,24 +18,16 @@
 
 ## Available Blueprints
 
-| Blueprint | Status | Purpose |
-|---|---|---|
-| [`manage-focus-cycle`](blueprints/manage-focus-cycle/BLUEPRINT.md) | In Progress | Generate project-local capabilities for managing one bounded Focus Cycle without inventing a final endpoint for the containing project. |
-| [`maintain-project-continuity`](blueprints/maintain-project-continuity/BLUEPRINT.md) | In Progress | Generate project-local continuity capabilities that preserve work, decisions, evidence, and handoff across sessions, Agents, and models. |
+| Blueprint | Status | Purpose | Use |
+|---|---|---|---|
+| `manage-focus-cycle` | In Progress | Generate project-local capabilities for managing one bounded Focus Cycle without inventing a final endpoint for the containing project. | [Install](blueprints/manage-focus-cycle/README.md) · [Contract](blueprints/manage-focus-cycle/BLUEPRINT.md) |
+| `maintain-project-continuity` | In Progress | Generate project-local continuity capabilities that preserve work, decisions, evidence, and handoff across sessions, Agents, and models. | [Install](blueprints/maintain-project-continuity/README.md) · [Contract](blueprints/maintain-project-continuity/BLUEPRINT.md) |
 
 See the [Blueprint index](blueprints/README.md) and each Blueprint's tracking issue.
 
 ## Use
 
-Give the Blueprint URL to the AI that is already working in the target project:
-
-```text
-Apply the following Capability Blueprint to this project.
-First inspect the project and propose the local Skills and supporting assets you would create.
-Do not create or modify files until I approve the proposal.
-
-https://github.com/SWBaek/improvement-ai/blob/main/blueprints/manage-focus-cycle/BLUEPRINT.md
-```
+Open the **Install** guide for the capability you want, copy its ready-to-use prompt, and give it to the AI already working in the target project. The guide starts a read-only inspection and proposal; project files are created only after you approve that proposal.
 
 Use a `main` URL for the latest design. Replace `main` with an exact commit for reproducible instantiation. The AI must resolve and record the exact revision even when starting from `main`.
 

@@ -18,24 +18,16 @@
 
 ## 제공 중인 Blueprint
 
-| Blueprint | 상태 | 목적 |
-|---|---|---|
-| [`manage-focus-cycle`](blueprints/manage-focus-cycle/BLUEPRINT.md) | In Progress | 전체 프로젝트의 가짜 종료점을 만들지 않고 하나의 제한된 Focus Cycle을 관리하는 프로젝트 로컬 capability를 생성합니다. |
-| [`maintain-project-continuity`](blueprints/maintain-project-continuity/BLUEPRINT.md) | In Progress | 세션·Agent·모델이 바뀌어도 작업, 결정, 근거와 인수인계를 보존하는 프로젝트 로컬 capability를 생성합니다. |
+| Blueprint | 상태 | 목적 | 사용 |
+|---|---|---|---|
+| `manage-focus-cycle` | In Progress | 전체 프로젝트의 가짜 종료점을 만들지 않고 하나의 제한된 Focus Cycle을 관리하는 프로젝트 로컬 capability를 생성합니다. | [설치](blueprints/manage-focus-cycle/README.md) · [계약](blueprints/manage-focus-cycle/BLUEPRINT.md) |
+| `maintain-project-continuity` | In Progress | 세션·Agent·모델이 바뀌어도 작업, 결정, 근거와 인수인계를 보존하는 프로젝트 로컬 capability를 생성합니다. | [설치](blueprints/maintain-project-continuity/README.md) · [계약](blueprints/maintain-project-continuity/BLUEPRINT.md) |
 
 [Blueprint index](blueprints/README.md)와 각 Blueprint의 tracking issue를 참고하세요.
 
 ## 사용 방법
 
-대상 프로젝트에서 이미 작업 중인 AI에게 Blueprint URL을 전달합니다.
-
-```text
-다음 Capability Blueprint를 현재 프로젝트에 적용해 주세요.
-먼저 프로젝트를 조사하고 필요한 로컬 Skill과 지원 자산의 구성을 제안하세요.
-내가 승인하기 전에는 파일을 만들거나 수정하지 마세요.
-
-https://github.com/SWBaek/improvement-ai/blob/main/blueprints/manage-focus-cycle/BLUEPRINT.md
-```
+원하는 capability의 **설치** 안내를 열고 준비된 프롬프트를 그대로 복사해 대상 프로젝트에서 작업 중인 AI에게 전달합니다. 설치 안내는 읽기 전용 조사와 설치안 제안부터 시작하며, 프로젝트 파일은 사람이 설치안을 승인한 뒤에만 생성됩니다.
 
 최신 설계는 `main` URL을 사용하고, 재현 가능한 생성에는 `main`을 정확한 commit으로 바꿉니다. `main`에서 시작한 경우에도 AI는 실제 생성에 사용한 revision을 확인해 기록해야 합니다.
 
