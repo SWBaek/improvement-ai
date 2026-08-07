@@ -69,6 +69,10 @@
 
 - 아직 반복 가능성, 범위 또는 해법이 확인되지 않은 아이디어는 `docs/idea/`에서 관리한다.
 - `docs/idea/README.md`를 Idea index와 운영 안내의 진입점으로 유지한다.
+- 모든 Idea note는 `Exploring`, `Parked`, `Promoted`, `Dropped` 중 정확히 하나의 상태와 `Last reviewed`, `Next trigger`를 기록한다. Idea index에도 같은 정보를 표시한다.
+- `Exploring`은 현재 탐색 중, `Parked`는 명시된 재개 조건까지 의도적으로 중단, `Promoted`는 issue 또는 Blueprint로 후속 관리, `Dropped`는 진행하지 않기로 결정한 상태다.
+- `Parked`와 `Dropped`에는 중단 또는 종료 이유를 `Next trigger`에 함께 기록한다. 재개 조건이 없는 `Parked`를 만들지 않는다.
+- `Promoted` 이후의 계약과 Pilot 진행 상태는 canonical Blueprint와 tracking issue에서 관리한다. Idea note에는 탐색 배경, 후속 링크와 재검토 조건만 남기고 실행 상태를 복제하지 않는다.
 - 각 Idea note는 문제, 배경 또는 관찰, 현재 가설, 비목표, 위험, 검증 질문과 관련 출처를 구분해 기록한다.
 - Idea note는 채택된 결정, 공개 계약, Candidate issue 또는 Blueprint가 아니며 구현을 약속하지 않는다.
 - Idea는 탐색 과정에서 자유롭게 수정할 수 있지만, Blueprint나 저장소 전체 방향을 규범적으로 변경하려면 issue와 필요한 ADR을 별도로 만든다.
