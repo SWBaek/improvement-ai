@@ -118,6 +118,7 @@ background mode나 재부팅 후 복구되는 설정은 의도보다 오래 남�
 
 ## 관련 출처
 
+- [시장과 인접 제품 benchmark](../research/bencmark/private-remote-artifact-preview-market.md): private network, public tunnel, IDE forwarding, remote workspace와 framework별 공유 기능 비교
 - [Tailscale Serve](https://tailscale.com/docs/features/tailscale-serve): tailnet 내부 공유, access control과 identity header의 보안 특성을 확인하기 위한 공식 설명
 - [Tailscale Serve CLI](https://tailscale.com/docs/reference/tailscale-cli/serve): route, port, status, reset과 background 동작을 확인하기 위한 명령 명세
 - [Tailscale Serve examples](https://tailscale.com/docs/reference/examples/serve): 정적 파일과 개발 server 게시, foreground/background lifecycle 사례
