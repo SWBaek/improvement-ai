@@ -20,7 +20,8 @@
 포함한다:
 
 - `blueprints/`: canonical Capability Blueprints와 설명용 reference·평가 scenario
-- `docs/`: 아키텍처, ADR과 GitHub 운영 정책
+- `docs/idea/`: 아직 채택되지 않은 문제, 관찰과 capability 가설을 수집·구체화하는 Idea note
+- `docs/`: Idea note 외의 아키텍처, ADR과 GitHub 운영 정책
 - `.github/`: Blueprint proposal, label, ownership와 PR 지침
 - `scripts/`: label 동기화처럼 저장소 governance에만 필요한 작은 helper
 
@@ -44,10 +45,21 @@
 - 보조 `references/`는 직접 연결된 설명과 평가 scenario에만 사용한다. executable, generator, schema나 reference implementation을 포함하지 않는다.
 - 외부 아이디어는 출처 링크와 사용 목적을 기록하고, 내용을 복사할 경우 license를 확인한다.
 
+## Idea 작성 규칙
+
+- 아직 반복 가능성, 범위 또는 해법이 확인되지 않은 아이디어는 `docs/idea/`에서 관리한다.
+- `docs/idea/README.md`를 Idea index와 운영 안내의 진입점으로 유지한다.
+- 각 Idea note는 문제, 배경 또는 관찰, 현재 가설, 비목표, 위험, 검증 질문과 관련 출처를 구분해 기록한다.
+- Idea note는 채택된 결정, 공개 계약, Candidate issue 또는 Blueprint가 아니며 구현을 약속하지 않는다.
+- Idea는 탐색 과정에서 자유롭게 수정할 수 있지만, Blueprint나 저장소 전체 방향을 규범적으로 변경하려면 issue와 필요한 ADR을 별도로 만든다.
+- 반복되는 문제와 검증할 가치가 확인되면 GitHub issue를 만들어 Candidate로 승격하고 Idea note와 상호 연결한다.
+- Blueprint를 만들거나 Idea를 폐기할 때는 note의 상태와 후속 링크를 갱신해 탐색 결과를 찾을 수 있게 한다.
+
 ## Lifecycle
 
 | 단계 | 저장소 산출물 | 진입·종료 조건 |
 |---|---|---|
+| Idea | `docs/idea/<name>.md` | 문제나 가능성을 탐색 중이며 아직 capability 후보로 확정하지 않음 |
 | Candidate | GitHub issue | 반복되는 문제가 식별됨 |
 | In Progress | `blueprints/<name>/BLUEPRINT.md`와 tracking issue | 첫 프로젝트 Pilot 시작 |
 | Promoted | 같은 Blueprint 경로 | 서로 다른 두 프로젝트에서 생성·실사용 성공 |
@@ -64,11 +76,19 @@ Capability 상태와 issue 작업 상태를 혼동하지 않는다. 실제 Pilot
 - token을 명령행, 파일, log 또는 commit에 기록하지 않는다. `gh`가 관리하는 인증 정보를 사용한다.
 - 파괴적이거나 되돌리기 어려운 GitHub 작업은 정확한 저장소와 대상을 먼저 출력해 확인한다.
 
+## 기본 게시 정책
+
+- 사용자가 이 저장소에서 간단한 수정이나 파일 변경을 요청하면, 요청 범위의 구현과 검증이 끝난 뒤 별도의 승인 질문 없이 항상 commit, push와 pull request merge까지 완료한다.
+- 기본 branch에서 작업을 시작한 경우 작업 branch를 만들고 pull request를 통해 병합한다. 원격 기본 branch에 직접 push하지 않는다.
+- commit 전 의도한 파일만 stage하고, push 전 `gh auth status`와 `git remote -v`로 인증 계정과 대상 저장소를 확인한다.
+- 병합 후 로컬 기본 branch를 원격과 동기화하고 최종 branch, commit과 pull request를 보고한다.
+- 관련 없는 사용자 변경, 충돌, 검증 실패, 파괴적 작업 또는 새로운 외부 권한이 필요한 상황은 자동 게시 범위에 포함하지 않는다. 안전하게 분리할 수 없으면 상태와 blocker를 보고하고 필요한 확인을 요청한다.
+
 ## 결정과 변경 절차
 
 - 저장소 전체 정체성, lifecycle 또는 공개 Blueprint 계약을 바꾸는 결정은 `docs/decisions/`에 ADR로 남긴다.
 - 기존 ADR을 삭제하거나 덮어쓰지 않고 새 ADR에서 supersede 관계를 기록한다.
-- Candidate는 issue에만 두고 speculative directory를 만들지 않는다.
+- 미성숙한 아이디어는 `docs/idea/`에 두고, Candidate로 승격한 뒤의 작업 상태는 issue에서 관리한다. Idea를 speculative Blueprint directory로 만들지 않는다.
 - 실제 프로젝트에서 관찰된 반복 문제를 가장 작은 Blueprint 변경으로 반영한다.
 - 프로젝트별 구현을 일반 해법처럼 복사하지 않고, 반복 가능한 원칙과 acceptance evidence만 추출한다.
 - 관련 링크와 issue form을 확인하고 `git diff --check`를 실행한다. 자동 validator나 CI는 반복 실패와 명확한 ROI가 생길 때만 추가한다.

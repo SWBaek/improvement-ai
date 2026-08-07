@@ -19,12 +19,15 @@ Blueprint는 생성 결과를 중앙에서 배포하거나 동기화하지 않�
 
 ## 저장소 계층
 
-1. **Capability source**: `blueprints/`
-2. **Evidence and decisions**: tracking issues와 `docs/decisions/`
-3. **Repository governance**: `AGENTS.md`, `.github/`, `docs/github/`
-4. **Governance helper**: `scripts/`의 작은 GitHub label 동기화 도구
+1. **Idea incubation**: 아직 채택되지 않은 문제와 capability 가설을 탐색하는 `docs/idea/`
+2. **Capability source**: `blueprints/`
+3. **Evidence and decisions**: tracking issues와 `docs/decisions/`
+4. **Repository governance**: `AGENTS.md`, `.github/`, `docs/github/`
+5. **Governance helper**: `scripts/`의 작은 GitHub label 동기화 도구
 
 설치형 Skill, capability runtime, package, framework, adapter와 프로젝트별 생성물은 계층에 포함하지 않는다.
+
+Idea note는 canonical capability source가 아니다. 탐색 중인 문제와 가설을 보존하며, 반복 가능성과 검증 가치가 확인된 뒤에만 tracking issue를 가진 Candidate로 승격한다.
 
 ## Blueprint와 생성물 경계
 
@@ -36,6 +39,7 @@ Blueprint는 생성 결과를 중앙에서 배포하거나 동기화하지 않�
 
 ## Lifecycle
 
+- 채택 전 탐색은 `docs/idea/`의 Idea note에서 수행한다.
 - Candidate는 GitHub issue에만 존재한다.
 - 첫 Pilot을 시작할 때 `blueprints/<name>/BLUEPRINT.md`를 만들고 In Progress로 등록한다.
 - 서로 다른 두 프로젝트에서 생성·실사용된 뒤 불변 조건과 trigger가 확인되면 Promoted로 변경한다.
