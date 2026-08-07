@@ -2,7 +2,7 @@
 
 ## 상태
 
-Idea note. 아직 Capability Blueprint, 구현 사양, 저장 형식 또는 특정 도구의 채택 결정이 아니다.
+In Progress Blueprint로 승격됨. Canonical capability 계약은 [`maintain-project-continuity`](../../blueprints/maintain-project-continuity/BLUEPRINT.md)와 [tracking issue #21](https://github.com/SWBaek/improvement-ai/issues/21)에서 관리한다. 이 문서는 탐색 배경과 v0.1 설계 가설을 보존하며 더 이상 규범적 원본이 아니다.
 
 ## 문제
 

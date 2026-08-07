@@ -30,4 +30,4 @@ Idea 단계에서는 실행 가능한 runtime, 설치형 Skill, formal schema나
 | Idea | 상태 | 요약 |
 |---|---|---|
 | [AI–Human Interactive Decision Workbench](ai-human-interactive-decision-workbench.md) | Idea note | 많은 인간 결정을 구조화된 시각적 Workbench에서 검토하고 AI에 전달하는 상호작용 방식 |
-| [Local Project Continuity](local-project-continuity.md) | Idea note | 세션·Agent·모델이 바뀌어도 로컬 프로젝트의 상태와 축적 지식을 복구하는 프로젝트 소유 기억 체계 |
+| [Local Project Continuity](local-project-continuity.md) | In Progress로 승격 | [`maintain-project-continuity`](../../blueprints/maintain-project-continuity/BLUEPRINT.md)의 탐색 배경과 v0.1 설계 가설 |

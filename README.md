@@ -21,8 +21,9 @@
 | Blueprint | Status | Purpose |
 |---|---|---|
 | [`manage-focus-cycle`](blueprints/manage-focus-cycle/BLUEPRINT.md) | In Progress | Generate project-local capabilities for managing one bounded Focus Cycle without inventing a final endpoint for the containing project. |
+| [`maintain-project-continuity`](blueprints/maintain-project-continuity/BLUEPRINT.md) | In Progress | Generate project-local continuity capabilities that preserve work, decisions, evidence, and handoff across sessions, Agents, and models. |
 
-See the [Blueprint index](blueprints/README.md) and [tracking issue #15](https://github.com/SWBaek/improvement-ai/issues/15).
+See the [Blueprint index](blueprints/README.md) and each Blueprint's tracking issue.
 
 ## Use
 
