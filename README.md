@@ -84,6 +84,10 @@ scripts/       Repository-governance helpers only
 
 Project-specific generated Skills, runtime implementations, credentials, session logs, and private Pilot artifacts do not belong here.
 
+## Contributing
+
+Start with the [contribution route table](CONTRIBUTING.md): small documentation, Research, and non-normative Ideas may go directly to a pull request, while new Blueprints and contract or repository-policy changes are issue-first. Submit privacy-safe real-use results to the existing tracking issue with the [Pilot evidence template](docs/github/pilot-evidence.md). Maintainers confirm Promotion only after evidence from two independent projects.
+
 ## Historical snapshot
 
 The [`manage-focus-cycle-v0.1.0` GitHub Release](https://github.com/SWBaek/improvement-ai/releases/tag/manage-focus-cycle-v0.1.0) is an immutable historical snapshot of the retired installable-Skill approach. It is not the current distribution path and receives no updates from `main`.

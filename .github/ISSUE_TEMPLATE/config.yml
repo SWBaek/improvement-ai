@@ -1,5 +1,11 @@
 blank_issues_enabled: false
 contact_links:
+  - name: 기여 방법
+    url: https://github.com/SWBaek/improvement-ai/blob/main/CONTRIBUTING.md
+    about: 기여 유형, issue 필요 여부, 언어와 검증 규칙을 먼저 선택합니다.
+  - name: Pilot evidence
+    url: https://github.com/SWBaek/improvement-ai/blob/main/docs/github/pilot-evidence.md
+    about: 새 issue 대신 기존 Blueprint tracking issue에 실사용 evidence를 제출합니다.
   - name: Issue 작성 표준
     url: https://github.com/SWBaek/improvement-ai/blob/main/docs/github/issues.md
     about: 이슈 제목, 필수 내용과 label 규칙을 먼저 확인합니다.
