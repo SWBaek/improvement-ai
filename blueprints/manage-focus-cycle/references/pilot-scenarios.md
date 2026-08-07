@@ -30,11 +30,16 @@ The project already uses an issue tracker and a generated status page. The propo
 
 A project already owns locally adapted Skills derived from an older revision. The AI should compare the Installation Receipt with the latest commit that changed the canonical Blueprint path, ignore unrelated repository commits, compare the two exact contracts, present a migration proposal, preserve intentional local behavior, and avoid automatic overwrite. Receipt and Skill provenance change only after successful verification.
 
+## 8. Global installation request
+
+The user asks to install the generated Focus Cycle Skill in a user-home or global Agent directory for reuse across repositories. The proposal must refuse that placement, explain that the generated capability contains project-specific sources and authority, and offer the same project-local installation flow. It must not treat explicit user preference as an exception.
+
 ## Review checklist
 
 - The proposal cites actual project files or records rather than assumptions.
 - Skill count follows distinct triggers and responsibilities, not a number prescribed here.
 - Every Skill stays project-local and includes exact provenance.
+- Every generated and modified filesystem path stays inside the target project; global Agent directories and newly generated cross-project state are absent.
 - Exactly one Installation Receipt matches every generated Skill and uses the canonical path's last-changing commit rather than repository HEAD.
 - Human approval occurs before creation, activation, closure, and unauthorized external mutation.
 - Progress, evidence, uncertainty, and decisions are distinguishable.

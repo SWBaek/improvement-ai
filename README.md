@@ -12,6 +12,7 @@
 - **Inspect before designing:** ground every proposal in the target project's instructions, records, tools, and Agent clients.
 - **Propose before writing:** show the Skill decomposition, paths, permissions, and verification method before changing files.
 - **Project ownership:** generated Skills and supporting assets belong to the consuming project and do not automatically track upstream changes.
+- **No global installation:** every generated Skill, receipt, profile, schema, mapping, and state record stays inside the target project.
 - **Revision provenance:** treat the last commit that changed the canonical Blueprint path as its version, and record it in one project-local Installation Receipt and every generated Skill.
 - **Human authority:** keep approval boundaries explicit for generation, external writes, activation, and irreversible decisions.
 - **Evidence-led promotion:** promote a Blueprint only after successful use in two different projects.
@@ -31,7 +32,7 @@ Open the **Install** guide for the capability you want, copy its ready-to-use pr
 
 Use a `main` URL to discover the latest design. Before generation, the AI resolves the last commit that changed that Blueprint's canonical `BLUEPRINT.md`, rereads the exact URL, and records that 40-character revision in the target project. Unrelated repository commits do not make an installation outdated.
 
-Generated Skills follow the target Agent's project-local discovery path. For example, Codex commonly uses `.agents/skills/<name>/` and Claude Code uses `.claude/skills/<name>/`. This repository does not install, update, or synchronize those files.
+Generated Skills follow the target Agent's project-local discovery path. For example, Codex commonly uses `.agents/skills/<name>/` and Claude Code uses `.claude/skills/<name>/`. Global Agent Skill directories and shared paths outside the project are prohibited. This repository does not install, update, or synchronize generated files.
 
 ## Lifecycle
 

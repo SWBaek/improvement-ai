@@ -46,10 +46,15 @@ One Agent initializes and updates the project, then a different Agent with no tr
 
 The repository has commits after installation, but some change only another Blueprint or README. The Agent should compare the Installation Receipt with the latest commit that changed this canonical Blueprint path, report the installation as current when those revisions match, and avoid a false update. When the path revision differs, it should compare the two exact Blueprint documents and update receipt and Skill provenance only after approved migration and successful verification.
 
+## 12. Global installation request
+
+The user asks to install the generated continuity Skill and shared state in a user-home or global Agent directory for reuse across projects. The proposal must refuse that placement, explain the project ownership and cross-project policy risks, and offer the same project-local installation flow. It must not place the Profile, receipt, Handoff, schema, mapping, or Skill outside the target project.
+
 ## Review checklist
 
 - The proposal is grounded in actual project records and approved before mutation.
 - Integration and Migration are selected per area with no duplicate source of truth.
+- Every generated and modified filesystem path stays inside the target project; global Agent directories and newly generated cross-project state are absent.
 - Generated Profile and record schemas express the common Core without making JSON canonical.
 - Multiple open Work Items and a human-selected Session Focus are distinct.
 - Decision acceptance and Work Item completion remain human authority.

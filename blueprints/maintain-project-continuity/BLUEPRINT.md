@@ -37,6 +37,7 @@ The generated local capability must:
 - Never resolve a meaningful disagreement between code, execution evidence, documents, or trackers automatically.
 - Keep Audit read-only. Apply its proposed corrections only through a separately authorized change.
 - Keep exactly one current Handoff unless the target project already has an authoritative equivalent. Do not create a session-by-session Handoff archive by default.
+- Keep every generated Skill, Installation Receipt, Profile, schema, mapping, and state record inside the target project. Global Agent Skill locations, user-home installation, shared global configuration, and newly generated state shared across projects are prohibited. An existing project-specific external source may remain integrated under its own authority rules.
 - Preserve completed, cancelled, rejected, and superseded records in place; exclude them from the default Brief rather than deleting or moving them.
 - Do not collect credentials, private transcript history, or sensitive data without an explicit project policy.
 
@@ -134,6 +135,7 @@ Before proposing files, inspect:
 - README, plans, issue trackers, ADRs, research notes, experiment logs, generated documentation, and their write policies;
 - each candidate source's authority, currentness, stable identifiers, and conflict behavior;
 - installed Agent clients and their project-local Skill discovery paths;
+- the resolved target-project root and any path that would escape it or point to global Agent configuration;
 - the human roles allowed to approve Decisions and Work Item completion;
 - external write permissions, privacy constraints, Git availability, and existing validation tools;
 - evidence of scale or retrieval failure before proposing a database, service, graph, renderer, hook, or background process.
@@ -160,11 +162,13 @@ Present one compact proposal containing:
 - one representative Brief, Decision, Handoff, and Audit verification scenario;
 - every file that would be created or changed.
 
+Reject any proposed path outside the target project and replace it with a project-local design. A request for global installation is not an approval exception for this capability.
+
 Ask for human approval and do not treat silence as approval.
 
 ### 3. Generate after approval
 
-Create only the approved project-local Skills, Profile, records, and schemas. Follow the target Agent's discovery path; when no convention exists, use `.agents/skills/<name>/` for Codex and `.claude/skills/<name>/` for Claude Code. Do not use a global Skill location.
+Create only the approved project-local Skills, Profile, records, and schemas. Follow the target Agent's project-local discovery path; when no convention exists, use `<target-project>/.agents/skills/<name>/` for Codex and `<target-project>/.claude/skills/<name>/` for Claude Code. Never create or modify a global Skill location, user-home Skill directory, shared global config, or state outside the target project, even when the user requests convenience across projects.
 
 Before generation, resolve the 40-character commit that most recently changed this canonical `BLUEPRINT.md` path. Reread the Blueprint from the exact commit URL; do not use the repository HEAD merely because the user supplied a `main` URL. Create exactly one project-local Installation Receipt at the approved path:
 
@@ -219,6 +223,7 @@ When an update is available, inspect the existing local implementation and compa
 - Replacing the entire project roadmap, existing reliable tracker, ADR collection, or knowledge system.
 - Mandating a hosted service, database, vector search, knowledge graph, MCP server, background daemon, Git hook, HTML dashboard, or task manager.
 - Fixing the number or names of generated Skills.
+- Installing generated Skills, Profile, schema, mapping, receipt, or project state globally. A stateless cross-project Blueprint bootstrap would require a separate capability and is not an exception here.
 - Making JSON or generated HTML the human-authoritative source.
 - Automatically resolving conflicts, accepting Decisions, completing Work Items, or writing to external systems.
 - Centralizing consumer project records or generated variants in this repository.
@@ -229,6 +234,7 @@ An instantiation is acceptable when:
 
 - the proposal cites inspected project evidence and is approved before writes;
 - every information area has exactly one declared source of truth and ownership mode;
+- every generated or modified filesystem path resolves inside the target project and no global Agent location or newly generated cross-project state is used;
 - exactly one Installation Receipt identifies the path-scoped Blueprint revision and matches every generated Skill provenance;
 - Profile and common record schema preserve the Core fields and namespaced extension boundary;
 - multiple open Work Items can be summarized without forcing one project-wide active objective;

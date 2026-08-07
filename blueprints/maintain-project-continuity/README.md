@@ -33,6 +33,8 @@
 - 생성하거나 변경할 파일
 
 같은 정보를 기존 원본과 새 Continuity record에 중복 관리하지 마세요.
+모든 Skill과 지원 자산은 대상 프로젝트 내부에만 설치하세요.
+사용자 홈, 전역 Agent Skill directory 또는 프로젝트 밖 공유 경로를 제안하거나 사용하지 마세요.
 내가 설치안을 승인하기 전에는 파일을 만들거나 수정하지 마세요.
 설치 전 canonical BLUEPRINT.md를 마지막으로 변경한 40자리 commit을 확인하고,
 그 exact-revision URL에서 Blueprint를 다시 읽으세요.
@@ -49,6 +51,8 @@ https://github.com/SWBaek/improvement-ai/blob/main/blueprints/maintain-project-c
 2. AI가 영역별 Integration/Migration과 프로젝트 로컬 설치안을 제안한다.
 3. 사람이 설치안을 검토하고 승인한다.
 4. AI가 승인된 파일만 생성·이전하고 대표 동작을 검증한다.
+
+이 capability의 생성물은 전역으로 설치할 수 없다. 여러 프로젝트에 적용하려면 각 프로젝트에서 이 설치 흐름을 별도로 수행한다.
 
 프롬프트의 `main` URL은 최신 설계를 찾는 진입점이다. AI는 저장소 HEAD가 아니라 canonical `BLUEPRINT.md`를 마지막으로 변경한 commit을 설치 revision으로 사용한다. 최신 확인도 이 path revision을 Installation Receipt와 비교하며, 다른 문서나 Blueprint 변경은 업데이트로 판정하지 않는다.
 

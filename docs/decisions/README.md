@@ -13,3 +13,4 @@
 | [0007](0007-prefer-pilot-speed-over-mandatory-validation.md) | Partially superseded by 0008 | 강제 검증을 제거하고 Pilot 속도를 우선 |
 | [0008](0008-adopt-blueprint-only-generative-capabilities.md) | Accepted | Blueprint 전용 생성형 Capability 저장소 채택 |
 | [0009](0009-use-path-scoped-git-revisions-for-blueprint-installations.md) | Accepted | Blueprint 설치 버전으로 canonical path의 마지막 Git revision 사용 |
+| [0010](0010-prohibit-global-installation-of-generated-capabilities.md) | Accepted | Blueprint 생성 capability와 지원 자산의 전역 설치 금지 |

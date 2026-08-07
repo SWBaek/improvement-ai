@@ -12,6 +12,7 @@
 - **설계 전 조사:** 대상 프로젝트의 지침, 기록, 도구와 Agent client를 근거로 제안합니다.
 - **작성 전 제안:** 파일 변경 전에 Skill 분해, 경로, 권한과 검증 방법을 보여줍니다.
 - **프로젝트 소유:** 생성된 Skill과 지원 자산은 소비 프로젝트가 소유하며 upstream 변경을 자동 추적하지 않습니다.
+- **전역 설치 금지:** 생성된 Skill, receipt, profile, schema, mapping과 상태 기록은 모두 대상 프로젝트 내부에 둡니다.
 - **Revision provenance:** canonical Blueprint path를 마지막으로 변경한 commit을 버전으로 사용하고 프로젝트 로컬 Installation Receipt와 모든 생성 Skill에 기록합니다.
 - **인간 권한:** 생성, 외부 쓰기, 활성화와 되돌리기 어려운 결정의 승인 경계를 명시합니다.
 - **실사용 승격:** 서로 다른 두 프로젝트에서 생성·실사용된 뒤에만 Blueprint를 Promoted로 판단합니다.
@@ -31,7 +32,7 @@
 
 최신 설계 탐색에는 `main` URL을 사용합니다. 생성 전 AI는 해당 canonical `BLUEPRINT.md`를 마지막으로 변경한 commit을 확인하고 exact URL에서 다시 읽은 뒤 대상 프로젝트에 40자리 revision을 기록합니다. 저장소의 무관한 commit은 설치를 오래된 것으로 만들지 않습니다.
 
-생성 Skill은 대상 Agent의 프로젝트 로컬 탐색 경로를 따릅니다. 예를 들어 Codex는 일반적으로 `.agents/skills/<name>/`, Claude Code는 `.claude/skills/<name>/`을 사용합니다. 이 저장소는 생성물을 설치·업데이트·동기화하지 않습니다.
+생성 Skill은 대상 Agent의 프로젝트 로컬 탐색 경로를 따릅니다. 예를 들어 Codex는 일반적으로 `.agents/skills/<name>/`, Claude Code는 `.claude/skills/<name>/`을 사용합니다. 전역 Agent Skill directory와 프로젝트 밖 공유 경로는 금지합니다. 이 저장소는 생성물을 설치·업데이트·동기화하지 않습니다.
 
 ## Lifecycle
 
