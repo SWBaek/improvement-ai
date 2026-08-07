@@ -18,5 +18,6 @@ Issues and pull requests are welcome. This is a maintainer-led Capability Bluepr
 4. Check changed links, run the label-sync dry run when labels change, and run `git diff --check`.
 5. Explain the human-visible capability outcome and the adaptation freedom left to target projects.
 6. Treat the last commit that changes the canonical `BLUEPRINT.md` path as that Blueprint's revision; do not add SemVer, tags, Releases, changelogs, or version catalogs.
+7. Require every generated artifact to stay inside the target project; do not add or recommend global Agent Skill installation or shared project state.
 
 GitHub service operations follow `AGENTS.md`: use authenticated `gh` and never place tokens in commands or files.

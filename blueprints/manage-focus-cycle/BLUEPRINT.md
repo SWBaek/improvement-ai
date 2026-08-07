@@ -32,6 +32,7 @@ The generated local capability must:
 - Require human confirmation before recording a Cycle as Closed.
 - Treat new questions as candidates for a later Cycle unless they block the current contract.
 - Preserve project instructions, generated-file rules, permissions, and unrelated changes.
+- Keep every generated Skill and supporting artifact inside the target project. Global Agent Skill locations, user-home installation, shared global configuration, and newly generated state shared across projects are prohibited. An existing project-specific external source may remain integrated under its own authority rules.
 - Do not publish, commit, push, create issues, or modify external systems unless the user and project policy authorize it.
 
 ## Capability operations
@@ -52,6 +53,7 @@ Before proposing files, inspect the target project's agent instructions and rele
 - project purpose and whether the current work is delivery, maintenance, research, or decision work;
 - the authoritative issue, plan, decision log, SDOC, research note, or equivalent durable source;
 - installed Agent clients and their project-local Skill locations;
+- the resolved target-project root and any path that would escape it or point to global Agent configuration;
 - existing visualization, documentation, validation, and generated-file conventions;
 - operations that require external writes, elevated permissions, or explicit approval;
 - whether a visual workspace adds enough value to justify its maintenance.
@@ -79,11 +81,13 @@ Present one compact proposal containing:
 - one realistic invocation and the verification method;
 - files that would be created or changed.
 
+Reject any proposed path outside the target project and replace it with a project-local design. A request for global installation is not an approval exception for this capability.
+
 Ask for human approval. Do not treat silence as approval.
 
 ### 3. Generate after approval
 
-Create only the approved project-local Skills and necessary resources. Follow the target Agent's discovery path; when no project convention exists, use `.agents/skills/<name>/` for Codex and `.claude/skills/<name>/` for Claude Code. Do not default to a global Skill location.
+Create only the approved project-local Skills and necessary resources. Follow the target Agent's project-local discovery path; when no project convention exists, use `<target-project>/.agents/skills/<name>/` for Codex and `<target-project>/.claude/skills/<name>/` for Claude Code. Never create or modify a global Skill location, user-home Skill directory, shared global config, or state outside the target project, even when the user requests convenience across projects.
 
 Before generation, resolve the 40-character commit that most recently changed this canonical `BLUEPRINT.md` path. Reread the Blueprint from the exact commit URL; do not use the repository HEAD merely because the user supplied a `main` URL. Create exactly one project-local Installation Receipt at the approved path:
 
@@ -129,6 +133,7 @@ When an update is available, inspect the existing local implementation and compa
 - Managing the entire project roadmap or claiming that a long-lived project is complete.
 - Mandating HTML, JSON, a particular renderer, or a fixed number of Skills.
 - Acting as a hosted workspace, issue tracker, scheduler, or autonomous project manager.
+- Installing generated Skills or supporting state globally. A stateless cross-project Blueprint bootstrap would require a separate capability and is not an exception here.
 - Synchronizing generated Skills with this repository.
 - Centralizing project-specific generated variants in this repository.
 
@@ -138,6 +143,7 @@ An instantiation is acceptable when:
 
 - the proposal is grounded in inspected project evidence and approved before writes;
 - generated Skills have distinct, accurate triggers and project-local paths;
+- every generated or modified filesystem path resolves inside the target project and no global Agent location or newly generated cross-project state is used;
 - exactly one Installation Receipt identifies the path-scoped Blueprint revision and matches every generated Skill provenance;
 - one Primary Focus Cycle and its Completion Contract are visible in the durable source;
 - inferred elements remain Proposed and closure requires human confirmation;

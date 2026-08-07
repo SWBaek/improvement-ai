@@ -10,6 +10,7 @@
 - **대상 프로젝트 우선**: Blueprint는 구현 형태와 Skill 수를 고정하지 않고 대상 프로젝트의 지침, 기록과 Agent client에 맞게 생성하도록 안내한다.
 - **제안 후 생성**: AI는 프로젝트를 읽기 전용으로 조사하고 생성 구성을 제시하며 인간 승인 전에는 파일을 변경하지 않는다.
 - **프로젝트 소유**: 생성된 Skill과 지원 자산은 대상 프로젝트가 소유한다. 이 저장소로 프로젝트별 변형을 가져오거나 자동 동기화하지 않는다.
+- **전역 설치 금지**: Blueprint가 생성하는 Skill, Installation Receipt, Profile, schema, mapping과 상태 기록은 반드시 대상 프로젝트 내부에 둔다. 전역 Agent Skill이나 여러 프로젝트가 공유하는 새 상태 경로를 제안·생성하지 않는다. 기존 프로젝트 전용 외부 source의 Integration은 별도 권한 규칙을 따른다.
 - **정확한 설치 revision**: Blueprint 버전은 canonical `BLUEPRINT.md` path를 마지막으로 변경한 40자리 Git commit이다. 생성 Skill provenance와 프로젝트 로컬 Installation Receipt가 같은 revision을 기록한다.
 - **사람의 권한**: 외부 쓰기, 활성화, 종료와 파괴적 결정의 승인 경계를 Blueprint에 명시한다.
 - **실사용 검증**: Blueprint는 서로 다른 두 프로젝트에서 생성·실사용된 뒤에만 Promoted로 승격한다.
@@ -44,6 +45,8 @@
 - 본문은 문제, required outcomes, invariants, capability operations, project adaptation, instantiation protocol, human authority, non-goals와 acceptance criteria를 포함한다.
 - Operation은 필요한 behavior를 정의하며 생성할 Skill의 이름이나 개수를 고정하지 않는다.
 - 생성 절차는 `읽기 전용 조사 → 구체적 구성 제안 → 인간 승인 → 프로젝트 로컬 생성 → 대표 동작 확인` 순서를 따른다.
+- 설치 제안의 모든 생성 경로가 대상 프로젝트 내부인지 확인한다. 사용자 홈, 전역 Skill directory, 공유 전역 config와 여러 프로젝트가 함께 쓰는 외부 상태 경로는 허용하지 않는다.
+- 프로젝트별 상태를 소유하지 않는 별도 무상태 bootstrap capability는 새로운 Idea와 Blueprint로만 검토하며 현재 Blueprint의 전역 설치 예외로 취급하지 않는다.
 - 생성 Skill의 YAML frontmatter는 Agent Skills 호환성을 위해 `name`과 trigger 중심 `description`만 사용하도록 지시한다.
 - provenance는 frontmatter가 아닌 `SKILL.md` 본문의 HTML comment로 기록하도록 지시한다.
 - `main`을 적용할 때 저장소 HEAD를 그대로 기록하지 않는다. 해당 canonical `BLUEPRINT.md`를 마지막으로 변경한 commit을 확인하고 exact-revision URL에서 다시 읽은 뒤 생성하도록 지시한다.
@@ -110,6 +113,7 @@ Capability 상태와 issue 작업 상태를 혼동하지 않는다. 실제 Pilot
 - required behavior와 project adaptation의 자유도가 구분된다.
 - 인간 승인 전 mutation 금지와 외부 권한 경계가 명확하다.
 - 생성물의 프로젝트 소유권, 단일 Installation Receipt와 일치하는 exact-revision provenance가 명시된다.
+- 모든 생성물 경로가 대상 프로젝트 내부이며 전역 설치나 프로젝트 밖 공유 상태가 없다.
 - lifecycle index, tracking issue와 관련 문서가 일치한다.
 - 설치형 Skill, runtime 구현, Release 경로나 과거 사용 명령을 현재 기능처럼 노출하지 않는다.
 - 비밀 정보와 프로젝트별 runtime 상태가 포함되지 않는다.
