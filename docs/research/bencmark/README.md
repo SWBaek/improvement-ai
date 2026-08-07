@@ -7,3 +7,4 @@
 | Report | 조사 범위 |
 |---|---|
 | [Karpathy LLM Wiki ecosystem and Blueprint strategy](karpathy-llm-wiki-ecosystem.md) | `llm-wiki.md` 이후 Idea File, Skill, framework, CLI, Plugin과 App 구현을 비교하고 `improvement-ai`의 Blueprint-only 전략을 평가 |
+| [Private Remote Artifact Preview market](private-remote-artifact-preview-market.md) | private network, public tunnel, IDE forwarding, remote workspace와 framework별 preview 제품을 비교하고 AI orchestration의 시장 공백을 평가 |
