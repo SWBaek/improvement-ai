@@ -63,3 +63,14 @@ body:
       description: 유사한 Idea File, workflow, 연구와 복사할 자산의 license를 기록해 주세요.
     validations:
       required: false
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: 생성과 설치 경계
+      options:
+        - label: 생성 결과는 대상 프로젝트 내부에만 두며 전역 Agent Skill 설치나 새 cross-project 공유 상태를 제안하지 않습니다.
+          required: true
+        - label: 설치안은 path-scoped Blueprint revision과 단일 Installation Receipt를 포함합니다.
+          required: true
+        - label: 설치형 Skill, runtime, package, formal schema 또는 generator를 이 저장소에 추가하는 제안이 아닙니다.
+          required: true

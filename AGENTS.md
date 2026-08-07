@@ -34,6 +34,15 @@
 - 특정 프로젝트의 생성 결과, 상태, 비공개 Pilot 자료와 session log
 - 인증 정보, cache와 재생성 가능한 runtime 파일
 
+## 기여 작업 규칙
+
+- 모든 기여 작업은 먼저 `CONTRIBUTING.md`에서 유형, 시작 위치, issue 필요 여부, 언어와 검증 규칙을 확인한다.
+- 오탈자, 링크, Research와 비규범 Idea는 저위험 직접 PR을 허용한다. 새 Blueprint, Blueprint 계약과 저장소 정책 변경은 issue-first로 진행한다.
+- Canonical `BLUEPRINT.md`와 Pilot scenario는 영어로 작성한다. 최상위 영문·국문 README의 사용자 의미가 바뀌면 함께 갱신한다.
+- Pilot evidence는 파일로 커밋하지 않고 기존 Blueprint tracking issue에 privacy-safe comment로 제출한다. `docs/github/pilot-evidence.md`의 형식을 따른다.
+- Maintainer만 서로 다른 두 프로젝트 evidence를 확인하고 Blueprint를 Promoted로 확정한다.
+- AI-assisted contribution의 내용, 출처, license, 민감 정보 제거와 검증 결과는 제출자가 책임진다.
+
 ## Blueprint 작성 규칙
 
 - 각 Blueprint directory에는 사람용 설치 landing page인 `README.md`와 AI용 canonical 계약인 `BLUEPRINT.md`를 둔다.

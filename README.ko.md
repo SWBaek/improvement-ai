@@ -84,6 +84,10 @@ scripts/       저장소 governance용 helper만 허용
 
 프로젝트별 생성 Skill, runtime 구현, 인증 정보, session log와 비공개 Pilot 자료는 포함하지 않습니다.
 
+## 기여하기
+
+[기여 유형 선택표](CONTRIBUTING.md)에서 시작하세요. 작은 문서 수정, Research와 비규범 Idea는 직접 pull request로 제출할 수 있지만 새 Blueprint, 계약 변경과 저장소 정책 변경은 issue-first입니다. 실제 사용 결과는 [Pilot evidence template](docs/github/pilot-evidence.md)을 사용해 기존 tracking issue에 privacy-safe하게 제출합니다. Maintainer는 서로 다른 두 프로젝트 evidence를 확인한 뒤에만 Promotion을 확정합니다.
+
 ## 과거 Snapshot
 
 [`manage-focus-cycle-v0.1.0` GitHub Release](https://github.com/SWBaek/improvement-ai/releases/tag/manage-focus-cycle-v0.1.0)는 폐기된 설치형 Skill 접근의 변경하지 않는 역사적 snapshot입니다. 현재 배포 경로가 아니며 `main`에서 더 이상 업데이트되지 않습니다.

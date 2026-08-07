@@ -4,6 +4,22 @@
 
 Issue는 Capability 후보, Blueprint 개선과 저장소 운영 작업의 이유·범위·완료 여부를 공유하는 durable record다. 프로젝트별 생성 결과나 비공개 Pilot 기록을 저장하는 장소가 아니다.
 
+기여 유형과 issue 필요 여부의 진입점은 [`CONTRIBUTING.md`](../../CONTRIBUTING.md)다.
+
+## Issue가 필요한 경우
+
+| 변경 | 처리 방식 |
+|---|---|
+| 오탈자, 깨진 링크, 의미를 바꾸지 않는 설명 | issue 없이 직접 PR 가능 |
+| Research와 비규범 Idea note | 직접 PR 가능, 논의가 필요하면 issue 선택 |
+| 새 Capability Blueprint | Blueprint proposal issue 필수 |
+| 기존 Blueprint의 invariant, operation, authority 또는 adaptation 계약 변경 | tracking 또는 feature issue 필수 |
+| 저장소 정체성, lifecycle 또는 장기 정책 변경 | feature issue와 필요한 ADR 필수 |
+| Pilot evidence | 새 issue를 만들지 않고 기존 tracking issue에 comment |
+| 보안 취약점 | 공개 issue가 아닌 private vulnerability report |
+
+직접 PR로 시작한 변경이 의미 계약을 바꾸는 것으로 확인되면 구현을 확대하지 않고 issue-first 흐름으로 전환한다.
+
 ## 제목과 유형
 
 ```text
@@ -53,6 +69,17 @@ status: triage → status: ready → status: in-progress → closed
 | In Progress | `in-progress` | `blueprints/<name>/BLUEPRINT.md`와 index 등록 |
 | Promoted | Pilot 기준 충족 후 issue 종료 | 같은 Blueprint와 두 프로젝트의 비공개 정보 없는 evidence 요약 |
 | Deprecated | 폐기 issue 종료 | 같은 경로의 대체 또는 폐기 안내 |
+
+## Pilot evidence
+
+Pilot은 [`Pilot evidence template`](pilot-evidence.md)을 사용해 해당 Blueprint tracking issue에 comment로 제출한다. 성공, 실패와 inconclusive 결과를 모두 기록할 수 있다.
+
+- Blueprint 이름과 path-scoped 40자리 revision을 기록한다.
+- 프로젝트 유형, 기존 관리 체계, Agent와 adaptation을 익명화해 설명한다.
+- 실제 operation, 기대·관찰 결과, 검증, 유지 비용과 재사용 학습을 기록한다.
+- 비공개 이름, 코드, 경로, 인증 정보와 원본 session log를 제거한다.
+- 같은 프로젝트의 반복 사용은 한 Pilot을 강화하지만 두 번째 독립 Pilot로 계산하지 않는다.
+- Maintainer가 두 evidence의 독립성과 Promoted 조건 충족 여부를 최종 판정한다.
 
 ## Triage와 동기화
 
