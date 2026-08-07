@@ -1,12 +1,42 @@
 # improvement-ai
 
-> Canonical Capability Blueprints that AI agents adapt into project-owned Skills and workflows.
+> Do not install our solution. Give its contract to the AI already inside your project.
 
 [한국어](README.ko.md)
 
-`improvement-ai` is not an application, Skill catalog, package registry, or source of installable runtime implementations. It records reusable capability designs as compact Blueprints. A human gives a Blueprint to an AI working inside a target project; the AI inspects that project's conventions, proposes a local design, and creates project-owned Skills only after approval.
+`improvement-ai` distributes **Capability Blueprints**, not universal Skills. A Blueprint fixes the problem, semantic contract, required operations, authority boundaries, and acceptance evidence while leaving implementation to the AI that can inspect the real project. That AI reuses the project's existing records, proposes only the missing local capability, and creates it after human approval.
 
-## Principles
+## What makes this different
+
+Most Skill and workflow repositories ship one implementation and ask every project to adopt or configure it. This repository ships the smallest contract from which an AI can generate a different, project-owned implementation without losing the capability's essential meaning.
+
+```text
+Conventional distribution
+upstream Skill / CLI / framework
+  → copy the same implementation into projects
+  → configure adapters
+  → keep following upstream
+
+improvement-ai
+exact-revision Blueprint
+  → the target project's AI inspects local reality
+  → it proposes Integration, Migration, Skill boundaries, paths, and permissions
+  → the human approves
+  → the project owns the generated capability
+```
+
+This creates a deliberate boundary:
+
+- **The contract is shared; the implementation is not.** Two projects may generate different Skills and files while preserving the same invariants and operations.
+- **Existing systems win.** Mature issues, ADRs, research notes, and project instructions are integrated instead of duplicated; migration occurs only when the human chooses it.
+- **The project remains sovereign.** Generated Skills, state, schemas, mappings, and receipts stay inside the target project. There is no global installation or upstream synchronization.
+- **AI adaptation remains reviewable.** Inspection is read-only, the complete installation proposal comes before mutation, and important decisions remain human authority.
+- **Every installation is reproducible.** One Installation Receipt and each generated Skill identify the exact commit that last changed the canonical Blueprint.
+- **A design earns stability through use.** A Blueprint is promoted only after different projects generate and operate it successfully.
+
+The approach was motivated by Andrej Karpathy's `llm-wiki.md`: a compact idea file can be more reusable than a fixed implementation when it gives an AI strong invariants and operations. `improvement-ai` generalizes that pattern into a governed portfolio of project-scoped capabilities. See the [ecosystem benchmark and strategy review](docs/research/bencmark/karpathy-llm-wiki-ecosystem.md).
+
+## Operating principles
 
 - **Blueprint, not product:** preserve the problem, invariants, operations, adaptation points, and acceptance criteria rather than one universal implementation.
 - **Inspect before designing:** ground every proposal in the target project's instructions, records, tools, and Agent clients.

@@ -1,12 +1,42 @@
 # improvement-ai
 
-> AI가 대상 프로젝트에 맞는 Skill과 workflow를 만들도록 안내하는 Capability Blueprint의 원본 저장소입니다.
+> 우리의 해법을 설치하지 마세요. 그 계약을 프로젝트 안의 AI에게 전달하세요.
 
 [English](README.md)
 
-`improvement-ai`는 애플리케이션, Skill catalog, package registry 또는 설치형 runtime 구현 저장소가 아닙니다. 반복 가능한 capability 설계를 간결한 Blueprint로 기록합니다. 사람은 Blueprint를 대상 프로젝트에서 작업 중인 AI에게 전달하고, AI는 프로젝트 관례를 조사해 로컬 설계를 제안한 뒤 승인 후에만 프로젝트 소유의 Skill을 생성합니다.
+`improvement-ai`는 범용 Skill 대신 **Capability Blueprint**를 배포합니다. Blueprint는 문제, 의미 계약, 필수 operation, 권한 경계와 acceptance evidence를 고정하고 실제 구현은 대상 프로젝트를 읽을 수 있는 AI에게 맡깁니다. AI는 기존 기록을 재사용하고 부족한 로컬 capability만 제안하며 인간 승인 후 생성합니다.
 
-## 운영 원칙
+## 무엇이 다른가
+
+일반적인 Skill·workflow 저장소는 하나의 구현을 배포하고 모든 프로젝트가 이를 설치·설정하게 합니다. 이 저장소는 capability의 핵심 의미를 잃지 않으면서 프로젝트마다 다른 구현을 생성할 수 있는 최소 계약을 배포합니다.
+
+```text
+일반적인 배포
+upstream Skill / CLI / framework
+  → 같은 구현을 여러 프로젝트에 복사
+  → adapter와 설정 추가
+  → upstream을 계속 추적
+
+improvement-ai
+exact-revision Blueprint
+  → 대상 프로젝트의 AI가 실제 환경 조사
+  → Integration, Migration, Skill 경계, 경로와 권한 제안
+  → 인간 승인
+  → 프로젝트가 생성 capability 소유
+```
+
+이 방식은 다음 경계를 의도적으로 만듭니다.
+
+- **계약은 공유하지만 구현은 공유하지 않습니다.** 서로 다른 프로젝트가 다른 Skill과 파일을 생성해도 같은 invariant와 operation을 유지합니다.
+- **기존 체계를 우선합니다.** 성숙한 issue, ADR, 연구 기록과 프로젝트 지침은 복제하지 않고 Integration하며 인간이 선택할 때만 Migration합니다.
+- **프로젝트가 주권을 가집니다.** 생성 Skill, 상태, schema, mapping과 receipt는 대상 프로젝트 내부에만 존재하며 전역 설치와 upstream 동기화가 없습니다.
+- **AI의 적응 과정을 검토할 수 있습니다.** 조사는 읽기 전용이고 전체 설치안이 mutation보다 먼저 나오며 중요한 결정은 인간 권한으로 남습니다.
+- **모든 설치를 재현할 수 있습니다.** 하나의 Installation Receipt와 각 생성 Skill이 canonical Blueprint를 마지막으로 변경한 exact commit을 기록합니다.
+- **설계는 실사용으로 안정성을 얻습니다.** 서로 다른 프로젝트에서 생성·운영에 성공한 뒤에만 Blueprint를 Promoted로 승격합니다.
+
+이 접근은 Andrej Karpathy의 `llm-wiki.md`에서 동기를 얻었습니다. 강한 invariant와 operation을 가진 작은 Idea File은 고정 구현보다 재사용성이 높을 수 있습니다. `improvement-ai`는 이 패턴을 project-scoped capability portfolio로 일반화합니다. 자세한 비교는 [생태계 benchmark와 전략 검토](docs/research/bencmark/karpathy-llm-wiki-ecosystem.md)를 참고하세요.
+
+## 세부 운영 원칙
 
 - **제품보다 Blueprint:** 하나의 범용 구현 대신 문제, 불변 조건, operation, 적응 지점과 acceptance criteria를 보존합니다.
 - **설계 전 조사:** 대상 프로젝트의 지침, 기록, 도구와 Agent client를 근거로 제안합니다.
