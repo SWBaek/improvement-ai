@@ -42,6 +42,10 @@ A private local folder has no Git history. The generated capability should still
 
 One Agent initializes and updates the project, then a different Agent with no transcript receives the project. The second Agent should interpret the same Profile, IDs, statuses, authority, extensions, and source mappings; produce the first-stage Brief; and resume the human-selected Work Item without reconstructing a new management system.
 
+## 11. Blueprint revision check
+
+The repository has commits after installation, but some change only another Blueprint or README. The Agent should compare the Installation Receipt with the latest commit that changed this canonical Blueprint path, report the installation as current when those revisions match, and avoid a false update. When the path revision differs, it should compare the two exact Blueprint documents and update receipt and Skill provenance only after approved migration and successful verification.
+
 ## Review checklist
 
 - The proposal is grounded in actual project records and approved before mutation.
@@ -53,4 +57,5 @@ One Agent initializes and updates the project, then a different Agent with no tr
 - Audit reports conflicts without mutation.
 - A new Agent recovers the exact resume point with bounded Context.
 - Skill decomposition follows project evidence and every generated Skill records exact Blueprint provenance.
+- Exactly one Installation Receipt matches every generated Skill and uses the canonical path's last-changing commit rather than repository HEAD.
 - No database, service, renderer, hook, or new tracker is introduced without demonstrated need.

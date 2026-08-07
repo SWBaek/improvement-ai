@@ -12,7 +12,7 @@
 - **Inspect before designing:** ground every proposal in the target project's instructions, records, tools, and Agent clients.
 - **Propose before writing:** show the Skill decomposition, paths, permissions, and verification method before changing files.
 - **Project ownership:** generated Skills and supporting assets belong to the consuming project and do not automatically track upstream changes.
-- **Revision provenance:** record the exact Blueprint path and 40-character Git commit in every generated Skill.
+- **Revision provenance:** treat the last commit that changed the canonical Blueprint path as its version, and record it in one project-local Installation Receipt and every generated Skill.
 - **Human authority:** keep approval boundaries explicit for generation, external writes, activation, and irreversible decisions.
 - **Evidence-led promotion:** promote a Blueprint only after successful use in two different projects.
 
@@ -29,7 +29,7 @@ See the [Blueprint index](blueprints/README.md) and each Blueprint's tracking is
 
 Open the **Install** guide for the capability you want, copy its ready-to-use prompt, and give it to the AI already working in the target project. The guide starts a read-only inspection and proposal; project files are created only after you approve that proposal.
 
-Use a `main` URL for the latest design. Replace `main` with an exact commit for reproducible instantiation. The AI must resolve and record the exact revision even when starting from `main`.
+Use a `main` URL to discover the latest design. Before generation, the AI resolves the last commit that changed that Blueprint's canonical `BLUEPRINT.md`, rereads the exact URL, and records that 40-character revision in the target project. Unrelated repository commits do not make an installation outdated.
 
 Generated Skills follow the target Agent's project-local discovery path. For example, Codex commonly uses `.agents/skills/<name>/` and Claude Code uses `.claude/skills/<name>/`. This repository does not install, update, or synchronize those files.
 

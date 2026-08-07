@@ -75,6 +75,7 @@ Present one compact proposal containing:
 - the durable source of Focus Cycle state and any fallback record;
 - the proposed progress and discussion representation;
 - external permissions and human confirmation points;
+- the single project-local Blueprint Installation Receipt path;
 - one realistic invocation and the verification method;
 - files that would be created or changed.
 
@@ -83,6 +84,17 @@ Ask for human approval. Do not treat silence as approval.
 ### 3. Generate after approval
 
 Create only the approved project-local Skills and necessary resources. Follow the target Agent's discovery path; when no project convention exists, use `.agents/skills/<name>/` for Codex and `.claude/skills/<name>/` for Claude Code. Do not default to a global Skill location.
+
+Before generation, resolve the 40-character commit that most recently changed this canonical `BLUEPRINT.md` path. Reread the Blueprint from the exact commit URL; do not use the repository HEAD merely because the user supplied a `main` URL. Create exactly one project-local Installation Receipt at the approved path:
+
+```yaml
+format: improvement-ai-blueprint-installation/v1
+blueprint: manage-focus-cycle
+repository: https://github.com/SWBaek/improvement-ai
+path: blueprints/manage-focus-cycle/BLUEPRINT.md
+revision: <40-character-commit>
+source: https://github.com/SWBaek/improvement-ai/blob/<40-character-commit>/blueprints/manage-focus-cycle/BLUEPRINT.md
+```
 
 For every generated `SKILL.md`:
 
@@ -100,7 +112,7 @@ revision: <40-character-commit>
 -->
 ```
 
-The generated files belong to the target project. Do not add an upstream update hook, overwrite local adaptations from a newer Blueprint, or copy project-specific output back into `improvement-ai`.
+Every generated Skill's provenance must match the Installation Receipt. The generated files belong to the target project. Do not add an upstream update hook, overwrite local adaptations from a newer Blueprint, or copy project-specific output back into `improvement-ai`.
 
 ### 4. Verify locally
 
@@ -108,7 +120,9 @@ Confirm that the target Agent can discover each Skill and run one representative
 
 ## Reapplying a newer revision
 
-When asked to adopt a newer Blueprint revision, inspect the existing local implementation and its recorded revision. Present a semantic comparison and migration proposal first. Preserve useful local behavior and never regenerate or overwrite files automatically.
+Treat the commit that most recently changed this canonical `BLUEPRINT.md` path as the latest Blueprint revision; unrelated repository commits are not updates. Compare it with the Installation Receipt. Report `current` when equal, `update available` when different, and `unknown` when the latest path revision cannot be established.
+
+When an update is available, inspect the existing local implementation and compare the two exact Blueprint documents. Present a semantic migration proposal first, preserve useful local behavior, and never regenerate or overwrite automatically. Update the Installation Receipt and every Skill provenance together only after approved changes and local verification succeed. If the installation predates receipts, propose creation of one from existing exact provenance before migration.
 
 ## Non-goals
 
@@ -124,10 +138,11 @@ An instantiation is acceptable when:
 
 - the proposal is grounded in inspected project evidence and approved before writes;
 - generated Skills have distinct, accurate triggers and project-local paths;
+- exactly one Installation Receipt identifies the path-scoped Blueprint revision and matches every generated Skill provenance;
 - one Primary Focus Cycle and its Completion Contract are visible in the durable source;
 - inferred elements remain Proposed and closure requires human confirmation;
 - progress and visual claims are supported by evidence;
-- provenance contains the exact source path and Git revision;
+- provenance contains the exact source path and path-scoped Git revision;
 - a representative invocation succeeds without violating project policy.
 
 Use [the Pilot scenarios](references/pilot-scenarios.md) to evaluate the proposal and generated behavior. Promotion requires successful use in two different projects; similarity or difference in their Skill decomposition must be explained by project evidence rather than forced by this Blueprint.

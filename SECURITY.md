@@ -2,7 +2,7 @@
 
 ## Supported state
 
-Only the latest `main` revision of each Blueprint is maintained. Commit-pinned revisions and the historical `manage-focus-cycle-v0.1.0` Skill Release remain available for audit but do not receive fixes.
+Only the latest canonical-path revision of each Blueprint reachable from `main` is maintained. Commit-pinned revisions and the historical `manage-focus-cycle-v0.1.0` Skill Release remain available for audit but do not receive fixes.
 
 Generated Skills, scripts, assets, and project state are owned and supported by their target projects. This repository does not automatically update or execute them.
 

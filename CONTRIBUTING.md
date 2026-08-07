@@ -12,10 +12,11 @@ Issues and pull requests are welcome. This is a maintainer-led Capability Bluepr
 
 ## Pull requests
 
-1. Keep the canonical entry point at `blueprints/<name>/BLUEPRINT.md`.
+1. Keep the human install entry point at `blueprints/<name>/README.md` and the canonical AI contract at `blueprints/<name>/BLUEPRINT.md`.
 2. Add references only when the Blueprint cannot remain concise without them; do not add executable implementations, schemas, generators, or installable Skills.
 3. Update the Blueprint index, tracking issue, architecture, or ADR only when their contract changes.
 4. Check changed links, run the label-sync dry run when labels change, and run `git diff --check`.
 5. Explain the human-visible capability outcome and the adaptation freedom left to target projects.
+6. Treat the last commit that changes the canonical `BLUEPRINT.md` path as that Blueprint's revision; do not add SemVer, tags, Releases, changelogs, or version catalogs.
 
 GitHub service operations follow `AGENTS.md`: use authenticated `gh` and never place tokens in commands or files.
