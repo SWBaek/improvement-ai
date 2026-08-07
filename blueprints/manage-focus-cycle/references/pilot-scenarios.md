@@ -28,13 +28,14 @@ The project already uses an issue tracker and a generated status page. The propo
 
 ## 7. New Blueprint revision
 
-A project already owns locally adapted Skills derived from an older revision. The AI should compare the old and new contracts, present a migration proposal, preserve intentional local behavior, and avoid automatic overwrite.
+A project already owns locally adapted Skills derived from an older revision. The AI should compare the Installation Receipt with the latest commit that changed the canonical Blueprint path, ignore unrelated repository commits, compare the two exact contracts, present a migration proposal, preserve intentional local behavior, and avoid automatic overwrite. Receipt and Skill provenance change only after successful verification.
 
 ## Review checklist
 
 - The proposal cites actual project files or records rather than assumptions.
 - Skill count follows distinct triggers and responsibilities, not a number prescribed here.
 - Every Skill stays project-local and includes exact provenance.
+- Exactly one Installation Receipt matches every generated Skill and uses the canonical path's last-changing commit rather than repository HEAD.
 - Human approval occurs before creation, activation, closure, and unauthorized external mutation.
 - Progress, evidence, uncertainty, and decisions are distinguishable.
 - The chosen visual representation is useful for the scenario and is not treated as the source of truth.

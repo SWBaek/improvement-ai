@@ -28,9 +28,14 @@
 - Focus Cycle과 Completion Contract의 저장 위치
 - 인간 승인과 외부 권한 경계
 - 필요한 표현 방식과 검증 방법
+- Blueprint Installation Receipt의 프로젝트 로컬 경로
 - 생성하거나 변경할 파일
 
 내가 설치안을 승인하기 전에는 파일을 만들거나 수정하지 마세요.
+설치 전 canonical BLUEPRINT.md를 마지막으로 변경한 40자리 commit을 확인하고,
+그 exact-revision URL에서 Blueprint를 다시 읽으세요.
+생성 결과에는 해당 revision과 exact source를 담은 Installation Receipt를 하나만 남기고,
+모든 생성 Skill의 provenance를 그 receipt와 일치시키세요.
 
 Blueprint:
 https://github.com/SWBaek/improvement-ai/blob/main/blueprints/manage-focus-cycle/BLUEPRINT.md
@@ -43,7 +48,7 @@ https://github.com/SWBaek/improvement-ai/blob/main/blueprints/manage-focus-cycle
 3. 사람이 설치안을 검토하고 승인한다.
 4. AI가 승인된 파일만 생성하고 대표 동작을 검증한다.
 
-최신 설계는 프롬프트의 `main` URL을 사용한다. 재현 가능한 설치에는 `main`을 정확한 40자리 commit으로 교체한다. `main`에서 시작해도 생성 Skill에는 실제 사용한 exact revision이 기록되어야 한다.
+프롬프트의 `main` URL은 최신 설계를 찾는 진입점이다. AI는 저장소 HEAD가 아니라 canonical `BLUEPRINT.md`를 마지막으로 변경한 commit을 설치 revision으로 사용한다. 최신 확인도 이 path revision을 Installation Receipt와 비교하며, 다른 문서나 Blueprint 변경은 업데이트로 판정하지 않는다.
 
 ## 계약과 상태
 

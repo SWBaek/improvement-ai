@@ -154,6 +154,7 @@ Present one compact proposal containing:
 - an area-by-area Integration/Migration table with exactly one source of truth per area;
 - proposed Skill names, triggers, non-triggers, responsibilities, paths, and bundled resources;
 - Profile fields, record locations, common schema location, authority roles, and extensions;
+- the single project-local Blueprint Installation Receipt path;
 - exact existing information to migrate and old sources that will stop receiving updates;
 - external writes and every human approval boundary;
 - one representative Brief, Decision, Handoff, and Audit verification scenario;
@@ -164,6 +165,17 @@ Ask for human approval and do not treat silence as approval.
 ### 3. Generate after approval
 
 Create only the approved project-local Skills, Profile, records, and schemas. Follow the target Agent's discovery path; when no convention exists, use `.agents/skills/<name>/` for Codex and `.claude/skills/<name>/` for Claude Code. Do not use a global Skill location.
+
+Before generation, resolve the 40-character commit that most recently changed this canonical `BLUEPRINT.md` path. Reread the Blueprint from the exact commit URL; do not use the repository HEAD merely because the user supplied a `main` URL. Create exactly one project-local Installation Receipt at the approved path:
+
+```yaml
+format: improvement-ai-blueprint-installation/v1
+blueprint: maintain-project-continuity
+repository: https://github.com/SWBaek/improvement-ai
+path: blueprints/maintain-project-continuity/BLUEPRINT.md
+revision: <40-character-commit>
+source: https://github.com/SWBaek/improvement-ai/blob/<40-character-commit>/blueprints/maintain-project-continuity/BLUEPRINT.md
+```
 
 For every generated `SKILL.md`:
 
@@ -180,7 +192,7 @@ revision: <40-character-commit>
 -->
 ```
 
-Generated artifacts belong to the target project. Do not add upstream synchronization, silently overwrite local adaptations, or copy private project records back into `improvement-ai`.
+Every generated Skill's provenance must match the Installation Receipt. Generated artifacts belong to the target project. Do not add upstream synchronization, silently overwrite local adaptations, or copy private project records back into `improvement-ai`.
 
 ### 4. Verify locally
 
@@ -188,7 +200,9 @@ Confirm that the target Agent discovers the generated Skills and that Profile an
 
 ## Reapplying a newer revision
 
-When adopting a newer Blueprint revision, inspect the existing local implementation and recorded revision. Present a semantic comparison and migration proposal before writes. Preserve intentional local behavior, schema extensions, IDs, record history, and authority mappings. Never regenerate or overwrite automatically.
+Treat the commit that most recently changed this canonical `BLUEPRINT.md` path as the latest Blueprint revision; unrelated repository commits are not updates. Compare it with the Installation Receipt. Report `current` when equal, `update available` when different, and `unknown` when the latest path revision cannot be established.
+
+When an update is available, inspect the existing local implementation and compare the two exact Blueprint documents. Present a semantic migration proposal before writes. Preserve intentional local behavior, schema extensions, IDs, record history, and authority mappings. Update the Installation Receipt and every Skill provenance together only after approved changes and local verification succeed. If the installation predates receipts, propose creation of one from existing exact provenance before migration. Never regenerate or overwrite automatically.
 
 ## Human authority
 
@@ -215,6 +229,7 @@ An instantiation is acceptable when:
 
 - the proposal cites inspected project evidence and is approved before writes;
 - every information area has exactly one declared source of truth and ownership mode;
+- exactly one Installation Receipt identifies the path-scoped Blueprint revision and matches every generated Skill provenance;
 - Profile and common record schema preserve the Core fields and namespaced extension boundary;
 - multiple open Work Items can be summarized without forcing one project-wide active objective;
 - a two-stage Brief ends with a human-selected Session Focus and bounded detailed Context;

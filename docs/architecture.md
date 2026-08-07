@@ -7,7 +7,7 @@
 ## 흐름
 
 ```text
-Capability Blueprint at an exact Git revision
+Capability Blueprint at the exact commit that last changed its canonical path
   └─ target-project AI inspects local policy and records
        └─ adaptation proposal
             └─ human approval
@@ -34,8 +34,9 @@ Idea note는 canonical capability source가 아니다. 탐색 중인 문제와 �
 - Blueprint는 문제, required outcomes, invariants와 operation을 규범적으로 정의한다.
 - Skill 수, 파일 구조, 시각화 기술과 결정적인 helper는 대상 프로젝트의 근거에 따라 AI가 제안한다.
 - AI는 승인 전까지 읽기 전용으로 동작하고, 승인된 프로젝트 로컬 경로만 변경한다.
-- 생성 Skill은 Agent Skills 호환 frontmatter와 exact-revision provenance를 가진다.
-- 생성물은 upstream 변경을 자동 추적하지 않는다. 새 revision 적용은 비교와 별도 승인 과정이다.
+- 생성 Skill은 Agent Skills 호환 frontmatter와 Installation Receipt에 일치하는 exact-revision provenance를 가진다.
+- 대상 프로젝트는 설치한 Blueprint마다 canonical path, path-scoped revision과 exact source를 담은 Installation Receipt 하나를 소유한다.
+- 생성물은 upstream 변경을 자동 추적하지 않는다. canonical Blueprint path의 최신 변경 commit이 receipt와 다를 때만 새 revision 후보이며, 적용은 semantic comparison과 별도 승인 과정이다.
 
 ## Lifecycle
 
@@ -48,8 +49,8 @@ Idea note는 canonical capability source가 아니다. 탐색 중인 문제와 �
 ## 배포와 검증
 
 - 최신 소비 경로는 `main`의 Blueprint URL이다.
-- 재현 가능한 소비 경로는 40자리 commit이 포함된 GitHub URL이다.
-- version catalog, tag, Release, installer, generator와 자동 update channel을 운영하지 않는다.
+- 재현 가능한 소비 경로는 canonical `BLUEPRINT.md`를 마지막으로 변경한 40자리 commit이 포함된 GitHub URL이다. 저장소 HEAD의 무관한 변경은 Blueprint revision이 아니다.
+- version catalog, tag, Release, changelog, installer, generator와 자동 update channel을 운영하지 않는다.
 - 문서 링크, issue metadata와 `git diff --check`만 비례적으로 확인한다.
 - Blueprint 품질은 자동 schema보다 실제 프로젝트 Pilot과 acceptance scenario로 판단한다.
 
