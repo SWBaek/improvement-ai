@@ -28,7 +28,7 @@
 - Work Item을 프로젝트 로컬에서 관리할지, 기존 또는 선택한 GitHub Issues·Jira 같은 외부 tracker와 연동할지에 대한 나의 명시적 선택
 - 기존 README, issue, ADR, tracker와 연구 기록의 source-of-truth 대응
 - Candidate 보존 위치, Work Item 생성 전 중복·통합 검사와 프로젝트별 ready horizon
-- Handoff freshness evidence와 기능 검증 context mode
+- 명시적으로 확정하는 bounded Handoff checkpoint, 새 세션의 freshness 검증과 기능 검증 context mode
 - 프로젝트 로컬 Profile, record와 Schema 구성
 - 인간 승인과 외부 권한 경계
 - Brief, Decision, Handoff, Verification Context와 Audit의 검증 방법
@@ -38,6 +38,8 @@
 같은 정보를 기존 원본과 새 Continuity record에 중복 관리하지 마세요.
 읽기 전용 조사 후 설치안을 작성하기 전에 Work Item 관리 위치를 반드시 질문하세요.
 외부 tracker 선택은 계정 설정, 활성화, 인증 또는 쓰기 승인이 아닙니다.
+canonical Handoff는 내가 checkpoint를 요청하거나 제안된 초안을 확정한 때에만
+갱신하고, 새 세션에서는 authoritative source와 대조하기 전에 신뢰하지 마세요.
 모든 Skill과 지원 자산은 대상 프로젝트 내부에만 설치하세요.
 사용자 홈, 전역 Agent Skill directory 또는 프로젝트 밖 공유 경로를 제안하거나 사용하지 마세요.
 내가 설치안을 승인하기 전에는 파일을 만들거나 수정하지 마세요.
@@ -89,8 +91,11 @@ Migration 제안에는 다음을 포함하세요.
 - Candidate intake, 기존 Work Item 중복·통합 검사, 새 Work Item 생성 승인과
   프로젝트별 ready horizon
 - 완료 조건 충족 시 completion review 절차
-- Handoff freshness watermark, durable-event source, Focus divergence Audit와
-  canonical state 시각을 projection 생성 시각과 구분하는 방법
+- 자동 갱신이 아닌 명시적 Handoff checkpoint 요청·확정 경계, bounded content,
+  freshness watermark와 새 세션에서 authoritative source를 대조해
+  `verified current`, `stale`, `unknown`을 판정하는 방법
+- durable-event source, Focus divergence Audit와 canonical state 시각을
+  projection 생성 시각과 구분하는 방법
 - native Decision 상태를 rejected, superseded 또는 extension으로 손실 없이
   매핑하는 방법과 Handoff ownership의 일관성
 - independent verification, change-informed regression verification과
@@ -105,8 +110,12 @@ Migration 제안에는 다음을 포함하세요.
 외부 쓰기만 수행하세요. 사용자 홈, 전역 Agent Skill directory 또는 프로젝트
 밖 공유 경로를 만들거나 사용하지 마세요.
 
-대표 Brief, Work Item 생성 gate, Handoff freshness Audit와 Verification Context를
-검증하세요. 모든 승인된 변경과 로컬 검증이 성공한 뒤에만 Installation Receipt와
+기존 Handoff가 누적 이력을 포함한다면 고유 사실을 잃지 않도록 Work Item,
+Decision, Git 또는 tracker의 권위 있는 원본을 확인한 뒤 최소 참조로 축약하는
+Migration안을 제시하세요. 자동으로 삭제하거나 현재 상태를 추측하지 마세요.
+
+대표 Brief, Work Item 생성 gate, 명시적 Handoff checkpoint, 새 세션 freshness
+Audit와 Verification Context를 검증하세요. 모든 승인된 변경과 로컬 검증이 성공한 뒤에만 Installation Receipt와
 모든 생성 Skill provenance를 최신 revision과 exact source로 함께 갱신하세요.
 검증이 실패하거나 Migration이 일부만 적용되면 기존 revision을 유지하고,
 부분 적용 상태와 rollback 방법을 보고하세요. 자동 재생성하거나 local
