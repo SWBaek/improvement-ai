@@ -19,24 +19,31 @@ The generated local capability must:
 - let an Agent with no prior conversation recover the open Work Items, approved decisions, relevant evidence, and exact resume point;
 - preserve a fixed semantic Core while mapping it to the target project's existing records and tools;
 - select `integration` or `migration` independently for each information area without creating duplicate sources of truth;
+- require the human to choose whether Work Items remain project-local or integrate a project-specific external tracker before generating either design;
 - support multiple open Work Items and let the human select the Session Focus after a compact overview and recommendation;
+- distinguish uncommitted candidates from approved Work Items, prevent duplicate creation, and keep the ready inventory within a human-approved project-specific horizon;
 - keep project-owned canonical records readable without a dedicated service or a particular Agent provider;
 - structurally validate project-local Profile and record metadata while keeping semantic conflicts visible for human review;
+- detect when durable project events make a structurally valid Handoff stale without treating every elapsed day or unrelated change as drift;
+- preserve functional-verification independence by limiting development context according to a declared verification mode;
 - record only durable, reusable outcomes rather than every conversation or tool result;
 - keep operation count, generated files, and maintenance cost proportional to demonstrated project needs.
 
 ## Invariants
 
 - Never create or migrate continuity records before a read-only inspection, concrete adaptation proposal, and human approval.
+- Never generate a local Work Item design, activate an external tracker, or create an external Work Item before the human chooses Work Item ownership and approves the resulting design and external writes.
 - Never maintain the same fact or state in both an existing source and a Continuity-owned record.
 - Never treat Agent inference, auto-memory, a search index, generated JSON, or an HTML projection as an approved canonical fact.
 - Never select the Session Focus on the human's behalf; recommendations do not change Work Item priority or status.
 - Never mark a Work Item `completed` without presenting completion evidence and receiving human approval.
+- Never promote an observation, idea, or possible follow-up into an authoritative Work Item without searching for an existing home and receiving human approval for creation or promotion.
 - Never mark a Decision `accepted` without an explicit human choice. A clear choice in the normal conversation is approval and must not require a redundant confirmation.
 - Never rewrite the meaning of an accepted Decision. Create a replacement Decision and preserve the supersession relation.
 - Never resolve a meaningful disagreement between code, execution evidence, documents, or trackers automatically.
 - Keep Audit read-only. Apply its proposed corrections only through a separately authorized change.
 - Keep exactly one current Handoff unless the target project already has an authoritative equivalent. Do not create a session-by-session Handoff archive by default.
+- Never claim that verification was independent when the verifying Agent has already consumed excluded development history; use a fresh bounded context or label the result `informed verification`.
 - Keep every generated Skill, Installation Receipt, Profile, schema, mapping, and state record inside the target project. Global Agent Skill locations, user-home installation, shared global configuration, and newly generated state shared across projects are prohibited. An existing project-specific external source may remain integrated under its own authority rules.
 - Preserve completed, cancelled, rejected, and superseded records in place; exclude them from the default Brief rather than deleting or moving them.
 - Do not collect credentials, private transcript history, or sensitive data without an explicit project policy.
@@ -64,9 +71,13 @@ For each information area, the Project Profile must declare one ownership mode:
 
 The proposal may mix modes across areas. It must identify the source of truth and write authority for every integrated area, describe what will move for every migrated area, and reject any configuration that requires dual maintenance.
 
+After read-only inspection and before proposing generated files, explicitly ask the human to choose the Work Item source of truth: Continuity-owned project-local records through Migration, or an existing or selected project-specific tracker such as GitHub Issues or Jira through Integration. Do not infer consent from the presence or absence of a tracker. Retaining an existing tracker does not authorize writes, and selecting a new external service does not authorize account setup, activation, authentication, or data creation. State those external actions separately and wait for approval under project policy.
+
+The ownership declaration must follow canonical content rather than pointer location. A Continuity-owned Handoff remains Migration-owned even when its Session Focus points to an integrated external Work Item. For integrated Decisions, map native states without conflating a Decision rejected before acceptance with one previously accepted and later retired, deprecated, or replaced. Preserve an unrepresentable distinction in a namespaced extension and report it in Audit instead of silently projecting the wrong Core state.
+
 ### Canonical and derived representations
 
-When Continuity owns an area, use a YAML Project Profile and Markdown records with limited YAML frontmatter. The Markdown body remains the human-auditable canonical content. Generate project-local JSON Schema for the Profile and common record envelope so Agents and tools can validate metadata consistently.
+When Continuity owns an area, use a YAML Project Profile and Markdown records with limited YAML frontmatter. Prefer readable block-style YAML so authority, timestamps, mappings, and extensions remain easy to review and diff; JSON being a YAML subset is not a reason to use one-line JSON as canonical metadata. The Markdown body remains the human-auditable canonical content. Generate project-local JSON Schema for the Profile and common record envelope so Agents and tools can validate metadata consistently.
 
 JSON interchange, HTML, full-text indexes, embeddings, and graphs are derived projections. Do not require or generate them unless the project has a demonstrated consumer or failure that justifies their maintenance. This Blueprint does not contain a formal schema, template, generator, or validator to copy.
 
@@ -101,6 +112,10 @@ any open state → cancelled
 
 Do not add `paused`; move an intentionally deferred item to `planned` and record the reason. An Agent may update progress, blockers, next actions, and verification evidence at a meaningful work boundary. It may only propose `completed`, show evidence against every completion criterion, and wait for human confirmation.
 
+An observation, idea, possible follow-up, or long-range initiative is a candidate, not another Core Work Item state. Before proposing a new Work Item, search open and relevant terminal records and show whether the smallest accurate action is to update an existing Work Item, retain a candidate in the project's existing intake, consolidate or supersede an item, or create a new bounded objective. Use an existing project-owned idea or intake source when available. If none exists and preservation is justified, propose the smallest project-local intake and its authority before creating it. Candidate intake must not duplicate Work Item status or appear in the default Brief as committed work.
+
+The Profile must define a human-approved ready horizon for the target project without imposing a universal number. Count `planned` Work Items, or the integrated tracker's explicitly mapped ready query; do not count `active`, `blocked`, terminal records, or candidates. At the limit, do not create another Work Item automatically. First present completion, cancellation, consolidation, reprioritization, and candidate-retention options. A human may approve an evidenced exception. When a merge, representative verification, or another meaningful boundary appears to satisfy completion criteria, promptly present criterion-by-criterion evidence and request completion review rather than allowing finished Work Items to accumulate.
+
 ### Decision lifecycle
 
 Use only `proposed`, `accepted`, `rejected`, and `superseded`. Create a Decision candidate when the choice will affect later work, is costly to reverse, cannot be reconstructed from code alone, or is necessary to prevent future Agents from repeating a failed direction. Do not record temporary implementation details or easily re-derived facts.
@@ -111,7 +126,11 @@ The Agent may write a `proposed` draft automatically. A clear human selection su
 
 ### Current Handoff
 
-Maintain one current Handoff containing the selected Session Focus, last completed work, verification results, exact resume point, unresolved risks, and relevant record or source references. Update it, together with the affected Work Item, when work starts or changes status, a meaningful stage finishes, a blocker appears or clears, verification changes the next action, or the session switches or stops. Do not update it for ordinary conversation without a durable state change.
+Maintain one current Handoff containing the selected Session Focus, last completed work, verification results, exact resume point, unresolved risks, relevant record or source references, and freshness evidence appropriate to the project. Update it, together with the affected Work Item, when work starts or changes status, a meaningful stage finishes, a blocker appears or clears, verification changes the next action, or the session switches or stops. Do not update it for ordinary conversation without a durable state change.
+
+The Profile must define the project's durable-event categories and Handoff freshness watermark. In a Git project, the watermark may combine the last reflected commit with the latest reflected accepted or superseded Decisions and mapped-source observations. In a non-Git project, use timestamps plus stable evidence from mapped sources. Audit changes after the watermark and classify them as relevant drift, unrelated change, or unresolved ambiguity with supporting evidence. A durable Decision, Project Brief or operating-policy change, mapped source change, or meaningful work outside the selected Focus may make the Handoff stale; elapsed time, an unrelated commit, a meaning-preserving edit, or regenerated output alone does not.
+
+Generated projections must distinguish their own generation time from the canonical state time and watermark. A recently generated HTML page, index, or report is never evidence that the underlying Handoff is current.
 
 Use Git history when it exists. In a non-Git folder, the latest Handoff still replaces the previous Handoff; durable history belongs in retained Work Items and Decisions rather than a new session-log subsystem.
 
@@ -119,11 +138,12 @@ Use Git history when it exists. In a non-Git folder, the latest Handoff still re
 
 These operations are required behavior, not fixed Skill names or boundaries:
 
-1. **Initialize**: inspect instructions, project records, trackers, Agent clients, permissions, and Git availability without mutation. Propose area-by-area ownership modes, mappings, generated files, migrations, approval roles, conflicts, and verification. Generate or migrate only after human approval.
-2. **Brief**: first show every open Work Item as a compact one-line map, distinguish blocked items, and recommend a next item with evidence. After the human selects the Session Focus, load only that item's details, applicable Decisions, evidence, and current Handoff.
+1. **Initialize**: inspect instructions, project records, trackers, Agent clients, permissions, and Git availability without mutation. Ask the human to choose local or external Work Item ownership, then propose area-by-area ownership modes, mappings, candidate intake, ready horizon, freshness evidence, generated files, migrations, approval roles, conflicts, and verification. Generate, activate, or migrate only after human approval.
+2. **Brief**: first show every committed open Work Item as a compact one-line map, distinguish blocked items and the bounded ready inventory, and recommend a next item with evidence. Exclude candidates and terminal records. After the human selects the Session Focus, load only that item's details, applicable Decisions, evidence, and current Handoff.
 3. **Record Decision**: apply the durable-impact threshold, create a proposed record, recognize an explicit human choice as approval, and maintain rejection and supersession without rewriting history.
 4. **Handoff**: at a meaningful work boundary, update the authoritative Work Item and the single current Handoff with verified state and an exact resume point. Do not turn Handoff into a chronological session archive.
-5. **Audit**: read all mapped and owned sources without mutation; report broken references, invalid transitions, duplicate authority, supersession errors, stale state, ungrounded claims, excessive context, and code/document/tracker conflicts with evidence and a proposed correction.
+5. **Prepare Verification**: before functional verification, ask the human to select `independent verification` or `change-informed regression verification`; use independent verification as the default only when an uncontaminated bounded context is possible. Independent verification may receive approved requirements, completion criteria, public interfaces, executable behavior, and observations gathered by the verifier, but not the current Handoff, development history, prior pass claims, implementation solution, or failure hypotheses. Change-informed regression verification may additionally receive the minimum change scope, risk summary, and stable Work Item identifiers, but not prior conclusions as evidence. If the Agent has already consumed excluded context and cannot restart cleanly, label the result `informed verification`. Record environment, procedure, observations, reproduction information, and context mode before summarizing the result into the Work Item or Handoff.
+6. **Audit**: read all mapped and owned sources without mutation; report broken references, invalid transitions, duplicate authority, lossy native-state mappings, ready-horizon violations, supersession errors, stale state, Focus divergence, ungrounded claims, excessive context, and code/document/tracker conflicts with evidence and a proposed correction. Compare durable events with the Handoff watermark, distinguish relevant drift from unrelated changes and ambiguity, and never change Focus, priority, status, or canonical content automatically.
 
 Capture, Query, Supersede, and Consolidate remain internal behaviors of these operations in v0.1. Generate a separate user-facing Skill only when the target project's triggers, permissions, or context make that split materially clearer.
 
@@ -134,10 +154,12 @@ Before proposing files, inspect:
 - project and nested Agent instructions;
 - README, plans, issue trackers, ADRs, research notes, experiment logs, generated documentation, and their write policies;
 - each candidate source's authority, currentness, stable identifiers, and conflict behavior;
+- existing candidate or idea intake, tracker grouping and dependency features, duplicate-search behavior, and the human-approved ready horizon;
 - installed Agent clients and their project-local Skill discovery paths;
 - the resolved target-project root and any path that would escape it or point to global Agent configuration;
 - the human roles allowed to approve Decisions and Work Item completion;
 - external write permissions, privacy constraints, Git availability, and existing validation tools;
+- durable-event sources, available freshness watermarks, projection timestamps, and functional-verification context boundaries;
 - evidence of scale or retrieval failure before proposing a database, service, graph, renderer, hook, or background process.
 
 Prefer Integration when an existing source already carries the Core meaning reliably. Prefer Migration only when the human wants full transition or no adequate source exists. A Profile is an adapter and authority declaration, not a license to duplicate existing content.
@@ -154,12 +176,14 @@ Present one compact proposal containing:
 
 - evidence about existing records, Agent clients, validation, and permissions;
 - an area-by-area Integration/Migration table with exactly one source of truth per area;
+- the human's explicit Work Item ownership choice, candidate intake mapping, duplicate-creation gate, ready horizon, and exception authority;
 - proposed Skill names, triggers, non-triggers, responsibilities, paths, and bundled resources;
 - Profile fields, record locations, common schema location, authority roles, and extensions;
 - the single project-local Blueprint Installation Receipt path;
 - exact existing information to migrate and old sources that will stop receiving updates;
 - external writes and every human approval boundary;
-- one representative Brief, Decision, Handoff, and Audit verification scenario;
+- Handoff freshness evidence, native-state mappings, verification modes, and projection timestamp boundaries;
+- one representative Brief, Decision, Handoff, Prepare Verification, and Audit scenario;
 - every file that would be created or changed.
 
 Reject any proposed path outside the target project and replace it with a project-local design. A request for global installation is not an approval exception for this capability.
@@ -206,26 +230,30 @@ Confirm that the target Agent discovers the generated Skills and that Profile an
 
 Treat the commit that most recently changed this canonical `BLUEPRINT.md` path as the latest Blueprint revision; unrelated repository commits are not updates. Compare it with the Installation Receipt. Report `current` when equal, `update available` when different, and `unknown` when the latest path revision cannot be established.
 
-When an update is available, inspect the existing local implementation and compare the two exact Blueprint documents. Present a semantic migration proposal before writes. Preserve intentional local behavior, schema extensions, IDs, record history, and authority mappings. Update the Installation Receipt and every Skill provenance together only after approved changes and local verification succeed. If the installation predates receipts, propose creation of one from existing exact provenance before migration. Never regenerate or overwrite automatically.
+When an update is available, inspect the existing local implementation and compare the two exact Blueprint documents. Present a semantic migration proposal before writes. Preserve intentional local behavior, schema extensions, IDs, record history, and authority mappings. Explicitly assess Work Item ownership, candidate intake and creation gates, ready horizon, completion review, freshness evidence, native-state mappings, verification context, and readable YAML impact when those semantics differ. Include external writes, failure handling, and rollback. Update the Installation Receipt and every Skill provenance together only after approved changes and local verification succeed. If verification fails or the migration is partial, keep the prior revision in the Receipt and provenance. If the installation predates receipts, propose creation of one from existing exact provenance before migration. Never regenerate or overwrite automatically.
 
 ## Human authority
 
 - The human approves the Initialize proposal before any project mutation or migration.
+- The human chooses Work Item ownership, approves Candidate promotion or new Work Item creation, sets the ready horizon, and authorizes exceptions to it.
 - The human selects the Session Focus after the first-stage Brief.
 - The human's explicit choice accepts or rejects a proposed Decision.
 - The human confirms Work Item completion after reviewing criterion evidence.
 - The human authorizes corrections proposed by Audit and all external writes not already allowed by project policy.
+- The human selects the functional-verification mode; external tracker setup, activation, authentication, and writes remain separately authorized.
 - The Agent may update non-terminal Work Item state and the current Handoff without an extra prompt at a meaningful work boundary.
 
 ## Non-goals
 
 - Reproducing every conversation or giving an Agent unlimited human-like memory.
 - Replacing the entire project roadmap, existing reliable tracker, ADR collection, or knowledge system.
+- Turning every observation, idea, initiative, or implementation step into a Work Item, or adding Candidate as a Core Work Item state.
 - Mandating a hosted service, database, vector search, knowledge graph, MCP server, background daemon, Git hook, HTML dashboard, or task manager.
 - Fixing the number or names of generated Skills.
 - Installing generated Skills, Profile, schema, mapping, receipt, or project state globally. A stateless cross-project Blueprint bootstrap would require a separate capability and is not an exception here.
 - Making JSON or generated HTML the human-authoritative source.
-- Automatically resolving conflicts, accepting Decisions, completing Work Items, or writing to external systems.
+- Automatically resolving conflicts, accepting Decisions, creating or completing Work Items, or writing to external systems.
+- Claiming independent verification after excluded development context has already influenced the verifier.
 - Centralizing consumer project records or generated variants in this repository.
 
 ## Acceptance
@@ -234,13 +262,16 @@ An instantiation is acceptable when:
 
 - the proposal cites inspected project evidence and is approved before writes;
 - every information area has exactly one declared source of truth and ownership mode;
+- Work Item ownership is explicitly chosen, external activation remains separately authorized, and Handoff ownership matches its canonical content rather than its Session Focus target;
 - every generated or modified filesystem path resolves inside the target project and no global Agent location or newly generated cross-project state is used;
 - exactly one Installation Receipt identifies the path-scoped Blueprint revision and matches every generated Skill provenance;
 - Profile and common record schema preserve the Core fields and namespaced extension boundary;
 - multiple open Work Items can be summarized without forcing one project-wide active objective;
+- candidates remain outside the committed Work Item lifecycle, duplicate creation is gated, and the ready inventory obeys its human-approved horizon or an explicit exception;
 - a two-stage Brief ends with a human-selected Session Focus and bounded detailed Context;
-- Decision approval, supersession, Work Item completion, conflict handling, and read-only Audit obey the authority rules;
-- only one current Handoff exists and it identifies an exact resume point;
+- Decision approval and native-state mapping, supersession, Work Item creation and completion, conflict handling, and read-only Audit obey the authority rules;
+- only one current Handoff exists, identifies an exact resume point and freshness watermark, and does not borrow freshness from a generated projection;
+- independent, change-informed regression, and informed verification are correctly distinguished, with evidence captured before Handoff summarization;
 - an Agent without prior conversation can resume representative work from the project-owned sources;
 - generated Skills contain exact source revision provenance and pass the target project's discovery and validation checks;
 - no runtime complexity was added without observed need and explicit approval.
