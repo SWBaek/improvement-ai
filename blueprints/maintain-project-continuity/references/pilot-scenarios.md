@@ -28,7 +28,7 @@ An active Work Item appears finished. The Agent should compare evidence with eve
 
 ## 7. Current Handoff
 
-The Session Focus reaches a meaningful boundary. The Agent should update the authoritative Work Item and the single current Handoff with completed work, verification, exact resume point, unknowns, and references. Repeated Handoff operations must update the current record rather than create chronological session files.
+The Session Focus reaches a meaningful boundary without a human checkpoint request. The Agent may propose a bounded checkpoint draft but must leave the canonical Handoff unchanged. After the human says to hand off or confirms the draft, it should replace the single current Handoff with the last verified state, exact next action, blockers or unknowns, freshness evidence, and minimal authoritative references. Repeated checkpoints must not create chronological session files or copy completed-work history from Work Items, Decisions, evidence, or version control.
 
 ## 8. Conflicting sources and Audit
 
@@ -40,7 +40,7 @@ A private local folder has no Git history. The generated capability should still
 
 ## 10. Cross-Agent handoff
 
-One Agent initializes and updates the project, then a different Agent with no transcript receives the project. The second Agent should interpret the same Profile, IDs, statuses, authority, extensions, and source mappings; produce the first-stage Brief; and resume the human-selected Work Item without reconstructing a new management system.
+One Agent initializes and updates the project, then a different Agent with no transcript receives the project. Before relying on Handoff claims, the second Agent should compare them with the authoritative Work Item, Decisions, Project Brief, available version-control history, and mapped-source observations. It should report `verified current`, `stale`, or `unknown`, then interpret the same Profile, IDs, statuses, authority, extensions, and source mappings; produce the first-stage Brief; and resume the human-selected Work Item without reconstructing a new management system.
 
 ## 11. Blueprint revision check
 
@@ -60,11 +60,11 @@ A project has one active item, ten planned items created from an initial roadmap
 
 ## 15. Event-based Handoff drift
 
-A Git project has a structurally valid Handoff with a recorded freshness watermark. After that watermark, an accepted Decision changes operating policy and a mapped source changes, while another commit only edits an unrelated README. Audit must report the Decision and mapped-source changes as relevant drift, classify the unrelated commit separately, and show whether work outside Session Focus represents limited parallel work, a missed Focus switch, a new candidate, or an existing-scope update. It must not change Focus, priority, status, or Handoff automatically. A recent generated report must not hide the stale canonical state.
+A Git project has a recently timestamped, structurally valid Handoff whose watermark predates an accepted operating-policy Decision and a mapped-source status change; another later commit only edits an unrelated README. A new-session Brief and Audit must compare material claims with all configured authoritative sources, report the checkpoint as `stale`, identify the Decision and mapped-source changes as relevant drift, and classify the unrelated commit separately. They must show whether work outside Session Focus represents limited parallel work, a missed Focus switch, a new candidate, or an existing-scope update, without changing Focus, priority, status, or Handoff automatically. A recent Handoff timestamp or generated report must not hide the stale canonical state.
 
 ## 16. Non-Git freshness and projection boundary
 
-A non-Git project uses timestamps and stable mapped-source observations as its Handoff watermark. A source changes after the last observation, then an HTML projection is regenerated. Audit must compare source evidence with the watermark, report the unresolved freshness impact, and distinguish canonical state time from projection generation time. It must not require Git, treat elapsed time alone as drift, or treat the recent projection as proof of freshness.
+A non-Git project uses timestamps and stable mapped-source observations as its Handoff watermark. A source changes after the last observation, then an HTML projection is regenerated. Audit must compare source evidence with the watermark, report the checkpoint as `stale`, and distinguish canonical state time from projection generation time. Repeat while the mapped source is unavailable: Brief and Audit must report `unknown`, not `verified current`. Neither run may require Git, treat elapsed time alone as drift, treat the recent projection as proof of freshness, or mutate Handoff without an explicit checkpoint request or confirmation.
 
 ## 17. Native state and ownership mapping
 
@@ -76,7 +76,7 @@ For independent functional verification, a fresh Agent receives approved require
 
 ## 19. Approved migration from an older revision
 
-A project has locally customized Skills, records, schemas, tracker mappings, and a single Receipt from an older exact Blueprint revision. The Agent must compare the installed and latest exact contracts, assess Work Item ownership, candidate gating, ready horizon, completion review, Handoff freshness, native states, verification context, and readable YAML impact, and propose files, external writes, validation, failure handling, and rollback before mutation. It must preserve intentional customization and stable history. Receipt and every Skill provenance move together only after all approved changes and representative verification succeed; partial or failed migration retains the old revision. If the Receipt is missing, the Agent must propose reconstructing it from exact provenance without guessing.
+A project has locally customized Skills, records, schemas, tracker mappings, an automatically updated history-heavy Handoff, and a single Receipt from an older exact Blueprint revision. The Agent must compare the installed and latest exact contracts; assess Work Item ownership, candidate gating, ready horizon, completion review, explicit checkpoint authority, bounded Handoff content, startup freshness verification, native states, verification context, and readable YAML impact; and propose files, external writes, validation, failure handling, and rollback before mutation. It must identify authoritative homes for historical Handoff content and must not delete or reinterpret unique facts automatically. It must preserve intentional customization and stable history. Receipt and every Skill provenance move together only after all approved changes and representative verification succeed; partial or failed migration retains the old revision. If the Receipt is missing, the Agent must propose reconstructing it from exact provenance without guessing.
 
 ## Review checklist
 
@@ -89,7 +89,8 @@ A project has locally customized Skills, records, schemas, tracker mappings, and
 - Candidates stay outside the Work Item lifecycle; duplicate creation is gated and the ready inventory respects its approved horizon.
 - Decision acceptance and Work Item completion remain human authority.
 - Completion review is proposed promptly when criterion evidence is available.
-- Handoff stays singular, carries project-appropriate freshness evidence, and preserves historical meaning in Work Items and Decisions.
+- Handoff stays singular and bounded, changes only through an explicit checkpoint request or confirmation, carries project-appropriate freshness evidence, and leaves history in its authoritative sources.
+- A new-session Brief verifies Handoff claims and reports `verified current`, `stale`, or `unknown`; recent timestamps and unavailable sources never imply freshness.
 - Audit reports relevant drift, unrelated changes, ambiguity, native-state loss, and Focus divergence without mutation.
 - Projection generation time is never treated as canonical state freshness.
 - Independent, change-informed regression, and informed verification keep their declared context boundaries and evidence order.
