@@ -48,4 +48,4 @@ Idea 단계에서는 실행 가능한 runtime, 설치형 Skill, formal schema나
 | [Local Project Continuity](local-project-continuity.md) | `Promoted` | 2026-08-07 | Pilot evidence가 최초 문제나 핵심 가설을 반박할 때 탐색 배경 재검토 |
 | [Private Remote Artifact Preview](private-remote-artifact-preview.md) | `Exploring` | 2026-08-10 | 단일 고정 Serve port와 전용 Artifact Root를 사용하는 개인 전역 Skill Pilot에서 정적 게시·Dashboard·cleanup을 검증하고 동적 app 실패 시 Hub 또는 port pool 필요성을 판단 |
 | [Subtractive Edit Fidelity](subtractive-edit-fidelity.md) | `Parked` | 2026-08-13 | 한 줄 결과 계약을 지침 없음·세션 한 줄·always-on으로 대조하는 실험을 실제로 시작할 때 재개 |
-| [Newcomer Reverse Questioning](newcomer-reverse-questioning.md) | `Exploring` | 2026-08-13 | WorkOs Capture 20건에서 신입 상시 질문과 look-before-ask+잔여 질문을 대조해 재질문율과 재사용 Claims를 재기 시작할 때 갱신 |
+| [Newcomer Reverse Questioning](newcomer-reverse-questioning.md) | `Exploring` | 2026-08-13 | 원장에 없는 새 엔티티 Capture에서 신입 상시 질문과 “없는 잔여만 묻고 한 페이지를 남긴 뒤 신입을 끝내는” 방식을 대조하기 시작할 때 갱신 |
