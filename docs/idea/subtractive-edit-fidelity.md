@@ -2,11 +2,11 @@
 
 ## Status
 
-- State: `Exploring`
+- State: `Parked`
 - Last reviewed: 2026-08-13
-- Next trigger: always-on 한두 문장의 결과 계약이 정책 파일의 반전 잔존을 줄이는지 작은 대조 실험으로 확인한다. 효과가 없거나 초과 삭제가 늘면 Skill·Blueprint로 올리지 않고 Parked 조건을 적는다.
+- Next trigger: 한 줄 결과 계약을 지침 없음·세션 한 줄·always-on으로 대조하는 실험을 실제로 시작할 때 재개한다.
 
-아직 Capability Blueprint, 실행 도구, schema 또는 구현 사양이 아니다. 원인 조사는 [`docs/research/deletion-avoidance-and-rule-inversion.md`](../research/deletion-avoidance-and-rule-inversion.md)에 있다.
+현재는 의도적으로 탐색을 중단했다. 아직 Capability Blueprint, 실행 도구, schema 또는 구현 사양이 아니다. 원인 조사는 [`docs/research/deletion-avoidance-and-rule-inversion.md`](../research/deletion-avoidance-and-rule-inversion.md)에 있다.
 
 ## 문제와 배경
 
