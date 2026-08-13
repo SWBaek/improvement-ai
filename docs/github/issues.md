@@ -89,7 +89,7 @@ Pilot은 [`Pilot evidence template`](pilot-evidence.md)을 사용해 해당 Blue
 4. 저장소 전체 계약에 영향을 주면 ADR을 추가한다.
 5. 실제 Pilot 자료에서는 재사용 가능한 학습만 issue에 기록한다.
 
-GitHub 서비스 변경은 인증된 `gh`만 사용한다.
+GitHub 서비스 변경은 인증된 GitHub connector 또는 인증된 `gh`를 사용한다. 아래는 `gh` 예시다.
 
 ```powershell
 gh auth status

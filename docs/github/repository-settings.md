@@ -14,7 +14,7 @@ The public repository `SWBaek/improvement-ai` protects history without adding au
 
 ## Verification
 
-Use only authenticated `gh` for GitHub state:
+Use an authenticated GitHub connector or authenticated `gh` for GitHub state. Example with `gh`:
 
 ```powershell
 gh auth status
