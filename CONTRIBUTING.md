@@ -124,7 +124,7 @@ Minimum checks:
 4. Confirm no runtime, installable Skill, formal schema, generated project output, secret, or private Pilot evidence was added.
 5. Confirm generated capability guidance remains project-local, uses one Installation Receipt, and prohibits global installation.
 
-Agents operating in this repository follow `AGENTS.md`: prefer the authenticated GitHub connector for GitHub service operations and never place tokens in commands, files, logs, or commits.
+Agents operating in this repository follow `AGENTS.md`. Never place tokens in commands, files, logs, or commits.
 
 ## Review and acceptance
 

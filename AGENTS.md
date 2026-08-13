@@ -31,12 +31,7 @@
 - Pilot evidence는 파일로 커밋하지 않고 tracking issue comment로 제출한다.
 - `references/`는 설명과 평가 scenario만 둔다. 업데이트는 두 exact Blueprint 비교, migration 제안, 인간 승인 뒤에 receipt와 모든 생성 Skill provenance를 함께 갱신한다.
 - Idea note는 결정이나 Blueprint가 아니다. 규범 변경은 issue와 필요한 ADR로 한다.
-
-## GitHub와 게시
-
-GitHub 조회와 변경은 연결된 GitHub connector를 우선한다. `gh` 전용 정책을 강제하지 않는다. GitHub API를 비인증 `curl`이나 임의 HTTP client로 직접 호출하지 않는다. token을 명령행, 파일, log, commit에 기록하지 않는다. 파괴적 작업은 대상 저장소와 객체를 먼저 확인한다.
-
-사용자가 이 저장소의 간단한 수정을 요청하면 구현과 검증 후 승인 질문 없이 commit, PR, merge까지 완료한다. 기본 branch에 직접 push하지 않는다. 관련 없는 사용자 변경, 충돌, 검증 실패, 파괴적 작업, 새 외부 권한은 자동 게시에 넣지 않는다.
+- 사용자가 이 저장소의 간단한 수정을 요청하면 구현과 검증 후 승인 질문 없이 commit, PR, merge까지 완료한다. 기본 branch에 직접 push하지 않는다. 관련 없는 사용자 변경, 충돌, 검증 실패, 파괴적 작업, 새 외부 권한은 자동 게시에 넣지 않는다.
 
 ## 완료
 
