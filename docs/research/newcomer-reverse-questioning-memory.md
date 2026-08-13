@@ -2,6 +2,7 @@
 
 - 조사일: 2026-08-13
 - 정정: 2026-08-13. 운영자가 GM 예시는 가정이며 실제 WorkOs 조회는 된다고 밝혔다. 조회 실패 오진을 걷어내고, 가설을 “아직 원장에 없는 전제”로 다시 읽었다.
+- 추가: 2026-08-14. Genspark AI Workspace 6.0 / SecondBrain을 관련 제품으로 대조했다. 이미 말한 것의 컴파일이며 신입 역질문의 대체재가 아니다.
 - 상태: Research note. 채택된 ADR이나 Blueprint 계약이 아니다.
 - 목적: “모르는 것에 대해 신입처럼 끈질기게 역질문해 장기기억을 쌓는다”는 가설을, 공개 연구·제품·커뮤니티 자료와 기존 WorkOs 운영 맥락으로 구분한다.
 
@@ -220,6 +221,16 @@ WorkOs에 이미 있는 부품과 대응하면 새 시스템이 아니다.
 
 이 네 질문이 측정되기 전에는 Blueprint나 schema를 만들 이유가 없다.
 
+## 관련 제품: Genspark AI Workspace 6.0
+
+2026-07-20 발표. 조사일 2026-08-14. 1차 출처는 [공식 블로그](https://www.genspark.ai/blog/genspark-ai-workspace-6)와 [SecondBrain 도움말](https://www.genspark.ai/helpcenter/secondbrain)이다.
+
+Workspace 6.0은 네 층이다. SecondBrain(메모리), Super Agent(지능), Design·AgentBase·GenMail 등 스위트, GenTeam(협업). 슬로건은 “Work does itself”이고, 베팅은 모델이 아니라 context다. CEO는 현재 AI를 “금붕어 기억의 천재”라고 부른다.
+
+SecondBrain이 푸는 문제는 **이미 존재하는 산출물을 다시 붙이는 것**이다. 메일, 캘린더, Slack, Notion, HubSpot, Salesforce, 회의록, 업로드 파일, Genspark 프로젝트를 연결하면 Super Agent가 그 맥락을 자동으로 끌어온다. 도움말의 Play는 주간 요약, 회의 브리프, 후속 메일 초안, 전역 검색이다. SecondBrain Note는 방 안 대화를 녹음해 같은 메모리로 흘려 보내는 하드웨어다. Email Brain은 메일에서 문체와 상대를 배운다. 공개 문서와 도움말에는 신입처럼 역질문하거나, 없는 엔티티를 인터뷰로 태어나게 하는 절차가 없다.
+
+관찰: 6.0은 이 Idea와 같은 층(저장 형식)이 아니라, 같은 증상(매번 설명하기)의 **다른 해법**이다. Genspark는 이미 말한 것을 컴파일한다. 이 Idea는 아직 말하지 않은 전제를 질문으로 꺼낸다. Super Agent가 맥락을 자동으로 쓰는 것은 look-before-ask와 같다. Note 하드웨어는 인터뷰 없이 암묵이 이미 입으로 나온 자리를 흡수한다. “앱을 전부 연결해 원장을 키운다”는 WorkOs를 폐기하려는 전제와 반대다.
+
 ## 결론
 
 방향은 타당하다. 기본 모델은 모르는 것을 질문하지 않고 채운다. 비서 기억의 공백 중 하나는 저장 형식이 아니라, **말하지 않은 전제를 침묵한 채 진행하는 습관**이다.
@@ -264,6 +275,12 @@ WorkOs 맥락에서는 이 차이가 더 크다. 조회는 이미 되고, vault�
 
 - [Aniccai: first agent should be an interviewer](https://aniccai.com/en/knowledge/Agents/ai-expertise-elicitation-agent)
 - [Hardman, 2026. Has AI finally fixed L&D's SME problem?](https://drphilippahardman.substack.com/p/has-ai-finally-fixed-l-and-ds-sme)
+
+### 관련 제품
+
+- [Genspark, 2026-07-20. Introducing Genspark AI Workspace 6.0](https://www.genspark.ai/blog/genspark-ai-workspace-6)
+- [Genspark Help Center. SecondBrain](https://www.genspark.ai/helpcenter/secondbrain)
+- X: `@sang_wen` / `@genspark_ai`, 2026-07-30, goldfish memory and SecondBrain ([2082713542894166248](https://x.com/genspark_ai/status/2082713542894166248))
 
 ### Vault 내부 선행
 
