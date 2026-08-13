@@ -3,7 +3,7 @@
 ## Status
 
 - State: `Exploring`
-- Last reviewed: 2026-08-13
+- Last reviewed: 2026-08-14
 - Next trigger: 빈 원장에서 지금 살아있는 일 몇 개만 신입 인터뷰로 페이지를 만든 뒤, 같은 엔티티에 질문이 멈추는지와 운영 노동이 다시 붙는지 1주 관찰할 때 갱신한다.
 
 아직 Capability Blueprint, 실행 도구, schema 또는 구현 사양이 아니다. 조사는 [`docs/research/newcomer-reverse-questioning-memory.md`](../research/newcomer-reverse-questioning-memory.md)에 있다.
@@ -108,3 +108,4 @@
 - [`docs/research/newcomer-reverse-questioning-memory.md`](../research/newcomer-reverse-questioning-memory.md)
 - [`docs/idea/local-project-continuity.md`](local-project-continuity.md)
 - WorkOs: `AI 장기기억과 WorkOs Vault`, `LLM-Wiki-Pattern-for-PKM`, `WorkOs-Dual-User-함께-성장하는-루프`, `WorkOs-AI-Native-목적과-컨셉`
+- [Genspark AI Workspace 6.0](https://www.genspark.ai/blog/genspark-ai-workspace-6) (2026-07-20)와 [SecondBrain 도움말](https://www.genspark.ai/helpcenter/secondbrain): 이미 말한 것(메일·회의·문서·앱)을 컴파일하는 메모리 층. 이 Idea의 공백(아직 안 쓴 전제)과는 겹치지 않는다. 참고할 점은 조회 후 행동, 회의 원문 흡수, “설명하지 않게 한다”는 목표다. 가져오지 않을 점은 앱을 전부 연결해 원장을 키우는 것, 상시 신입 인터뷰다.
