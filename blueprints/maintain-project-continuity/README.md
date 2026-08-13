@@ -28,7 +28,7 @@
 - Work Item을 프로젝트 로컬에서 관리할지, 기존 또는 선택한 GitHub Issues·Jira 같은 외부 tracker와 연동할지에 대한 나의 명시적 선택
 - 기존 README, issue, ADR, tracker와 연구 기록의 source-of-truth 대응
 - Candidate 보존 위치, Work Item 생성 전 중복·통합 검사와 프로젝트별 ready horizon
-- 명시적으로 확정하는 bounded Handoff checkpoint, 새 세션의 freshness 검증과 기능 검증 context mode
+- 하나의 authoritative Handoff 위치, 명시적인 `no current checkpoint` 상태, bounded checkpoint와 새 세션의 freshness 검증 및 기능 검증 context mode
 - 프로젝트 로컬 Profile, record와 Schema 구성
 - 인간 승인과 외부 권한 경계
 - Brief, Decision, Handoff, Verification Context와 Audit의 검증 방법
@@ -38,8 +38,13 @@
 같은 정보를 기존 원본과 새 Continuity record에 중복 관리하지 마세요.
 읽기 전용 조사 후 설치안을 작성하기 전에 Work Item 관리 위치를 반드시 질문하세요.
 외부 tracker 선택은 계정 설정, 활성화, 인증 또는 쓰기 승인이 아닙니다.
-canonical Handoff는 내가 checkpoint를 요청하거나 제안된 초안을 확정한 때에만
-갱신하고, 새 세션에서는 authoritative source와 대조하기 전에 신뢰하지 마세요.
+canonical Handoff 위치에는 명시적인 빈 상태 또는 내가 확정한 checkpoint 하나만
+두세요. 실제 빈 파일이나 placeholder를 빈 상태로 사용하거나 checkpoint 내용을
+임의로 만들지 마세요. checkpoint의 생성·교체·제거는 내가 요청하거나 제안된
+초안을 확정한 때에만 수행하고, 새 세션에서는 authoritative source와 대조하기
+전에 checkpoint를 신뢰하지 마세요. 유효한 빈 상태는 `no current checkpoint`로
+보고하고 authoritative Work Item과 Decision에서 다음 작업을 제안하세요. 최초
+설치안에 명시한 빈 상태는 내가 그 설치안을 승인하면 생성할 수 있습니다.
 모든 Skill과 지원 자산은 대상 프로젝트 내부에만 설치하세요.
 사용자 홈, 전역 Agent Skill directory 또는 프로젝트 밖 공유 경로를 제안하거나 사용하지 마세요.
 내가 설치안을 승인하기 전에는 파일을 만들거나 수정하지 마세요.
@@ -91,9 +96,11 @@ Migration 제안에는 다음을 포함하세요.
 - Candidate intake, 기존 Work Item 중복·통합 검사, 새 Work Item 생성 승인과
   프로젝트별 ready horizon
 - 완료 조건 충족 시 completion review 절차
-- 자동 갱신이 아닌 명시적 Handoff checkpoint 요청·확정 경계, bounded content,
-  freshness watermark와 새 세션에서 authoritative source를 대조해
-  `verified current`, `stale`, `unknown`을 판정하는 방법
+- 하나의 authoritative Handoff 위치와 실제 빈 파일·placeholder가 아닌 명시적인
+  `no current checkpoint` 표현, checkpoint 생성·교체·제거의 요청·확정 경계
+- checkpoint에만 bounded content와 freshness watermark를 요구하고, 새 세션에서
+  authoritative source를 대조해 `verified current`, `stale`, `unknown`을 판정하며
+  빈 상태에서는 freshness label을 적용하지 않는 방법
 - durable-event source, Focus divergence Audit와 canonical state 시각을
   projection 생성 시각과 구분하는 방법
 - native Decision 상태를 rejected, superseded 또는 extension으로 손실 없이
@@ -110,12 +117,22 @@ Migration 제안에는 다음을 포함하세요.
 외부 쓰기만 수행하세요. 사용자 홈, 전역 Agent Skill directory 또는 프로젝트
 밖 공유 경로를 만들거나 사용하지 마세요.
 
-기존 Handoff가 누적 이력을 포함한다면 고유 사실을 잃지 않도록 Work Item,
-Decision, Git 또는 tracker의 권위 있는 원본을 확인한 뒤 최소 참조로 축약하는
-Migration안을 제시하세요. 자동으로 삭제하거나 현재 상태를 추측하지 마세요.
+기존 Handoff를 다음과 같이 구분하고 각 처리안을 제시하세요.
 
-대표 Brief, Work Item 생성 gate, 명시적 Handoff checkpoint, 새 세션 freshness
-Audit와 Verification Context를 검증하세요. 모든 승인된 변경과 로컬 검증이 성공한 뒤에만 Installation Receipt와
+- 사람이 확정한 실제 checkpoint는 보존하고 freshness를 검증합니다.
+- template, placeholder 또는 임의 생성 요약은 명시적 빈 상태로 바꾸도록 제안합니다.
+- 누적 이력형 record는 Work Item, Decision, Git 또는 tracker에서 고유 사실의
+  권위 있는 원본을 모두 확인한 뒤 bounded checkpoint 또는 빈 상태를 제안합니다.
+- 의도나 고유 사실을 판별할 수 없으면 unresolved로 보고하고 사람의 결정을 기다립니다.
+
+승인 전에는 기존 Handoff를 변경하지 말고 자동으로 삭제·축약·clear하거나 현재
+상태를 추측하지 마세요. Migration 제안에는 Handoff 표현, Skill trigger,
+checkpoint에만 필수 필드를 요구하는 Schema 검증, Brief와 Audit 동작, clear 권한,
+실패 처리와 rollback을 포함하세요.
+
+대표 Brief, Work Item 생성 gate, checkpoint 유지, 명시적 checkpoint 제거,
+빈 상태에서 `no current checkpoint`를 보고하는 Brief와 Audit, 새 세션 freshness
+검증 및 Verification Context를 확인하세요. 모든 승인된 변경과 로컬 검증이 성공한 뒤에만 Installation Receipt와
 모든 생성 Skill provenance를 최신 revision과 exact source로 함께 갱신하세요.
 검증이 실패하거나 Migration이 일부만 적용되면 기존 revision을 유지하고,
 부분 적용 상태와 rollback 방법을 보고하세요. 자동 재생성하거나 local

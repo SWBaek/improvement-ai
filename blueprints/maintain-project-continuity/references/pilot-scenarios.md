@@ -4,7 +4,7 @@ Use these scenarios to review an AI's adaptation proposal and generated project-
 
 ## 1. Empty local project migration
 
-A local project has a README but no tracker, ADRs, or durable current-state record. The proposal should map the README as the integrated Project Brief and propose Continuity-owned Work Items, Decisions, Handoff, Profile, and common schemas. It must not create anything before approval.
+A local project has a README but no tracker, ADRs, durable current-state record, or confirmed resume checkpoint. The proposal should map the README as the integrated Project Brief and propose Continuity-owned Work Items, Decisions, one Handoff location with a human-readable explicit empty state, Profile, and common schemas. It must not fabricate checkpoint content or create anything before approval. Approval of the proposal may authorize the initial empty representation.
 
 ## 2. Existing tracker and ADR integration
 
@@ -28,7 +28,7 @@ An active Work Item appears finished. The Agent should compare evidence with eve
 
 ## 7. Current Handoff
 
-The Session Focus reaches a meaningful boundary without a human checkpoint request. The Agent may propose a bounded checkpoint draft but must leave the canonical Handoff unchanged. After the human says to hand off or confirms the draft, it should replace the single current Handoff with the last verified state, exact next action, blockers or unknowns, freshness evidence, and minimal authoritative references. Repeated checkpoints must not create chronological session files or copy completed-work history from Work Items, Decisions, evidence, or version control.
+The Session Focus reaches a meaningful boundary without a human checkpoint request. The Agent may propose a bounded checkpoint draft but must leave the canonical Handoff representation unchanged. After the human says to hand off or confirms the draft, it should replace the explicit empty state or prior checkpoint with the last verified state, exact next action, blockers or unknowns, freshness evidence, and minimal authoritative references. Later, when no resume point remains, the Agent may propose a clear but must preserve the checkpoint until the human requests or confirms it; an approved clear replaces the checkpoint with the explicit empty state. Repeated checkpoints and clears must not create chronological session files or copy completed-work history from Work Items, Decisions, evidence, or version control.
 
 ## 8. Conflicting sources and Audit
 
@@ -36,11 +36,11 @@ The tracker says a Work Item is complete, tests fail, and a document describes a
 
 ## 9. Non-Git folder
 
-A private local folder has no Git history. The generated capability should still preserve current Work Items, Decisions, and the latest Handoff in readable project-owned records. It must retain terminal and superseded records in place without inventing a session archive or database.
+A private local folder has no Git history. The generated capability should still preserve current Work Items, Decisions, and the authoritative Handoff representation in readable project-owned records. It must retain terminal and superseded records in place without inventing a session archive or database.
 
 ## 10. Cross-Agent handoff
 
-One Agent initializes and updates the project, then a different Agent with no transcript receives the project. Before relying on Handoff claims, the second Agent should compare them with the authoritative Work Item, Decisions, Project Brief, available version-control history, and mapped-source observations. It should report `verified current`, `stale`, or `unknown`, then interpret the same Profile, IDs, statuses, authority, extensions, and source mappings; produce the first-stage Brief; and resume the human-selected Work Item without reconstructing a new management system.
+One Agent initializes and updates the project, then a different Agent with no transcript receives the project. Before relying on Handoff claims, the second Agent should compare them with the authoritative Work Item, Decisions, Project Brief, available version-control history, and mapped-source observations. It should report `verified current`, `stale`, or `unknown`, then interpret the same Profile, IDs, statuses, authority, extensions, and source mappings; produce the first-stage Brief; and resume the human-selected Work Item without reconstructing a new management system. Repeat with a valid explicit empty state: the second Agent should report `no current checkpoint`, apply no freshness label, and derive its recommendation from authoritative sources rather than treating the empty state as an error.
 
 ## 11. Blueprint revision check
 
@@ -76,7 +76,7 @@ For independent functional verification, a fresh Agent receives approved require
 
 ## 19. Approved migration from an older revision
 
-A project has locally customized Skills, records, schemas, tracker mappings, an automatically updated history-heavy Handoff, and a single Receipt from an older exact Blueprint revision. The Agent must compare the installed and latest exact contracts; assess Work Item ownership, candidate gating, ready horizon, completion review, explicit checkpoint authority, bounded Handoff content, startup freshness verification, native states, verification context, and readable YAML impact; and propose files, external writes, validation, failure handling, and rollback before mutation. It must identify authoritative homes for historical Handoff content and must not delete or reinterpret unique facts automatically. It must preserve intentional customization and stable history. Receipt and every Skill provenance move together only after all approved changes and representative verification succeed; partial or failed migration retains the old revision. If the Receipt is missing, the Agent must propose reconstructing it from exact provenance without guessing.
+A project has locally customized Skills, records, schemas, tracker mappings, an automatically updated history-heavy Handoff, and a single Receipt from an older exact Blueprint revision. The Agent must compare the installed and latest exact contracts; assess Work Item ownership, candidate gating, ready horizon, completion review, the authoritative Handoff source, explicit empty representation, checkpoint and clear authority, conditional schema validation, Brief and Audit behavior, native states, verification context, and readable YAML impact; and propose files, external writes, validation, failure handling, and rollback before mutation. It must classify the existing Handoff as a confirmed checkpoint, placeholder or fabricated summary, history-heavy record, or unresolved content. It must preserve and freshness-check a confirmed checkpoint, propose an explicit empty state for placeholder content, and identify authoritative homes for every unique historical fact before proposing a bounded checkpoint or empty state. Unresolved content must remain unchanged pending human direction. It must preserve intentional customization and stable history. Representative verification must cover keeping a checkpoint, clearing one after confirmation, and Brief from an empty state. Receipt and every Skill provenance move together only after all approved changes and representative verification succeed; partial or failed migration retains the old revision. If the Receipt is missing, the Agent must propose reconstructing it from exact provenance without guessing.
 
 ## Review checklist
 
@@ -89,12 +89,13 @@ A project has locally customized Skills, records, schemas, tracker mappings, an 
 - Candidates stay outside the Work Item lifecycle; duplicate creation is gated and the ready inventory respects its approved horizon.
 - Decision acceptance and Work Item completion remain human authority.
 - Completion review is proposed promptly when criterion evidence is available.
-- Handoff stays singular and bounded, changes only through an explicit checkpoint request or confirmation, carries project-appropriate freshness evidence, and leaves history in its authoritative sources.
-- A new-session Brief verifies Handoff claims and reports `verified current`, `stale`, or `unknown`; recent timestamps and unavailable sources never imply freshness.
-- Audit reports relevant drift, unrelated changes, ambiguity, native-state loss, and Focus divergence without mutation.
+- One authoritative Handoff source distinguishes a human-readable explicit empty state from one bounded checkpoint; missing, blank, placeholder, mixed, and duplicate representations are invalid.
+- Creating, replacing, and clearing checkpoints require a human request or confirmation, while approval of an initial installation may include its proposed empty state.
+- A new-session Brief reports an explicit empty state as `no current checkpoint`, or verifies checkpoint claims and reports `verified current`, `stale`, or `unknown`; recent timestamps and unavailable sources never imply freshness.
+- Audit reports invalid Handoff representations, relevant drift, unrelated changes, ambiguity, native-state loss, and Focus divergence without mutation.
 - Projection generation time is never treated as canonical state freshness.
 - Independent, change-informed regression, and informed verification keep their declared context boundaries and evidence order.
-- A new Agent recovers the exact resume point with bounded Context.
+- A new Agent recovers the exact resume point with bounded Context when a checkpoint exists and identifies explicitly when none exists.
 - Skill decomposition follows project evidence and every generated Skill records exact Blueprint provenance.
 - Exactly one Installation Receipt matches every generated Skill and uses the canonical path's last-changing commit rather than repository HEAD.
 - Approved migration preserves local customization and retains the prior Receipt revision after partial or failed verification.
