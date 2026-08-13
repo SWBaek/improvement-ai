@@ -47,4 +47,4 @@ Idea 단계에서는 실행 가능한 runtime, 설치형 Skill, formal schema나
 | [AI–Human Interactive Decision Workbench](ai-human-interactive-decision-workbench.md) | `Parked` | 2026-08-07 | 실제 프로젝트에서 채팅 기반 다중 결정 검토의 반복 실패와 Pilot 후보가 확인되면 재개 |
 | [Local Project Continuity](local-project-continuity.md) | `Promoted` | 2026-08-07 | Pilot evidence가 최초 문제나 핵심 가설을 반박할 때 탐색 배경 재검토 |
 | [Private Remote Artifact Preview](private-remote-artifact-preview.md) | `Exploring` | 2026-08-10 | 단일 고정 Serve port와 전용 Artifact Root를 사용하는 개인 전역 Skill Pilot에서 정적 게시·Dashboard·cleanup을 검증하고 동적 app 실패 시 Hub 또는 port pool 필요성을 판단 |
-| [Subtractive Edit Fidelity](subtractive-edit-fidelity.md) | `Exploring` | 2026-08-13 | 삭제 요청이 반전·비활성화로 바뀐 사례를 더 모으고, 프로젝트 로컬 생성 지침으로 줄일 수 있는지 판단되면 Candidate 여부를 결정 |
+| [Subtractive Edit Fidelity](subtractive-edit-fidelity.md) | `Exploring` | 2026-08-13 | always-on 한두 문장의 결과 계약이 정책 파일의 반전 잔존을 줄이는지 작은 대조 실험으로 확인. 실패하면 Skill·Blueprint로 올리지 않음 |
