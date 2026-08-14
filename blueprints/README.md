@@ -20,6 +20,7 @@ Blueprint의 버전은 저장소 HEAD가 아니라 해당 canonical `BLUEPRINT.m
 |---|---|
 | Candidate | 반복되는 문제가 issue에 기록됐지만 Blueprint가 아직 없다. |
 | In Progress | Blueprint가 존재하며 실제 프로젝트에서 생성 결과를 Pilot 중이다. |
+| Paused | Blueprint는 보존하지만 기록된 재개 조건을 충족할 때까지 active Pilot과 신규 설치 권장을 중단한다. |
 | Promoted | 서로 다른 두 프로젝트에서 생성·실사용되어 불변 조건과 trigger가 확인됐다. |
 | Deprecated | 대체 Blueprint 또는 폐기 이유와 기존 소비자를 위한 안내가 기록됐다. |
 
@@ -28,7 +29,7 @@ Blueprint의 버전은 저장소 HEAD가 아니라 해당 canonical `BLUEPRINT.m
 | Blueprint | Status | Install | Contract | Tracking |
 |---|---|---|---|---|
 | `manage-focus-cycle` | In Progress | [설치 안내](manage-focus-cycle/README.md) | [Blueprint](manage-focus-cycle/BLUEPRINT.md) | [#15](https://github.com/SWBaek/improvement-ai/issues/15) |
-| `maintain-project-continuity` | In Progress | [설치 안내](maintain-project-continuity/README.md) | [Blueprint](maintain-project-continuity/BLUEPRINT.md) | [#21](https://github.com/SWBaek/improvement-ai/issues/21) |
+| `maintain-project-continuity` | Paused | [설치 안내](maintain-project-continuity/README.md) | [Blueprint](maintain-project-continuity/BLUEPRINT.md) | [#21](https://github.com/SWBaek/improvement-ai/issues/21) |
 
 ## 작성 원칙
 

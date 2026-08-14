@@ -52,7 +52,7 @@ exact-revision Blueprint
 | Blueprint | 상태 | 목적 | 사용 |
 |---|---|---|---|
 | `manage-focus-cycle` | In Progress | 전체 프로젝트의 가짜 종료점을 만들지 않고 하나의 제한된 Focus Cycle을 관리하는 프로젝트 로컬 capability를 생성합니다. | [설치](blueprints/manage-focus-cycle/README.md) · [계약](blueprints/manage-focus-cycle/BLUEPRINT.md) |
-| `maintain-project-continuity` | In Progress | 세션·Agent·모델이 바뀌어도 작업, 결정, 근거와 인수인계를 보존하는 프로젝트 로컬 capability를 생성합니다. | [설치](blueprints/maintain-project-continuity/README.md) · [계약](blueprints/maintain-project-continuity/BLUEPRINT.md) |
+| `maintain-project-continuity` | Paused | 실패한 Pilot에서 확인된 상호작용 비용을 재검토하는 동안 프로젝트 로컬 continuity 설계를 보존합니다. | [설치](blueprints/maintain-project-continuity/README.md) · [계약](blueprints/maintain-project-continuity/BLUEPRINT.md) |
 
 [Blueprint index](blueprints/README.md)와 각 Blueprint의 tracking issue를 참고하세요.
 
@@ -70,6 +70,7 @@ exact-revision Blueprint
 |---|---|
 | Candidate | 반복되는 문제가 issue에 존재하지만 Blueprint는 아직 없습니다. |
 | In Progress | Blueprint가 존재하며 실제 프로젝트에서 생성 결과를 Pilot 중입니다. |
+| Paused | Blueprint는 보존하지만 기록된 재개 조건을 충족할 때까지 active Pilot과 신규 설치 권장을 중단합니다. |
 | Promoted | 서로 다른 두 프로젝트에서 capability가 생성·실사용됐습니다. |
 | Deprecated | 대체 또는 폐기 이유와 소비자 안내가 기록됐습니다. |
 

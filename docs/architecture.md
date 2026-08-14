@@ -45,6 +45,7 @@ Idea note는 canonical capability source가 아니다. 탐색 중인 문제와 �
 - 채택 전 탐색은 `docs/idea/`의 Idea note에서 수행한다.
 - Candidate는 GitHub issue에만 존재한다.
 - 첫 Pilot을 시작할 때 `blueprints/<name>/BLUEPRINT.md`를 만들고 In Progress로 등록한다.
+- 부정적 또는 불확정 evidence로 현재 설계를 계속 Pilot하는 비용이 정당화되지 않으면 canonical 경로를 보존한 채 Paused로 변경하고 실패 근거, 기존 소비자 안내와 관찰 가능한 재개 조건을 기록한다.
 - 서로 다른 두 프로젝트에서 생성·실사용된 뒤 불변 조건과 trigger가 확인되면 Promoted로 변경한다.
 - 대체나 폐기 시 같은 경로에 소비자 안내를 남기고 Deprecated로 변경한다.
 

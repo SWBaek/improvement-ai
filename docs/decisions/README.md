@@ -15,3 +15,4 @@
 | [0009](0009-use-path-scoped-git-revisions-for-blueprint-installations.md) | Accepted | Blueprint 설치 버전으로 canonical path의 마지막 Git revision 사용 |
 | [0010](0010-prohibit-global-installation-of-generated-capabilities.md) | Accepted | Blueprint 생성 capability와 지원 자산의 전역 설치 금지 |
 | [0011](0011-standardize-idea-status-management.md) | Accepted | Idea 상태, 마지막 검토일과 다음 조건을 표준화 |
+| [0012](0012-preserve-paused-blueprints.md) | Accepted | 부정적 Pilot evidence가 있는 Blueprint를 Paused로 보존 |

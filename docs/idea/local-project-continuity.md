@@ -3,11 +3,13 @@
 ## Status
 
 - State: `Promoted`
-- Last reviewed: 2026-08-07
-- Next trigger: Pilot evidence가 최초 문제나 핵심 가설을 반박할 때 이 탐색 배경을 재검토한다.
+- Last reviewed: 2026-08-14
+- Next trigger: 사용자 개입을 기본값으로 삼지 않는 더 작은 continuity 가설이 제안되어 최초 문제와 이 탐색의 record-first 가정을 다시 비교할 때 재검토한다.
 - Follow-up: [`maintain-project-continuity`](../../blueprints/maintain-project-continuity/BLUEPRINT.md), [tracking issue #21](https://github.com/SWBaek/improvement-ai/issues/21)
 
 이 문서는 탐색 배경과 v0.1 설계 가설을 보존하는 동결된 기록이며 더 이상 규범적 원본이 아니다. 현재 계약은 canonical Blueprint에서, Pilot 진행 상태와 evidence는 tracking issue에서만 관리한다.
+
+2026-08-14 재검토에서 세션 간 복구 문제 자체는 남아 있지만, 많은 record 유형과 사전 선택으로 복구를 보장하려던 가설은 첫 실사용의 사용자 인지 부하를 정당화하지 못했다. 구체적인 결과와 후속 상태는 tracking issue에서 관리한다.
 
 ## 문제
 

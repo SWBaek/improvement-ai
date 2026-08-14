@@ -52,14 +52,16 @@ Label 정의의 원본은 `.github/issue-labels.json`이다.
 | Type | 정확히 하나 | `type: blueprint`, `type: bug` |
 | Area | 주 영역 하나, 필요하면 복수 | `area: blueprints`, `area: github` |
 | Priority | triage 이후 정확히 하나 | `priority: p0` ~ `priority: p3` |
-| Status | 열린 issue에 정확히 하나 | `status: triage`, `status: ready` |
+| Status | 열린 issue에 정확히 하나 | `status: triage`, `status: ready`, `status: paused` |
 
 ```text
 status: triage → status: ready → status: in-progress → closed
                          ↘ status: blocked ↗
+
+Blueprint tracking: status: in-progress ↔ status: paused
 ```
 
-완료하거나 진행하지 않기로 한 issue는 닫고 status label을 제거한다. Catalog에서 제거된 legacy label은 역사적 issue 보존을 위해 remote에 남을 수 있다.
+`status: blocked`는 외부 결정이나 선행 작업을 기다리는 상태다. `status: paused`는 Blueprint의 부정적·불확정 evidence를 보존하면서 명시한 재개 조건까지 Pilot을 의도적으로 중단한 상태다. 완료하거나 진행하지 않기로 한 issue는 닫고 status label을 제거한다. Catalog에서 제거된 legacy label은 역사적 issue 보존을 위해 remote에 남을 수 있다.
 
 ## Capability lifecycle
 
@@ -67,6 +69,7 @@ status: triage → status: ready → status: in-progress → closed
 |---|---|---|
 | Candidate | `triage` 또는 `ready` | 문제, target context, invariants와 Pilot 조건 |
 | In Progress | `in-progress` | `blueprints/<name>/BLUEPRINT.md`와 index 등록 |
+| Paused | `paused`인 열린 tracking issue | 같은 Blueprint, 실패 또는 불확정 evidence, 기존 소비자 안내와 관찰 가능한 재개 조건 |
 | Promoted | Pilot 기준 충족 후 issue 종료 | 같은 Blueprint와 두 프로젝트의 비공개 정보 없는 evidence 요약 |
 | Deprecated | 폐기 issue 종료 | 같은 경로의 대체 또는 폐기 안내 |
 
