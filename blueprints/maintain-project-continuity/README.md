@@ -23,21 +23,36 @@
 
 설치안에는 다음을 포함하세요.
 
-- 생성할 Skill의 이름, trigger, 책임과 프로젝트 로컬 경로
+- 생성할 Skill의 이름, trigger, non-trigger, 책임과 프로젝트 로컬 경로
+- 일반 질의에는 개입하지 않으면서 durable work 전에 Brief로 연결하는 최소한의
+  always-on Agent instruction
 - Project Brief, Work Item, Decision, Knowledge/Evidence와 Handoff 영역별 Integration 또는 Migration 선택
 - Work Item을 프로젝트 로컬에서 관리할지, 기존 또는 선택한 GitHub Issues·Jira 같은 외부 tracker와 연동할지에 대한 나의 명시적 선택
 - 기존 README, issue, ADR, tracker와 연구 기록의 source-of-truth 대응
 - Candidate 보존 위치, Work Item 생성 전 중복·통합 검사와 프로젝트별 ready horizon
+- 프로젝트 전역 lock이 아닌 세션별 Session Focus, 같은 브랜치의 병렬 Agent와
+  working-tree overlap을 처리하는 방법
 - 하나의 authoritative Handoff 위치, 명시적인 `no current checkpoint` 상태, bounded checkpoint와 새 세션의 freshness 검증 및 기능 검증 context mode
 - 프로젝트 로컬 Profile, record와 Schema 구성
 - 인간 승인과 외부 권한 경계
-- Brief, Decision, Handoff, Verification Context와 Audit의 검증 방법
+- Brief, durable-work entry, Decision, Handoff, Verification Context와 Audit의 검증 방법
 - Blueprint Installation Receipt의 프로젝트 로컬 경로
 - 생성하거나 변경할 파일
 
 같은 정보를 기존 원본과 새 Continuity record에 중복 관리하지 마세요.
 읽기 전용 조사 후 설치안을 작성하기 전에 Work Item 관리 위치를 반드시 질문하세요.
 외부 tracker 선택은 계정 설정, 활성화, 인증 또는 쓰기 승인이 아닙니다.
+다른 Agent가 재개·검증하기 위해 objective, 완료 조건, 현재 위치 또는 evidence가
+필요한 변경, 재사용 가능한 조사·결론이나 의미 있는 다단계 작업은 durable work로
+보고 변경 전에 Brief를 수행하세요. 일반 질의, 쉽게 다시 확인할 수 있는 읽기 전용
+점검, 일시적 메모와 원자적인 의미 보존 수정은 제외하세요. 일치하는 committed Work
+Item이 없으면 읽기 전용 조사와 update, Candidate, 통합 또는 생성안을 제시한 뒤
+필요한 인간 승인과 외부 쓰기 승인을 기다리고, 그 전에는 프로젝트를 변경하지 마세요.
+Session Focus는 각 Agent 세션에 속하며, 여러 세션이 같은 브랜치에서 서로 다른
+Work Item을 선택할 수 있습니다. 전역 Focus나 Agent registry를 만들지 마세요.
+Handoff checkpoint는 인계 대상으로 선택한 한 세션의 Focus만 담고 다른 active
+Work Item이나 병렬 세션을 취소·대체하지 않게 하세요. 나머지 현재 위치는 각 Work
+Item에서 복구하고 병렬 checkpoint나 세션 archive를 만들지 마세요.
 canonical Handoff 위치에는 명시적인 빈 상태 또는 내가 확정한 checkpoint 하나만
 두세요. 실제 빈 파일이나 placeholder를 빈 상태로 사용하거나 checkpoint 내용을
 임의로 만들지 마세요. checkpoint의 생성·교체·제거는 내가 요청하거나 제안된
@@ -78,7 +93,8 @@ Capability Blueprint의 최신 revision과 비교하고 Migration하세요.
 
 먼저 현재 프로젝트를 읽기 전용으로 조사하세요. 기존 Installation Receipt,
 모든 생성 Skill의 provenance, Profile, Schema, record, Handoff, tracker mapping,
-Agent instruction과 의도적인 local customization을 확인하세요.
+Agent instruction, Skill trigger와 non-trigger, working tree, 기존 Focus 표현,
+동시 Agent 사용 방식과 의도적인 local customization을 확인하세요.
 아직 파일, 외부 tracker 또는 다른 상태를 변경하지 마세요.
 
 canonical BLUEPRINT.md path를 마지막으로 변경한 최신 40자리 commit을 확인하고,
@@ -95,14 +111,24 @@ Migration 제안에는 다음을 포함하세요.
   연동할지에 대한 나의 명시적 선택
 - Candidate intake, 기존 Work Item 중복·통합 검사, 새 Work Item 생성 승인과
   프로젝트별 ready horizon
+- durable work와 제외 대상을 구분하고 변경 전에 Brief로 연결하는 최소 always-on
+  Agent instruction 및 Skill trigger
+- 프로젝트 전역 lock이 아닌 세션별 Focus, 같은 브랜치에서 서로 다른 Work Item을
+  선택한 병렬 세션, 기존 dirty path 관찰과 overlap 처리
 - 완료 조건 충족 시 completion review 절차
 - 하나의 authoritative Handoff 위치와 실제 빈 파일·placeholder가 아닌 명시적인
-  `no current checkpoint` 표현, checkpoint 생성·교체·제거의 요청·확정 경계
+  `no current checkpoint` 표현, 선택된 한 세션의 인계 범위와 checkpoint
+  생성·교체·제거의 요청·확정 경계
 - checkpoint에만 bounded content와 freshness watermark를 요구하고, 새 세션에서
   authoritative source를 대조해 `verified current`, `stale`, `unknown`을 판정하며
   빈 상태에서는 freshness label을 적용하지 않는 방법
 - durable-event source, Focus divergence Audit와 canonical state 시각을
   projection 생성 시각과 구분하는 방법
+- 빈 Handoff에서도 non-ignored tracked/untracked working tree와 unscoped durable
+  work를 계속 검사하고, 의미 있는 Focus 없는 변경을 clean/`OK`가 아닌
+  `needs attention`으로 보고하는 방법
+- Candidate, Knowledge/Evidence와 Handoff의 요약 write authority가 세부 인간 승인
+  정책보다 넓지 않음을 확인하는 방법
 - native Decision 상태를 rejected, superseded 또는 extension으로 손실 없이
   매핑하는 방법과 Handoff ownership의 일관성
 - independent verification, change-informed regression verification과
@@ -130,9 +156,17 @@ Migration 제안에는 다음을 포함하세요.
 checkpoint에만 필수 필드를 요구하는 Schema 검증, Brief와 Audit 동작, clear 권한,
 실패 처리와 rollback을 포함하세요.
 
-대표 Brief, Work Item 생성 gate, checkpoint 유지, 명시적 checkpoint 제거,
-빈 상태에서 `no current checkpoint`를 보고하는 Brief와 Audit, 새 세션 freshness
-검증 및 Verification Context를 확인하세요. 모든 승인된 변경과 로컬 검증이 성공한 뒤에만 Installation Receipt와
+기존의 프로젝트 전역 Focus 표현은 세션별 Focus로 바꾸는 안을 제시하되 Work Item,
+Handoff 또는 dirty work를 자동으로 재귀속하지 마세요. 기존 dirty work, 누락된
+Evidence나 Candidate는 unresolved migration input으로 보고 authoritative Work Item,
+기록 또는 유지·통합안을 제시한 뒤 사람의 결정을 기다리세요. Agent/session registry나
+세션별 Handoff archive를 새로 만들지 마세요.
+
+Continuity를 언급하지 않은 durable research 요청과 non-trigger 대조군, Work Item
+생성 gate, 서로 다른 Work Item을 선택한 같은 브랜치의 병렬 세션과 overlap 경고,
+checkpoint 유지, 명시적 checkpoint 제거, 빈 상태에서 `no current checkpoint`를
+보고하면서 working tree Audit을 계속하는 동작, 새 세션 freshness 검증 및
+Verification Context를 확인하세요. 모든 승인된 변경과 로컬 검증이 성공한 뒤에만 Installation Receipt와
 모든 생성 Skill provenance를 최신 revision과 exact source로 함께 갱신하세요.
 검증이 실패하거나 Migration이 일부만 적용되면 기존 revision을 유지하고,
 부분 적용 상태와 rollback 방법을 보고하세요. 자동 재생성하거나 local
