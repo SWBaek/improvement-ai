@@ -4,6 +4,8 @@
 
 이 README는 사람을 위한 설치 안내다. 규범적 계약은 [BLUEPRINT.md](BLUEPRINT.md)이며, 여기서 말하는 설치는 공통 package를 복사하는 것이 아니라 대상 프로젝트에 맞는 Skill, 기록과 Schema를 AI가 생성하는 과정이다.
 
+> **Pilot 중단:** exact revision `6860d1899296ee65b96569dee66831eeada69588`의 실사용에서 반복적인 분류·선택·승인 질문이 복구 가치보다 큰 상호작용 비용을 만들었다. Blueprint는 학습 자산으로 보존하지만 현재 신규 설치와 active Pilot을 권장하지 않는다. 기존 설치는 자동으로 무효화하거나 변경·제거하지 않으며, 프로젝트 소유자가 계속 사용하거나 단순화하거나 제거할 수 있다.
+
 ## 이런 경우에 사용한다
 
 - GitHub·GitLab issue 없이 로컬 또는 비공개 프로젝트를 운영한다.
@@ -86,6 +88,8 @@ https://github.com/SWBaek/improvement-ai/blob/main/blueprints/maintain-project-c
 ## 기존 설치 Migration
 
 이미 이 Blueprint로 생성한 프로젝트 로컬 capability가 있다면 아래 프롬프트를 대상 프로젝트의 AI에게 그대로 전달한다. 이 프롬프트는 특정 과거 revision에 한정하지 않으며, 설치된 exact revision과 최신 exact revision을 비교해 필요한 변경만 제안한다.
+
+`Paused` 상태와 pause notice만 반영하기 위해 기존 설치를 Migration하지 않는다. read-only 비교에서 최신 path revision을 발견해도 생성 동작 계약의 차이가 없다면 Receipt와 provenance를 그대로 유지한다.
 
 ```text
 현재 프로젝트에 설치된 Maintain Project Continuity capability를 다음
@@ -179,5 +183,5 @@ https://github.com/SWBaek/improvement-ai/blob/main/blueprints/maintain-project-c
 ## 계약과 상태
 
 - Canonical contract: [BLUEPRINT.md](BLUEPRINT.md)
-- Status: In Progress
+- Status: Paused
 - Tracking: [issue #21](https://github.com/SWBaek/improvement-ai/issues/21)

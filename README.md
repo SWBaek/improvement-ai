@@ -52,7 +52,7 @@ The approach was motivated by Andrej Karpathy's `llm-wiki.md`: a compact idea fi
 | Blueprint | Status | Purpose | Use |
 |---|---|---|---|
 | `manage-focus-cycle` | In Progress | Generate project-local capabilities for managing one bounded Focus Cycle without inventing a final endpoint for the containing project. | [Install](blueprints/manage-focus-cycle/README.md) · [Contract](blueprints/manage-focus-cycle/BLUEPRINT.md) |
-| `maintain-project-continuity` | In Progress | Generate project-local continuity capabilities that preserve work, decisions, evidence, and handoff across sessions, Agents, and models. | [Install](blueprints/maintain-project-continuity/README.md) · [Contract](blueprints/maintain-project-continuity/BLUEPRINT.md) |
+| `maintain-project-continuity` | Paused | Retain the project-local continuity design while its interaction cost is reconsidered after a failed Pilot. | [Install](blueprints/maintain-project-continuity/README.md) · [Contract](blueprints/maintain-project-continuity/BLUEPRINT.md) |
 
 See the [Blueprint index](blueprints/README.md) and each Blueprint's tracking issue.
 
@@ -70,6 +70,7 @@ Generated Skills follow the target Agent's project-local discovery path. For exa
 |---|---|
 | Candidate | A repeated problem exists as an issue, but no Blueprint has been written. |
 | In Progress | A Blueprint exists and generated results are being piloted in real projects. |
+| Paused | The Blueprint is retained, but active Pilots and new-install recommendations are stopped until a recorded resume condition is met. |
 | Promoted | Two different projects have generated and used the capability successfully. |
 | Deprecated | A replacement or retirement reason and consumer guidance are recorded. |
 

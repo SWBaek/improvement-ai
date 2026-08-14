@@ -25,11 +25,14 @@ Idea note
   → In Progress Blueprint and tracking issue
   → Promoted after two independent real-project Pilots
   → Deprecated when replaced or retired
+
+In Progress ↔ Paused with negative evidence and a concrete resume condition
 ```
 
 - **Idea** explores a problem or hypothesis without promising implementation.
 - **Candidate** records a repeated problem, target contexts, invariants, authority, and Pilot conditions in an issue.
 - **In Progress** has a canonical Blueprint and is being generated and used in real projects.
+- **Paused** retains the canonical Blueprint after negative or inconclusive evidence, but stops active Pilots and new-install recommendations until a recorded resume condition is met.
 - **Promoted** requires maintainer-confirmed evidence from two different target projects.
 - **Deprecated** retains the canonical path with a replacement or retirement explanation.
 

@@ -1,8 +1,14 @@
 # Maintain Project Continuity Capability Blueprint
 
-- Status: In Progress
+- Status: Paused
 - Tracking: [issue #21](https://github.com/SWBaek/improvement-ai/issues/21)
 - Canonical path: `blueprints/maintain-project-continuity/BLUEPRINT.md`
+
+## Pause notice
+
+Active Pilots and new installations are paused after real use of revision `6860d1899296ee65b96569dee66831eeada69588` showed that repeated Work Item, Focus, Candidate, Evidence, and Handoff choices imposed more interaction and maintenance cost than the continuity they recovered. The contract remains here as reusable design evidence; it is not deprecated, and existing installations are not automatically invalidated, migrated, or removed.
+
+Resume only after a smaller, default-silent interaction model is proposed and approved in [tracking issue #21](https://github.com/SWBaek/improvement-ai/issues/21). A new Pilot must be able to perform ordinary durable local work without pre-work classification questions, interrupt only at genuine human-authority or conflict boundaries, and show that ongoing maintenance costs less than reconstructing the lost context.
 
 Use this Blueprint to design project-owned Agent Skills and supporting records that preserve a project's current work, approved decisions, reusable evidence, and exact resume point across sessions, Agents, and models. Do not copy a fixed implementation from this repository. Inspect the target project, propose how its existing sources map to the Continuity Core, and create project-local artifacts only after human approval.
 
