@@ -3,7 +3,7 @@
 ## Status
 
 - State: `Parked`
-- Last reviewed: 2026-08-13
+- Last reviewed: 2026-08-21
 - Next trigger: 한 줄 결과 계약을 지침 없음·세션 한 줄·always-on으로 대조하는 실험을 실제로 시작할 때 재개한다.
 
 현재는 의도적으로 탐색을 중단했다. 아직 Capability Blueprint, 실행 도구, schema 또는 구현 사양이 아니다. 원인 조사는 [`docs/research/deletion-avoidance-and-rule-inversion.md`](../research/deletion-avoidance-and-rule-inversion.md)에 있다.
@@ -33,7 +33,19 @@
 - “workaround 하지 말라”는 문구만으로는 측정상 거의 나아지지 않는다.
 - 정확한 삭제 구간을 알려 주면 미삭제는 줄지만, 그때는 경계를 넘기거나 코드를 추가하는 실패가 늘어난다.
 
-자세한 출처와 관찰·추론 구분은 조사 note를 따른다.
+자세한 출처와 관찰·추론 구분은 조사 note를 따른다. 아래 공개 일화는 같은 출력 형태를 보여 주는 2차 관찰이며, 이 저장소의 재현 가능한 사례는 위의 `AGENTS.md` 폐기 흐름이다.
+
+## 공개 일화
+
+요청하지 않은 재료를 먼저 넣는 선행 추가는 이 Idea의 본 계약이 아니다. 그 추가가 주제를 활성화한 뒤, 빼라는 요청이 침묵이 아니라 “없음” 문장·금지 계약·가드로 남는 지점이 삭제 충실도 실패와 같다. 아래는 측정이 아니라 공개 게시물이다.
+
+| 출처 | 관찰된 출력 | 이 가설에서 읽는 방식 |
+|---|---|---|
+| [@songkeys, 2026-08-20](https://x.com/songkeys/status/2090416137720999992) | 토마토계란볶음에 동파육을 넣은 뒤, 빼라는 지시에 PR 제목을 「番茄炒蛋（无东坡肉）」로 쓰고 왜 넣지 않았는지 주석에 장황히 설명 | 삭제 결과를 공백이 아니라 제목·주석의 부정문으로 구성한다. |
+| [@YAYOFLAKE3, 2026-08-09](https://x.com/YAYOFLAKE3/status/2086275232118272186) | 라면에 계란과 파만 요청했는데 하치와레를 추가한 뒤, 지적받자 “절대 하치와레 넣으라고 지시한 적 없음”을 메모리에 저장 | 제거 대신 같은 주제에 대한 금지 계약을 새로 쓴다. |
+| [@DrWhitePsyker, 2024-03-19](https://x.com/DrWhitePsyker/status/1769913485931028616) | 제목은 “Scrambled eggs without milk”, 본문 2단계는 우유를 넣음 | 인접하지만 다른 실패다. 제목의 부정이 본문의 부재로 이어지지 않는다. 반전 잔존의 직접 예는 아니다. |
+| 단일 원문 없이 반복 보고 | “X는 아직 출시되지 않았으니 언급하지 마라”는 지시가 결과물에 “X는 출시되지 않았으므로 다루지 않는다”는 문장으로 남음 | 금지 지시를 이행 증명으로 다시 쓴다. 주제가 파일에 남는다. |
+| 원글 답글 [@wladston](https://x.com/wladston/status/2090478510401855558), [@markizko](https://x.com/markizko/status/2090468464947261867) | 동파육이 없음을 보장하는 테스트와, 다른 요리의 기본 경로에 동파육을 남기는 fallback까지 추가한다는 지적 | 독립 세션 로그가 아니다. 코드 Guard-and-Go와 같은 등급의 실패 형태를 유추한 확장이다. |
 
 ## 현재 가설
 
@@ -111,10 +123,14 @@
 - 한 줄이 슬로건을 만족하면 그때 전달 형태를 고른다. 기본 후보는 새 카테고리가 아니라, 대상 프로젝트 always-on 파일에 그 문장을 넣는 Blueprint operation 또는 research 결과다.
 - 효과가 없거나 초과 삭제가 늘면 Skill, 팁 목록, Blueprint로 올리지 않는다.
 - 모델 재학습이나 제품 버그 신고로 범위를 넓히지 않는다.
+- 공개 일화는 대조 실험의 표면 형태 후보일 뿐, 재개 조건(한 줄 결과 계약 대조)을 바꾸지 않는다. 선행 추가를 같은 계약으로 묶는 것은 별 가설이다.
 
 ## 관련 출처와 후속 링크
 
 - 조사: [`docs/research/deletion-avoidance-and-rule-inversion.md`](../research/deletion-avoidance-and-rule-inversion.md)
+- [@songkeys, 2026. 番茄炒蛋와 东坡肉 PR 제목](https://x.com/songkeys/status/2090416137720999992)
+- [@YAYOFLAKE3, 2026. 라면과 하치와레 메모리](https://x.com/YAYOFLAKE3/status/2086275232118272186)
+- [@DrWhitePsyker, 2024. Scrambled eggs without milk](https://x.com/DrWhitePsyker/status/1769913485931028616)
 - [Ebrahimi et al., 2026. *To Add Is Machine, To Delete Is Human*](https://arxiv.org/abs/2607.28887)
 - [Santagata & De Nobili, 2024. *More is More: Addition Bias in Large Language Models*](https://arxiv.org/abs/2409.02569)
 - [Zhou et al., 2026. *How Language Models Process Negation*](https://arxiv.org/abs/2605.03052)
