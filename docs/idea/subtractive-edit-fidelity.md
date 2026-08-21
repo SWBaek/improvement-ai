@@ -12,15 +12,15 @@
 
 범용 코딩 Agent에게 필요 없는 문장, 규칙, 경로를 지우거나 최적화하라고 하면, 대상을 없애기보다 기능하지 않도록 고쳐 남기는 일이 반복된다. 대상을 지운 뒤에도 제목·주석·PR·메모리에 “없음”을 다시 쓰는 일이 같이 반복된다.
 
-이 저장소에서 공개된 흐름은 다음과 같다.
+이 저장소의 공개 커밋은 A처럼 보이는 치환을 남긴다. 대화 세션은 검증되지 않았다. 운영자는 2026-08-21에, 빼라는 지시를 실제로 하지 않았을 수 있다고 정정했다.
 
 1. `AGENTS.md`에 “GitHub 조회나 변경에는 인증된 `gh`만 사용한다”는 규칙이 있었다. 당시 GitHub connector가 동작하지 않아 생긴 우회였다.
-2. connector가 다시 동작했다.
-3. 사람은 그 규칙을 폐기하라고 했다. 즉 해당 구문을 삭제하라고 했다.
-4. 1차 결과([#42](https://github.com/SWBaek/improvement-ai/commit/de5bd09958129576ea7717f848b24661d9f4ca95))는 삭제가 아니었다. 같은 절이 “connector를 우선한다. `gh` 전용 정책을 강제하지 않는다”로 남았다.
-5. 2차 요청 뒤([#43](https://github.com/SWBaek/improvement-ai/commit/39bf2153f38fe467de0355364fd6737528e2b2fa))에야 GitHub 도구 절이 사라졌다.
+2. connector가 다시 동작한 뒤, 1차 커밋([#42](https://github.com/SWBaek/improvement-ai/commit/de5bd09958129576ea7717f848b24661d9f4ca95))은 절을 지우지 않았다. 같은 절이 “connector를 우선한다. `gh` 전용 정책을 강제하지 않는다”로 남았다. 커밋 제목은 정책을 drop한다고 적었다.
+3. 이후 커밋([#43](https://github.com/SWBaek/improvement-ai/commit/39bf2153f38fe467de0355364fd6737528e2b2fa))에서 GitHub 도구 절이 사라졌다.
 
-같은 형태의 치환은 이 예시만이 아니다. 죽은 코드, 쓰이지 않는 기능, 오래된 주석, 최적화 대상 경로에서도 “없애라”가 “끄거나 반대로 적어 남겨라”가 된다. Codex와 Grok 모두에서 관찰되었다.
+출력 형태는 A다. 사람이 삭제를 요청했는지는 커밋만으로 단정하지 않는다. 정책 갱신 요청을 반전 문장으로 실현했을 수도 있다.
+
+같은 형태의 치환은 이 예시만이 아니다. 죽은 코드, 쓰이지 않는 기능, 오래된 주석, 최적화 대상 경로에서도 “없애라”가 “끄거나 반대로 적어 남겨라”가 된다. 다만 그 일반화는 빼기 지시가 확인된 과제에만 적용한다.
 
 핵심 불편은 모델이 게으르다는 인상이 아니다. 사람이 공백을 기대한 자리에, 반대 의미의 새 규칙이나 “이것을 빼 달라”는 서술 자체가 남아 이후 세션의 기본 동작까지 왜곡한다는 점이다.
 
@@ -31,7 +31,7 @@
 - **A. 대상 잔존.** 원 문장·경로가 극성 반전, 가드, 주석 처리, feature flag, fallback으로 파일에 남는다. 반전된 규칙은 원 규칙을 폐기하지 않는다. 같은 주제를 반대 방향으로 다시 계약한다.
 - **B. 부재 서술 잔존.** 대상은 사라졌는데 제목, 커밋, PR, 주석, 메모리에 “X 없음”, “Y 제거”, “절대 넣지 말 것”이 남는다.
 
-이 저장소의 재현 가능한 A는 위의 `AGENTS.md` 폐기 1차 결과다. 공개 일화의 토마토 PR 제목과 하치와레 메모리는 주로 B다. 같은 운영자의 다른 프로젝트에서 B와 삭제 성공·반례가 추가로 확인됐다. 아래 프로젝트 사례를 따른다.
+이 저장소 #42는 A 형태의 출력이지만, 빼기 지시가 대화로 확인되지 않아 A 확정이 아니다. 세션이 확인된 실패는 주로 B다. 공개 일화의 토마토 PR 제목과 하치와레 메모리, 아래 프로젝트 사례의 Grok 금지 문장과 `doc-extract-review` 이슈 #32다.
 
 그 밖의 측정된 관찰은 조사 note를 따른다.
 
@@ -57,16 +57,17 @@
 
 ## 프로젝트 사례
 
-2026-08-21에 열린 Paseo 워크스페이스의 git 산출물을 읽었다. 에이전트 대화 전문은 `improvement-ai` 세션 말고는 이 데몬에 없었다. 비공개 경로와 vault 내용은 적지 않는다. A/B는 이 가설의 읽기다.
+2026-08-21에 열린 Paseo 워크스페이스의 git 산출물과, 확인된 한 Codex 세션을 읽었다. 비공개 경로와 vault 내용은 적지 않는다. A/B는 이 가설의 읽기다.
 
 | 출처 | 관찰된 출력 | 읽기 |
 |---|---|---|
-| [sdoc-editor `c041cd5`](https://github.com/SWBaek/sdoc-editor/commit/c041cd57cb65ca2e3c76e0f457acada55264f174) → [`5565886`](https://github.com/SWBaek/sdoc-editor/commit/556588650b040c428d1b091a2f5dec96635d20e1) → [`4892442`](https://github.com/SWBaek/sdoc-editor/commit/4892442d32110916ace39581bc5ee19e06e78fac) | 2026-08-05 Grok advisor 규칙을 `AGENTS.md`에서 지운 뒤, 같은 날 다른 PR이 `Do not use Grok CLI… The project no longer maintains or requires them.`을 다시 넣었다. 이틀 뒤 orchestration 제거와 함께 그 문장도 사라졌다. | **B.** 대상은 이미 없는데 금지·“no longer” 계약으로 주제가 돌아온다. 공개 일화의 하치와레 메모리와 같은 형태다. 대조 실험의 B 과제 후보다. |
-| [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373) | 2026-08-13 `GitHub operations` 절을 통째로 삭제했다. PR 제목·본문은 CLI-only 제한을 drop하고 `no longer need to be restricted to authenticated gh`라고 적었다. 파일에는 반전 문장이 남지 않았다. | **A 성공.** 본 작업이 정책 폐기라 제목의 제거 서술은 잔여 동작이다. 이 저장소 #42와 같은 요청인데 한 번에 삭제된 대조다. |
-| 제어 아키텍처 프로젝트 `5ce0b41` (2026-08-18) | Continuity·Focus 절과 프로젝트 로컬 Skill을 삭제하고, 폐기를 활성 Decision으로 기록했다. `AGENTS.md`에는 금지 대체 문장이 남지 않았다. | **삭제 성공 + 정당한 결정 기록.** 운영 체계 폐기가 본 작업이고, 결정 로그가 그 잔여 동작이다. B가 아니다. |
+| [sdoc-editor `c041cd5`](https://github.com/SWBaek/sdoc-editor/commit/c041cd57cb65ca2e3c76e0f457acada55264f174) → [`5565886`](https://github.com/SWBaek/sdoc-editor/commit/556588650b040c428d1b091a2f5dec96635d20e1) → [`4892442`](https://github.com/SWBaek/sdoc-editor/commit/4892442d32110916ace39581bc5ee19e06e78fac) | 2026-08-05 Grok advisor 규칙을 `AGENTS.md`에서 지운 뒤, 같은 날 다른 PR이 `Do not use Grok CLI… The project no longer maintains or requires them.`을 다시 넣었다. 이틀 뒤 orchestration 제거와 함께 그 문장도 사라졌다. | **B.** 대상은 이미 없는데 금지·“no longer” 계약으로 주제가 돌아온다. 공개 일화의 하치와레 메모리와 같은 형태다. 대화 세션은 이 데몬에 없다. 커밋 순서로만 읽는다. |
+| [doc-extract-review #32](https://github.com/SWBaek/doc-extract-review/issues/32) (2026-08-21 Codex 세션) | 범위 밖 `mineru-local` 파일을 고친 뒤, 복구하라는 지적을 받고 되돌렸다. 이어서 기술 스택 이슈 본문에 그 폴더를 수정하지 않는다고 명시했다. 사람이 “이런 말은 넣지 마세요. 애초에 연관없던 거잖아요”라고 하자 본문에서 경로를 지웠다. | **B, 세션 확인.** 선행 추가는 별 가설이다. 이 Idea가 겨누는 지점은 복구 뒤에 무관한 이슈에 “수정하지 않는다”를 쓴 것이다. 두 번째 지적 뒤 현재 이슈 본문에는 경로가 없다. |
+| [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373) | 2026-08-13 `GitHub operations` 절을 통째로 삭제했다. PR 제목·본문은 CLI-only 제한을 drop하고 `no longer need to be restricted to authenticated gh`라고 적었다. 파일에는 반전 문장이 남지 않았다. | **정책 절 삭제.** 본 작업이 폐기로 읽히면 제목의 제거 서술은 잔여 동작이다. 이 저장소 #42와 “같은 빼기 요청”이라고 단정하지 않는다. |
+| 제어 아키텍처 프로젝트 `5ce0b41` (2026-08-18) | Continuity·Focus 절과 프로젝트 로컬 Skill을 삭제하고, 폐기를 활성 Decision으로 기록했다. `AGENTS.md`에는 금지 대체 문장이 남지 않았다. | **삭제 + 정당한 결정 기록.** 운영 체계 폐기가 본 작업이고, 결정 로그가 그 잔여 동작이다. B가 아니다. |
 | 개인 WorkOs `AGENTS.md` (2026-08-21 현재) | `gh` 전용 GitHub 규칙은 아직 현행이다. 버린 프로젝트 필드명을 새 기록에 쓰지 말라는 금지 목록은 남아 있다. | **`gh`는 A가 아니다.** 폐기 요청의 잔존이 확인되지 않았다. 필드 금지 목록은 마이그레이션이 끝났다면 **B 후보**, 아직이면 정당한 반전이다. |
 
-질문방 워크스페이스는 빈 디렉터리였다. MinerU Local과 Tailscale 운영 저장소의 최근 산출물에서는 A/B를 보지 못했다.
+질문방 워크스페이스는 빈 디렉터리였다. Tailscale 운영 저장소의 최근 산출물에서는 A/B를 보지 못했다.
 
 ## 현재 가설
 
@@ -133,7 +134,8 @@ Titles, commits, and comments describe remaining behavior.
 - 요청 자체가 공개 동작의 제거일 수 있다. 제목 `Remove legacy adapter`는 잔여 동작을 서술한다. `never “removed Y”`는 그 변경을 잘못된 잔존으로 오인한다. 이 가설이 겨누는 것은 범위 밖·거절된 요소의 부재 광고이지, 제거가 본 작업인 변경의 이름 붙이기 금지가 아니다.
 - 정확한 줄을 강조하면 초과 삭제가 늘어난다는 측정이 있다. 삭제 충실도를 올리다가 관련 없는 인접 규칙을 지울 수 있다.
 - “최소 수정”과 “대상 부재”는 충돌할 수 있다. 한 줄을 반대로 바꾸는 편이 diff는 작아 보인다.
-- 정책 문장 반전(A)과 제목·PR의 “없음” 서술(B)을 같은 한 줄이 고친다는 것은 아직 가설이다. 금지 팔은 B만 줄이고 A는 안 줄거나, 금지 예시를 따라 쓸 수 있다.
+- 정책 문장 반전(A)과 제목·PR·이슈의 “없음” 서술(B)을 같은 한 줄이 고친다는 것은 아직 가설이다. 금지 팔은 B만 줄이고 A는 안 줄거나, 금지 예시를 따라 쓸 수 있다.
+- 반전 출력을 A로 읽으려면 빼기 지시가 대화로 확인돼야 한다. 커밋 제목의 drop만으로는 부족하다.
 - 생성 지침이 길어지면 always-on 예산을 잠식한다. 이 습관을 루트 `AGENTS.md`에 장황히 복제하면 안 된다.
 
 ## 검증 기준 또는 실험 질문
@@ -162,11 +164,11 @@ Titles, commits, and comments describe remaining behavior.
 4. T4만으로 B가 줄면, 상시 문장보다 교정 턴의 재지정이 작은 해법인가?
 5. 같은 요청을 Codex, Grok, 다른 Agent에 반복하면 잔존 비율이 제품보다 과제 유형에 더 의존하는가?
 
-아직 T0 밖의 팔은 이 저장소에서 측정하지 않았다. A의 존재는 이 저장소 #42와 #43로 확인됐다. B의 존재는 sdoc-editor의 Grok 금지 문장 재삽입으로 확인됐다.
+아직 T0 밖의 팔은 이 저장소에서 측정하지 않았다. B는 sdoc-editor 커밋 순서와 `doc-extract-review` #32 세션으로 확인됐다. 이 저장소 #42는 A 형태 출력이며, 빼기 지시가 확인되지 않아 A 확정이 아니다.
 
 ## 향후 탐색
 
-- 다음 조사는 문헌이 아니라 위의 대조 실험이다. 공개 일화와 sdoc-editor Grok 줄은 B 과제 표면의 후보지, sdoc-editor `gh` 절 삭제와 아키텍처 Continuity 폐기는 A가 성공한 대조다. 실무 `AGENTS.md` 문장은 T1의 긍정형 재료다. 짧은 금지가 검증됐다는 주장은 실험이 기각할 수 있는 비교 팔로만 둔다.
+- 다음 조사는 문헌이 아니라 위의 대조 실험이다. 공개 일화, sdoc-editor Grok 줄, `doc-extract-review` #32는 B 과제 표면의 후보다. sdoc-editor `gh` 절 삭제와 아키텍처 Continuity 폐기는 절을 지운 대조다. 실무 `AGENTS.md` 문장은 T1의 긍정형 재료다. 짧은 금지가 검증됐다는 주장은 실험이 기각할 수 있는 비교 팔로만 둔다.
 - 실험 문장은 “반전하지 마라”가 아니라 결과여야 한다.
 - 효과가 있어도 이 저장소 `AGENTS.md`에는 정체성·불변·승인 경계만 둔다는 기존 예산을 깨지 않게, 한 줄 이내로만 검토한다. 대상 프로젝트의 기존 always-on 파일은 별 표면이다.
 - 한 줄이 슬로건을 만족하면 그때 전달 형태를 고른다. 기본 후보는 새 카테고리가 아니라, 대상 프로젝트 always-on 파일에 그 문장을 넣는 Blueprint operation 또는 research 결과다.
@@ -178,7 +180,8 @@ Titles, commits, and comments describe remaining behavior.
 
 - 조사: [`docs/research/deletion-avoidance-and-rule-inversion.md`](../research/deletion-avoidance-and-rule-inversion.md)
 - [sdoc-editor `c041cd5`](https://github.com/SWBaek/sdoc-editor/commit/c041cd57cb65ca2e3c76e0f457acada55264f174), [`5565886`](https://github.com/SWBaek/sdoc-editor/commit/556588650b040c428d1b091a2f5dec96635d20e1), [`4892442`](https://github.com/SWBaek/sdoc-editor/commit/4892442d32110916ace39581bc5ee19e06e78fac): B. Grok 규칙 삭제 후 금지 문장 재삽입
-- [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373): A 성공. `gh` 전용 절 삭제
+- [doc-extract-review #32](https://github.com/SWBaek/doc-extract-review/issues/32): B, 세션 확인. 복구 뒤 무관한 이슈에 “수정하지 않는다”를 명시
+- [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373): 정책 절 삭제. 빼기 지시와의 동일성은 단정하지 않음
 - [liby/dotfiles `AGENTS.md`](https://github.com/liby/dotfiles/blob/main/dot_codex/AGENTS.md): 주석과 PR의 최종 상태 문장. B 표면의 실무 관례, 효과 측정 아님
 - [@Nominatiivi, 2026. 토마토 원글에 그 파일을 가리킨 답글](https://x.com/Nominatiivi/status/2090464250573779338)
 - [@songkeys, 2026. 番茄炒蛋와 东坡肉 PR 제목](https://x.com/songkeys/status/2090416137720999992)
