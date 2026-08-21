@@ -31,7 +31,7 @@
 - **A. 대상 잔존.** 원 문장·경로가 극성 반전, 가드, 주석 처리, feature flag, fallback으로 파일에 남는다. 반전된 규칙은 원 규칙을 폐기하지 않는다. 같은 주제를 반대 방향으로 다시 계약한다.
 - **B. 부재 서술 잔존.** 대상은 사라졌는데 제목, 커밋, PR, 주석, 메모리에 “X 없음”, “Y 제거”, “절대 넣지 말 것”이 남는다.
 
-이 저장소의 재현 가능한 사례는 A다. 위의 `AGENTS.md` 폐기 1차 결과. 공개 일화의 토마토 PR 제목과 하치와레 메모리는 주로 B다. 동파육 금지 테스트·fallback 유추는 A와 같다.
+이 저장소의 재현 가능한 A는 위의 `AGENTS.md` 폐기 1차 결과다. 공개 일화의 토마토 PR 제목과 하치와레 메모리는 주로 B다. 같은 운영자의 다른 프로젝트에서 B와 삭제 성공·반례가 추가로 확인됐다. 아래 프로젝트 사례를 따른다.
 
 그 밖의 측정된 관찰은 조사 note를 따른다.
 
@@ -54,6 +54,19 @@
 | [@DrWhitePsyker, 2024-03-19](https://x.com/DrWhitePsyker/status/1769913485931028616) | 제목은 “Scrambled eggs without milk”, 본문 2단계는 우유를 넣음 | 인접하지만 다른 실패다. 제목의 부정이 본문의 부재로 이어지지 않는다. |
 | 단일 원문 없이 반복 보고 | “X는 아직 출시되지 않았으니 언급하지 마라”는 지시가 결과물에 “X는 출시되지 않았으므로 다루지 않는다”는 문장으로 남음 | B. 금지 지시를 이행 증명으로 다시 쓴다. |
 | 원글 답글 [@wladston](https://x.com/wladston/status/2090478510401855558), [@markizko](https://x.com/markizko/status/2090468464947261867) | 동파육이 없음을 보장하는 테스트와, 다른 요리의 기본 경로에 동파육을 남기는 fallback까지 추가한다는 지적 | 독립 세션 로그가 아니다. A와 같은 등급의 실패 형태를 유추한 확장이다. |
+
+## 프로젝트 사례
+
+2026-08-21에 열린 Paseo 워크스페이스의 git 산출물을 읽었다. 에이전트 대화 전문은 `improvement-ai` 세션 말고는 이 데몬에 없었다. 비공개 경로와 vault 내용은 적지 않는다. A/B는 이 가설의 읽기다.
+
+| 출처 | 관찰된 출력 | 읽기 |
+|---|---|---|
+| [sdoc-editor `c041cd5`](https://github.com/SWBaek/sdoc-editor/commit/c041cd57cb65ca2e3c76e0f457acada55264f174) → [`5565886`](https://github.com/SWBaek/sdoc-editor/commit/556588650b040c428d1b091a2f5dec96635d20e1) → [`4892442`](https://github.com/SWBaek/sdoc-editor/commit/4892442d32110916ace39581bc5ee19e06e78fac) | 2026-08-05 Grok advisor 규칙을 `AGENTS.md`에서 지운 뒤, 같은 날 다른 PR이 `Do not use Grok CLI… The project no longer maintains or requires them.`을 다시 넣었다. 이틀 뒤 orchestration 제거와 함께 그 문장도 사라졌다. | **B.** 대상은 이미 없는데 금지·“no longer” 계약으로 주제가 돌아온다. 공개 일화의 하치와레 메모리와 같은 형태다. 대조 실험의 B 과제 후보다. |
+| [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373) | 2026-08-13 `GitHub operations` 절을 통째로 삭제했다. PR 제목·본문은 CLI-only 제한을 drop하고 `no longer need to be restricted to authenticated gh`라고 적었다. 파일에는 반전 문장이 남지 않았다. | **A 성공.** 본 작업이 정책 폐기라 제목의 제거 서술은 잔여 동작이다. 이 저장소 #42와 같은 요청인데 한 번에 삭제된 대조다. |
+| 제어 아키텍처 프로젝트 `5ce0b41` (2026-08-18) | Continuity·Focus 절과 프로젝트 로컬 Skill을 삭제하고, 폐기를 활성 Decision으로 기록했다. `AGENTS.md`에는 금지 대체 문장이 남지 않았다. | **삭제 성공 + 정당한 결정 기록.** 운영 체계 폐기가 본 작업이고, 결정 로그가 그 잔여 동작이다. B가 아니다. |
+| 개인 WorkOs `AGENTS.md` (2026-08-21 현재) | `gh` 전용 GitHub 규칙은 아직 현행이다. 버린 프로젝트 필드명을 새 기록에 쓰지 말라는 금지 목록은 남아 있다. | **`gh`는 A가 아니다.** 폐기 요청의 잔존이 확인되지 않았다. 필드 금지 목록은 마이그레이션이 끝났다면 **B 후보**, 아직이면 정당한 반전이다. |
+
+질문방 워크스페이스는 빈 디렉터리였다. MinerU Local과 Tailscale 운영 저장소의 최근 산출물에서는 A/B를 보지 못했다.
 
 ## 현재 가설
 
@@ -149,11 +162,11 @@ Titles, commits, and comments describe remaining behavior.
 4. T4만으로 B가 줄면, 상시 문장보다 교정 턴의 재지정이 작은 해법인가?
 5. 같은 요청을 Codex, Grok, 다른 Agent에 반복하면 잔존 비율이 제품보다 과제 유형에 더 의존하는가?
 
-아직 T0 밖의 팔은 이 저장소에서 측정하지 않았다. A의 존재는 공개 커밋 #42와 #43로만 확인됐다.
+아직 T0 밖의 팔은 이 저장소에서 측정하지 않았다. A의 존재는 이 저장소 #42와 #43로 확인됐다. B의 존재는 sdoc-editor의 Grok 금지 문장 재삽입으로 확인됐다.
 
 ## 향후 탐색
 
-- 다음 조사는 문헌이 아니라 위의 대조 실험이다. 공개 일화는 과제 표면의 후보지, 실무 `AGENTS.md` 문장은 T1의 긍정형 재료다. 짧은 금지가 검증됐다는 주장은 실험이 기각할 수 있는 비교 팔로만 둔다.
+- 다음 조사는 문헌이 아니라 위의 대조 실험이다. 공개 일화와 sdoc-editor Grok 줄은 B 과제 표면의 후보지, sdoc-editor `gh` 절 삭제와 아키텍처 Continuity 폐기는 A가 성공한 대조다. 실무 `AGENTS.md` 문장은 T1의 긍정형 재료다. 짧은 금지가 검증됐다는 주장은 실험이 기각할 수 있는 비교 팔로만 둔다.
 - 실험 문장은 “반전하지 마라”가 아니라 결과여야 한다.
 - 효과가 있어도 이 저장소 `AGENTS.md`에는 정체성·불변·승인 경계만 둔다는 기존 예산을 깨지 않게, 한 줄 이내로만 검토한다. 대상 프로젝트의 기존 always-on 파일은 별 표면이다.
 - 한 줄이 슬로건을 만족하면 그때 전달 형태를 고른다. 기본 후보는 새 카테고리가 아니라, 대상 프로젝트 always-on 파일에 그 문장을 넣는 Blueprint operation 또는 research 결과다.
@@ -164,6 +177,8 @@ Titles, commits, and comments describe remaining behavior.
 ## 관련 출처와 후속 링크
 
 - 조사: [`docs/research/deletion-avoidance-and-rule-inversion.md`](../research/deletion-avoidance-and-rule-inversion.md)
+- [sdoc-editor `c041cd5`](https://github.com/SWBaek/sdoc-editor/commit/c041cd57cb65ca2e3c76e0f457acada55264f174), [`5565886`](https://github.com/SWBaek/sdoc-editor/commit/556588650b040c428d1b091a2f5dec96635d20e1), [`4892442`](https://github.com/SWBaek/sdoc-editor/commit/4892442d32110916ace39581bc5ee19e06e78fac): B. Grok 규칙 삭제 후 금지 문장 재삽입
+- [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373): A 성공. `gh` 전용 절 삭제
 - [liby/dotfiles `AGENTS.md`](https://github.com/liby/dotfiles/blob/main/dot_codex/AGENTS.md): 주석과 PR의 최종 상태 문장. B 표면의 실무 관례, 효과 측정 아님
 - [@Nominatiivi, 2026. 토마토 원글에 그 파일을 가리킨 답글](https://x.com/Nominatiivi/status/2090464250573779338)
 - [@songkeys, 2026. 番茄炒蛋와 东坡肉 PR 제목](https://x.com/songkeys/status/2090416137720999992)
