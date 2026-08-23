@@ -47,5 +47,5 @@ Idea 단계에서는 실행 가능한 runtime, 설치형 Skill, formal schema나
 | [AI–Human Interactive Decision Workbench](ai-human-interactive-decision-workbench.md) | `Parked` | 2026-08-07 | 실제 프로젝트에서 채팅 기반 다중 결정 검토의 반복 실패와 Pilot 후보가 확인되면 재개 |
 | [Local Project Continuity](local-project-continuity.md) | `Promoted` | 2026-08-14 | 사용자 개입을 기본값으로 삼지 않는 더 작은 continuity 가설이 제안되면 최초 문제와 record-first 가정을 다시 비교 |
 | [Private Remote Artifact Preview](private-remote-artifact-preview.md) | `Exploring` | 2026-08-10 | 단일 고정 Serve port와 전용 Artifact Root를 사용하는 개인 전역 Skill Pilot에서 정적 게시·Dashboard·cleanup을 검증하고 동적 app 실패 시 Hub 또는 port pool 필요성을 판단 |
-| [Subtractive Edit Fidelity](subtractive-edit-fidelity.md) | `Parked` | 2026-08-21 | 한 줄 결과 계약과 짧은 금지 카탈로그를, 대상 잔존(A)과 부재 서술(B)로 나눠 세는 대조 실험을 실제로 시작할 때 재개 |
+| [Subtractive Edit Fidelity](subtractive-edit-fidelity.md) | `Parked` | 2026-08-23 | 한 줄 결과 계약과 짧은 금지 카탈로그를, 대상 잔존(A)과 부재 서술(B)로 나눠 세는 대조 실험을 실제로 시작할 때 재개 |
 | [Newcomer Reverse Questioning](newcomer-reverse-questioning.md) | `Exploring` | 2026-08-14 | 빈 원장에서 지금 살아있는 일 몇 개만 신입 인터뷰로 페이지를 만든 뒤, 질문이 멈추는지와 운영 노동이 다시 붙는지 1주 관찰할 때 갱신 |
