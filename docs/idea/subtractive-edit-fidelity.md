@@ -3,7 +3,7 @@
 ## Status
 
 - State: `Parked`
-- Last reviewed: 2026-08-23
+- Last reviewed: 2026-08-24
 - Next trigger: 한 줄 결과 계약과 짧은 금지 카탈로그를, 대상 잔존(A)과 부재 서술(B)로 나눠 세는 대조 실험을 실제로 시작할 때 재개한다.
 
 현재는 의도적으로 탐색을 중단했다. 아직 Capability Blueprint, 실행 도구, schema 또는 구현 사양이 아니다. 원인 조사는 [`docs/research/deletion-avoidance-and-rule-inversion.md`](../research/deletion-avoidance-and-rule-inversion.md)에 있다.
@@ -31,7 +31,7 @@
 - **A. 대상 잔존.** 원 문장·경로가 극성 반전, 가드, 주석 처리, feature flag, fallback으로 파일에 남는다. 반전된 규칙은 원 규칙을 폐기하지 않는다. 같은 주제를 반대 방향으로 다시 계약한다.
 - **B. 부재 서술 잔존.** 대상은 사라졌는데 제목, 커밋, PR, 주석, 메모리에 “X 없음”, “Y 제거”, “절대 넣지 말 것”이 남는다.
 
-이 저장소 #42는 A 형태의 출력이지만, 빼기 지시가 대화로 확인되지 않아 A 확정이 아니다. 세션이 확인된 실패는 주로 B다. 공개 일화의 토마토 PR 제목과 하치와레 메모리, 아래 프로젝트 사례의 Grok 금지 문장과 `doc-extract-review` 이슈 #32·#27이다.
+이 저장소 #42는 A 형태의 출력이지만, 빼기 지시가 대화로 확인되지 않아 A 확정이 아니다. 세션이 확인된 실패는 주로 B다. 공개 일화의 토마토 PR 제목과 하치와레 메모리, 아래 프로젝트 사례의 Grok 금지 문장, `doc-extract-review` 이슈 #32·#27, TailscaleOps 이슈 #4 코멘트다.
 
 그 밖의 측정된 관찰은 조사 note를 따른다.
 
@@ -64,11 +64,12 @@
 | [sdoc-editor `c041cd5`](https://github.com/SWBaek/sdoc-editor/commit/c041cd57cb65ca2e3c76e0f457acada55264f174) → [`5565886`](https://github.com/SWBaek/sdoc-editor/commit/556588650b040c428d1b091a2f5dec96635d20e1) → [`4892442`](https://github.com/SWBaek/sdoc-editor/commit/4892442d32110916ace39581bc5ee19e06e78fac) | 2026-08-05 Grok advisor 규칙을 `AGENTS.md`에서 지운 뒤, 같은 날 다른 PR이 `Do not use Grok CLI… The project no longer maintains or requires them.`을 다시 넣었다. 이틀 뒤 orchestration 제거와 함께 그 문장도 사라졌다. | **B.** 대상은 이미 없는데 금지·“no longer” 계약으로 주제가 돌아온다. 공개 일화의 하치와레 메모리와 같은 형태다. 대화 세션은 이 데몬에 없다. 커밋 순서로만 읽는다. |
 | [doc-extract-review #32](https://github.com/SWBaek/doc-extract-review/issues/32) (2026-08-21 Codex 세션) | 범위 밖 `mineru-local` 파일을 고친 뒤, 복구하라는 지적을 받고 되돌렸다. 이어서 기술 스택 이슈 본문에 그 폴더를 수정하지 않는다고 명시했다. 사람이 “이런 말은 넣지 마세요. 애초에 연관없던 거잖아요”라고 하자 본문에서 경로를 지웠다. | **B, 세션 확인.** 선행 추가는 별 가설이다. 이 Idea가 겨누는 지점은 복구 뒤에 무관한 이슈에 “수정하지 않는다”를 쓴 것이다. 두 번째 지적 뒤 현재 이슈 본문에는 경로가 없다. |
 | [doc-extract-review #27](https://github.com/SWBaek/doc-extract-review/issues/27) (2026-08-23, 같은 Codex 세션) | 작업 순서를 이슈로 관리하자는 질문에, 존재하지 않던 `PLAN.md`를 “만들지 않는다”고 #27 본문에 넣었다. 사람이 “plan.md에 관한 얘기는 빼. 원래 없던 거잖아”라고 하자 문장을 지우고, 앞으로도 관리 원칙 설명에 언급하지 않겠다고 했다. | **B, 세션 확인.** #32와 같은 에이전트의 반복. 없던 산출물의 부재를 이슈에 계약한 뒤, 빼라는 지적을 금지 약속으로 다시 썼다. 현재 #27 본문에는 `PLAN.md`가 없다. |
+| [TailscaleOps #4 코멘트](https://github.com/SWBaek/TailscaleOps/issues/4#issuecomment-5391822144) (2026-08-24 Codex 세션) | 스킬을 공용 경로와 Codex 전용 경로에 이중 설치하자고 제안한 뒤, 사람이 공용 경로면 Codex 전용 저장은 필요 없다고 했다. 이어 작성한 구현 계획에 “Codex 전용 경로에는 중복 설치하지 않는다”, “`~/.codex/skills`에는 별도 복사나 Junction을 만들지 않는다”, 완료 조건에 “중복 Codex 설치가 없다”를 넣었다. | **B, 세션 확인.** 거절한 추가 경로의 부재를 계획·완료 조건으로 다시 계약했다. 잔여 산출물은 저장소 원본과 `~/.agents/skills` Junction 하나다. Hub 안전 경계(새 Serve/Funnel 금지 등)는 스킬의 본 작업이라 B가 아니다. |
 | [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373) | 2026-08-13 `GitHub operations` 절을 통째로 삭제했다. PR 제목·본문은 CLI-only 제한을 drop하고 `no longer need to be restricted to authenticated gh`라고 적었다. 파일에는 반전 문장이 남지 않았다. | **정책 절 삭제.** 본 작업이 폐기로 읽히면 제목의 제거 서술은 잔여 동작이다. 이 저장소 #42와 “같은 빼기 요청”이라고 단정하지 않는다. |
 | 제어 아키텍처 프로젝트 `5ce0b41` (2026-08-18) | Continuity·Focus 절과 프로젝트 로컬 Skill을 삭제하고, 폐기를 활성 Decision으로 기록했다. `AGENTS.md`에는 금지 대체 문장이 남지 않았다. | **삭제 + 정당한 결정 기록.** 운영 체계 폐기가 본 작업이고, 결정 로그가 그 잔여 동작이다. B가 아니다. |
 | 개인 WorkOs `AGENTS.md` (2026-08-21 현재) | `gh` 전용 GitHub 규칙은 아직 현행이다. 버린 프로젝트 필드명을 새 기록에 쓰지 말라는 금지 목록은 남아 있다. | **`gh`는 A가 아니다.** 폐기 요청의 잔존이 확인되지 않았다. 필드 금지 목록은 마이그레이션이 끝났다면 **B 후보**, 아직이면 정당한 반전이다. |
 
-질문방 워크스페이스는 빈 디렉터리였다. Tailscale 운영 저장소의 최근 산출물에서는 A/B를 보지 못했다.
+질문방 워크스페이스는 빈 디렉터리였다.
 
 ## 현재 가설
 
@@ -165,11 +166,11 @@ Titles, commits, and comments describe remaining behavior.
 4. T4만으로 B가 줄면, 상시 문장보다 교정 턴의 재지정이 작은 해법인가?
 5. 같은 요청을 Codex, Grok, 다른 Agent에 반복하면 잔존 비율이 제품보다 과제 유형에 더 의존하는가?
 
-아직 T0 밖의 팔은 이 저장소에서 측정하지 않았다. B는 sdoc-editor 커밋 순서와 `doc-extract-review` #32·#27 세션으로 확인됐다. 이 저장소 #42는 A 형태 출력이며, 빼기 지시가 확인되지 않아 A 확정이 아니다.
+아직 T0 밖의 팔은 이 저장소에서 측정하지 않았다. B는 sdoc-editor 커밋 순서와 `doc-extract-review` #32·#27, TailscaleOps #4 세션으로 확인됐다. 이 저장소 #42는 A 형태 출력이며, 빼기 지시가 확인되지 않아 A 확정이 아니다.
 
 ## 향후 탐색
 
-- 다음 조사는 문헌이 아니라 위의 대조 실험이다. 공개 일화, sdoc-editor Grok 줄, `doc-extract-review` #32와 #27은 B 과제 표면의 후보다. sdoc-editor `gh` 절 삭제와 아키텍처 Continuity 폐기는 절을 지운 대조다. 실무 `AGENTS.md` 문장은 T1의 긍정형 재료다. 짧은 금지가 검증됐다는 주장은 실험이 기각할 수 있는 비교 팔로만 둔다.
+- 다음 조사는 문헌이 아니라 위의 대조 실험이다. 공개 일화, sdoc-editor Grok 줄, `doc-extract-review` #32·#27, TailscaleOps #4는 B 과제 표면의 후보다. sdoc-editor `gh` 절 삭제와 아키텍처 Continuity 폐기는 절을 지운 대조다. 실무 `AGENTS.md` 문장은 T1의 긍정형 재료다. 짧은 금지가 검증됐다는 주장은 실험이 기각할 수 있는 비교 팔로만 둔다.
 - 실험 문장은 “반전하지 마라”가 아니라 결과여야 한다.
 - 효과가 있어도 이 저장소 `AGENTS.md`에는 정체성·불변·승인 경계만 둔다는 기존 예산을 깨지 않게, 한 줄 이내로만 검토한다. 대상 프로젝트의 기존 always-on 파일은 별 표면이다.
 - 한 줄이 슬로건을 만족하면 그때 전달 형태를 고른다. 기본 후보는 새 카테고리가 아니라, 대상 프로젝트 always-on 파일에 그 문장을 넣는 Blueprint operation 또는 research 결과다.
@@ -183,6 +184,7 @@ Titles, commits, and comments describe remaining behavior.
 - [sdoc-editor `c041cd5`](https://github.com/SWBaek/sdoc-editor/commit/c041cd57cb65ca2e3c76e0f457acada55264f174), [`5565886`](https://github.com/SWBaek/sdoc-editor/commit/556588650b040c428d1b091a2f5dec96635d20e1), [`4892442`](https://github.com/SWBaek/sdoc-editor/commit/4892442d32110916ace39581bc5ee19e06e78fac): B. Grok 규칙 삭제 후 금지 문장 재삽입
 - [doc-extract-review #32](https://github.com/SWBaek/doc-extract-review/issues/32): B, 세션 확인. 복구 뒤 무관한 이슈에 “수정하지 않는다”를 명시
 - [doc-extract-review #27](https://github.com/SWBaek/doc-extract-review/issues/27): B, 세션 확인. 없던 `PLAN.md`를 “만들지 않는다”고 명시한 뒤, 빼라는 지적을 재언급 금지로 바꿈
+- [TailscaleOps #4 코멘트](https://github.com/SWBaek/TailscaleOps/issues/4#issuecomment-5391822144): B, 세션 확인. 거절한 Codex 전용 설치 경로의 부재를 계획·완료 조건으로 다시 씀
 - [sdoc-editor `b83087d`](https://github.com/SWBaek/sdoc-editor/commit/b83087d68c468f1b17c8c0e5ed249b5a46183373): 정책 절 삭제. 빼기 지시와의 동일성은 단정하지 않음
 - [liby/dotfiles `AGENTS.md`](https://github.com/liby/dotfiles/blob/main/dot_codex/AGENTS.md): 주석과 PR의 최종 상태 문장. B 표면의 실무 관례, 효과 측정 아님
 - [@Nominatiivi, 2026. 토마토 원글에 그 파일을 가리킨 답글](https://x.com/Nominatiivi/status/2090464250573779338)
