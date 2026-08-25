@@ -4,7 +4,7 @@
 
 - State: `Exploring`
 - Last reviewed: 2026-08-25
-- Next trigger: 동일한 read-only 감사 절차를 성숙도가 다른 두 실제 저장소에 적용하고, 발견사항의 채택·기각 사유와 최종 목적지를 비교하는 첫 검증을 시작할 때 갱신한다.
+- Next trigger: `manage-workspace-agents-md`의 고정 revision을 기준 구현으로 삼아 성숙도가 다른 두 실제 저장소에서 read-only 감사를 시작하고, 발견사항의 채택·기각 사유와 최종 목적지를 비교할 때 갱신한다.
 
 이 문서는 `AGENTS.md`를 한 번 잘 작성하는 방법보다, 프로젝트 변화와 실제 Agent 실패를 근거로 지속적으로 감사하고 개선하는 capability 가설을 탐색한다. 아직 Candidate issue, Capability Blueprint, 설치형 Skill, 구현 사양 또는 자동 수정 정책이 아니다.
 
@@ -130,6 +130,24 @@ AI-native 개발에서는 `AGENTS.md`가 단순한 안내 문서가 아니라 Ag
 - auditor의 evidence classification과 최소 Patch
 - scripted checker의 deterministic verification
 - retrospective의 destination routing과 인간 승인
+
+### 첫 Pilot 기준 구현 선택
+
+2026-08-25의 탐색 단계 운영 선택으로, 새 Skill을 먼저 만들지 않고
+[`manage-workspace-agents-md`](https://github.com/stayhydated/skills/blob/a23fa326af472a5beedeec3e42a954037ee79222/skills/manage-workspace-agents-md/SKILL.md)를
+첫 read-only 감사의 기준 구현으로 사용한다. 이 선택은 새 capability의 채택 결정,
+Blueprint 계약 또는 이 저장소가 배포할 Skill을 뜻하지 않는다.
+
+- 비교 가능한 결과를 위해 위 exact revision을 두 실제 저장소에서 동일하게 사용한다.
+- Skill을 이 저장소로 복사하거나 설치하지 않고, Pilot 대상이 소유하는 프로젝트 로컬
+  환경에서만 사용한다.
+- 기존 Skill의 Draft, Patch, Audit, Alignment, evidence 분류와 최소 수정 절차를 먼저
+  재사용한다.
+- retrospective intake, `AGENTS.md` 밖의 durable destination routing, finding별 인간
+  승인과 fresh-context 전후 평가가 실제로 부족한지 관찰한다.
+- 기존 Skill만으로 required outcome이 충족되면 새 Skill을 만들지 않는다. 같은 공백이
+  서로 다른 저장소에서 반복될 때만 upstream 기여, 작은 보완 Skill 또는 별도
+  Capability Blueprint를 비교한다.
 
 ## 현재 capability 가설
 
