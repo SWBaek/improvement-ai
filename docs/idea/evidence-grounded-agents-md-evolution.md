@@ -2,11 +2,12 @@
 
 ## Status
 
-- State: `Exploring`
+- State: `Promoted`
 - Last reviewed: 2026-08-25
-- Next trigger: `manage-workspace-agents-md`의 고정 revision을 기준 구현으로 삼아 성숙도가 다른 두 실제 저장소에서 read-only 감사를 시작하고, 발견사항의 채택·기각 사유와 최종 목적지를 비교할 때 갱신한다.
+- Next trigger: Candidate issue #68의 계약이나 Pilot evidence가 현재 가설을 좁히거나 반증할 때 최초 문제와 근거를 다시 비교한다.
+- Follow-up: [Blueprint Candidate #68](https://github.com/SWBaek/improvement-ai/issues/68)
 
-이 문서는 `AGENTS.md`를 한 번 잘 작성하는 방법보다, 프로젝트 변화와 실제 Agent 실패를 근거로 지속적으로 감사하고 개선하는 capability 가설을 탐색한다. 아직 Candidate issue, Capability Blueprint, 설치형 Skill, 구현 사양 또는 자동 수정 정책이 아니다.
+이 문서는 `AGENTS.md`를 한 번 잘 작성하는 방법보다, 프로젝트 변화와 실제 Agent 실패를 근거로 지속적으로 감사하고 개선하는 capability 가설을 탐색한 기록이다. 후속 계약과 실행 상태는 [Candidate issue #68](https://github.com/SWBaek/improvement-ai/issues/68)에서 관리한다. 이 Idea 자체는 Capability Blueprint, 설치형 Skill, 구현 사양 또는 자동 수정 정책이 아니다.
 
 공개 저장소 사례는 직접 연결한다. 비공개 저장소에서 얻은 관찰은 저장소명, 경로, 버전, 원문 지침과 업무 데이터를 공개하지 않고 일반화했다.
 
@@ -327,23 +328,23 @@ Codex, Claude Code, Copilot, Cursor는 instruction discovery와 precedence가 �
 7. rule 준수 향상이 모델 성능 변화인지 guidance 변화인지 어떻게 분리할 것인가?
 8. 한 저장소에서 여러 번 성공한 결과를 독립적인 capability evidence로 볼 수 있는가?
 
-## Candidate 승격을 검토할 조건
+## Candidate 승격 결과
 
-다음 evidence가 쌓이면 Candidate issue를 검토한다.
+2026-08-25에 이 Idea를 [`maintain-agent-guidance` Blueprint Candidate #68](https://github.com/SWBaek/improvement-ai/issues/68)로 승격했다. 이 상태는 Blueprint acceptance, 구현 착수 또는 Pilot 성공을 의미하지 않는다. 이후 required outcomes, authority boundary, 기존 스킬 baseline과 두 프로젝트 Pilot 조건은 Candidate issue에서 관리한다.
 
-- 성숙도가 다른 최소 두 저장소에서 read-only audit을 수행했다.
-- 한 사례에서는 실제 drift 또는 잘못된 destination을 찾아 승인된 개선으로 연결했다.
-- 다른 사례에서는 full rewrite를 거부하거나 변경 불필요를 정확히 판정했다.
-- finding별 evidence와 human authority boundary가 반복해서 이해 가능했다.
-- private repository와 session material을 공개하지 않고도 결과를 설명할 수 있었다.
-- generator, auditor, retrospective, checker 중 어떤 부분이 Blueprint의 required outcome이고 어떤 부분이 프로젝트 적응 지점인지 구분할 수 있었다.
+현재 가설을 다시 검토할 조건은 다음과 같다.
 
-두 저장소에서 같은 템플릿을 만들었다는 사실만으로는 승격하지 않는다. 핵심 evidence는 서로 다른 저장소가 서로 다른 개입을 필요로 했는데도 공통 authority와 routing 원칙이 유지되는지다.
+- 기존 `manage-workspace-agents-md`만으로 두 저장소의 required outcome이 충분히 충족된다.
+- domain-heavy 저장소에서 safety boundary 보존에 실패하거나 성숙한 저장소에서 false rewrite를 유발한다.
+- finding별 evidence, destination routing 또는 human authority가 반복해서 이해되지 않는다.
+- private repository와 session material 없이 Pilot evidence를 설명할 수 없다.
+- generator, auditor, retrospective, checker의 분리가 실제 사용에서 불필요하거나 다른 분해가 더 안정적임이 확인된다.
 
 ## 관련 출처와 후속 링크
 
 ### 이 저장소
 
+- [Blueprint Candidate #68](https://github.com/SWBaek/improvement-ai/issues/68)
 - [`AGENTS.md` 크기 지침 조사](../research/agents-md-size-guidance.md)
 - [`Subtractive Edit Fidelity`](subtractive-edit-fidelity.md)
 - [`Ideas` 운영 방식](README.md)
