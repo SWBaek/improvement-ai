@@ -2,9 +2,13 @@
 
 ## Status
 
-- State: `Exploring`
+- State: `Promoted`
 - Last reviewed: 2026-09-03
-- Next trigger: 별도 사용자 환경의 개인 전역 bootstrap Skill로 GitHub 기반 신규 프로젝트와 local-only 신규 프로젝트를 각각 하나 이상 초기화하고, 실제 Issue lifecycle과 중요한 결정이 발생한 프로젝트에서의 ADR 작성을 거친 뒤 fresh-context Agent가 추가 설명 없이 두 기록의 원본과 역할을 구분하며 중복 상태가 생기지 않는지 비교한다.
+- Next trigger: [Candidate #72](https://github.com/SWBaek/improvement-ai/issues/72)의 계약이나 [Establish Project Records Blueprint](../../blueprints/establish-project-records/BLUEPRINT.md)의 Pilot evidence가 최초 가설을 좁히거나 반증할 때 재검토한다.
+
+## 승격 결과
+
+이 Idea는 [Candidate #72](https://github.com/SWBaek/improvement-ai/issues/72)와 [Establish Project Records Blueprint](../../blueprints/establish-project-records/BLUEPRINT.md)로 승격됐다. 아래 내용은 문제를 발견하고 범위를 좁힌 탐색 맥락이며, 현재 계약과 Pilot 상태의 원본은 Blueprint와 tracking issue다.
 
 ## 문제와 배경
 
@@ -39,17 +43,17 @@
 
 ## 현재 가설
 
-가칭 **Project Records Bootstrap**은 프로젝트 시작 직후 사람이 명시적으로 한 번 실행하는 개인 전역 Agent Skill이다. Skill 자체는 프로젝트 상태를 가지지 않고, 선택과 승인 뒤 모든 사람과 Agent가 읽을 수 있는 프로젝트 로컬 기록 계약을 생성한다. 계약은 앞으로 할 일을 위한 Work Item 원본과 오래 남길 결정을 위한 ADR 원본을 구분한다.
+초기 가설은 **Project Records Bootstrap**을 프로젝트 시작 직후 사람이 명시적으로 한 번 실행하는 개인 전역 Agent Skill로 두는 것이었다. Candidate 승격에서는 전역 Skill 대신 Blueprint 설치 프롬프트 자체를 일회성 bootstrap으로 사용하고, 선택과 승인 뒤 모든 사람과 Agent가 읽을 수 있는 프로젝트 로컬 기록 계약을 생성하는 방향을 택했다. 계약은 앞으로 할 일을 위한 Work Item 원본과 오래 남길 결정을 위한 ADR 원본을 구분하며, 설치 후 지속적인 bootstrap Skill을 요구하지 않는다.
 
 ```text
-explicit one-time invocation
+explicit one-time Blueprint installation
   → read-only project inspection
   → Work Item provider and record scope proposal
   → human approval
   → fixed record core + one Work Item provider profile
   → project-local policy, Work Item templates and Agent pointer
   → local and approved remote verification
-  → no runtime dependency on the bootstrap Skill
+  → no runtime dependency on the Blueprint or bootstrap Skill
 ```
 
 이 접근은 기존 프로젝트를 일반화해 다시 쓰는 migration Skill이 아니라 greenfield bootstrap을 우선한다. 이미 Issue나 tracker가 있는 프로젝트에서는 자동 정규화하지 않고 기존 원본과 충돌을 보고한다.
@@ -245,9 +249,9 @@ GitHub Project Status, GitLab scoped label, Jira workflow와 Markdown frontmatte
 - 고정 표준이 줄인 context switching이 template와 remote 설정 유지 비용보다 큰가?
 - 이 capability가 다른 사용자에게도 반복되는가, 아니면 개인 전역 Skill로 충분한가?
 
-## 첫 Pilot 가설
+## 승격 당시 Pilot 가설
 
-실행 가능한 Skill과 template는 이 저장소가 아니라 별도 사용자 환경에서 만든다. 첫 Pilot은 기존 프로젝트 migration이 아닌 서로 다른 신규 프로젝트를 대상으로 한다.
+정식 Pilot은 exact Blueprint revision으로 생성된 프로젝트 로컬 결과를 대상으로 하며 tracking issue에 evidence를 제출한다. 기존 프로젝트 migration이 아닌 서로 다른 신규 프로젝트를 우선한다.
 
 1. GitHub 기반 신규 프로젝트 하나에 명시적으로 bootstrap을 실행한다.
 2. local-only 신규 프로젝트 하나에 같은 공통 의미와 Local profile을 생성한다.
@@ -255,7 +259,7 @@ GitHub Project Status, GitLab scoped label, Jira workflow와 Markdown frontmatte
 4. 실제로 중요한 결정이 발생한 프로젝트에서만 ADR 하나를 작성하고, 다른 프로젝트에는 검증만을 위한 ADR이나 빈 directory를 만들지 않는다.
 5. 새 context의 Agent에게 Work Item 조회, 새 작업 제안, 중요한 결정의 기록 위치 판단과 완료 확인을 요청한다.
 6. source 재질문, 잘못된 위치, 역할 혼동, 필수 정보 누락, 중복 상태, remote drift, ADR 과잉 작성과 사용자 정정 횟수를 기록한다.
-7. bootstrap Skill을 호출하지 않은 후속 세션에서도 프로젝트 로컬 계약만으로 운영되는지 확인한다.
+7. Blueprint나 bootstrap Skill을 호출하지 않은 후속 세션에서도 프로젝트 로컬 계약만으로 운영되는지 확인한다.
 8. 실제 후보가 생기면 `Work Item: none`과 ADR만 사용하는 repository를 후속 반례로 검증한다.
 
 성공 신호는 구조가 생성되었다는 사실이 아니라, 두 프로젝트에서 Agent와 사람이 Work Item과 durable decision의 의미를 재학습하지 않고 구분하며 각 상태 원본이 하나로 유지되는 것이다. GitHub와 Local의 차이가 반복적으로 방해되거나 개인 표준 밖에서 같은 요구가 확인되면 Candidate issue와 Capability Blueprint의 adaptation boundary를 검토한다.

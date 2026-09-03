@@ -28,6 +28,7 @@ Blueprint의 버전은 저장소 HEAD가 아니라 해당 canonical `BLUEPRINT.m
 
 | Blueprint | Status | Install | Contract | Tracking |
 |---|---|---|---|---|
+| `establish-project-records` | In Progress | [설치 안내](establish-project-records/README.md) | [Blueprint](establish-project-records/BLUEPRINT.md) | [#72](https://github.com/SWBaek/improvement-ai/issues/72) |
 | `manage-focus-cycle` | In Progress | [설치 안내](manage-focus-cycle/README.md) | [Blueprint](manage-focus-cycle/BLUEPRINT.md) | [#15](https://github.com/SWBaek/improvement-ai/issues/15) |
 | `maintain-project-continuity` | Paused | [설치 안내](maintain-project-continuity/README.md) | [Blueprint](maintain-project-continuity/BLUEPRINT.md) | [#21](https://github.com/SWBaek/improvement-ai/issues/21) |
 
