@@ -51,6 +51,7 @@ exact-revision Blueprint
 
 | Blueprint | 상태 | 목적 | 사용 |
 |---|---|---|---|
+| `establish-project-records` | In Progress | 지속적인 bootstrap runtime 없이 repository work의 프로젝트 로컬 원본과 provider 독립적인 ADR 규약을 설정합니다. | [설치](blueprints/establish-project-records/README.md) · [계약](blueprints/establish-project-records/BLUEPRINT.md) |
 | `manage-focus-cycle` | In Progress | 전체 프로젝트의 가짜 종료점을 만들지 않고 하나의 제한된 Focus Cycle을 관리하는 프로젝트 로컬 capability를 생성합니다. | [설치](blueprints/manage-focus-cycle/README.md) · [계약](blueprints/manage-focus-cycle/BLUEPRINT.md) |
 | `maintain-project-continuity` | Paused | 실패한 Pilot에서 확인된 상호작용 비용을 재검토하는 동안 프로젝트 로컬 continuity 설계를 보존합니다. | [설치](blueprints/maintain-project-continuity/README.md) · [계약](blueprints/maintain-project-continuity/BLUEPRINT.md) |
 

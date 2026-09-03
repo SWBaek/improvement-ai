@@ -51,6 +51,7 @@ The approach was motivated by Andrej Karpathy's `llm-wiki.md`: a compact idea fi
 
 | Blueprint | Status | Purpose | Use |
 |---|---|---|---|
+| `establish-project-records` | In Progress | Establish one project-local source for repository work and a provider-independent ADR convention without a continuing bootstrap runtime. | [Install](blueprints/establish-project-records/README.md) · [Contract](blueprints/establish-project-records/BLUEPRINT.md) |
 | `manage-focus-cycle` | In Progress | Generate project-local capabilities for managing one bounded Focus Cycle without inventing a final endpoint for the containing project. | [Install](blueprints/manage-focus-cycle/README.md) · [Contract](blueprints/manage-focus-cycle/BLUEPRINT.md) |
 | `maintain-project-continuity` | Paused | Retain the project-local continuity design while its interaction cost is reconsidered after a failed Pilot. | [Install](blueprints/maintain-project-continuity/README.md) · [Contract](blueprints/maintain-project-continuity/BLUEPRINT.md) |
 
